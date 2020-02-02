@@ -134,13 +134,6 @@ class SignupForm extends Component {
 
     return (
       <>
-        <Head>
-          <title>MangSNS</title>
-          <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"
-          ></link>
-        </Head>
         <StyledForm>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="E-mail">
