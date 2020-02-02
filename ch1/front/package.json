@@ -1,0 +1,27 @@
+{
+  "name": "mang-sns",
+  "version": "1.0.0",
+  "description": "SNS for MangWon people!",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "seosang",
+  "license": "MIT",
+  "dependencies": {
+    "antd": "^3.26.7",
+    "next": "^8.1.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-react": "^7.18.2",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "nodemon": "^2.0.2",
+    "webpack": "^4.41.5"
+  }
+}
