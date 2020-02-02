@@ -55,7 +55,9 @@ class SignupForm extends Component {
   handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
+      console.log("TCL: values", values)
+      if (!err && !!values.agreement) {
+        console.log("TCL: values.agreement", values.agreement)
         console.log("Received values of form: ", values)
       }
     })
@@ -79,6 +81,15 @@ class SignupForm extends Component {
     const { form } = this.props
     if (value && this.state.confirmDirty) {
       form.validateFields(["confirm"], { force: true })
+    }
+    callback()
+  }
+
+  validateChecked = (rule, value, callback) => {
+    console.log(this.props.form)
+    const { form } = this.props
+    if (value === true) {
+      form.validateFields(["agreement"], { force: true })
     }
     callback()
   }
@@ -137,11 +148,11 @@ class SignupForm extends Component {
                 rules: [
                   {
                     type: "email",
-                    message: "The input is not valid E-mail!"
+                    message: "올바른 이메일 주소가 아닙니다!"
                   },
                   {
                     required: true,
-                    message: "Please input your E-mail!"
+                    message: "이메일을 입력해주세요!"
                   }
                 ]
               })(<Input />)}
@@ -175,7 +186,7 @@ class SignupForm extends Component {
             <Form.Item
               label={
                 <span>
-                  별명&nbsp;
+                  닉네임&nbsp;
                   <Tooltip title="무엇으로 불리고 싶으신가요?">
                     <Icon type="question-circle-o" />
                   </Tooltip>
@@ -186,7 +197,7 @@ class SignupForm extends Component {
                 rules: [
                   {
                     required: true,
-                    message: "별명을 입력해주세요!",
+                    message: "닉네임을 입력해주세요!",
                     whitespace: true
                   }
                 ]
@@ -212,6 +223,7 @@ class SignupForm extends Component {
             <Form.Item {...tailFormItemLayout}>
               {getFieldDecorator("agreement", {
                 valuePropName: "checked"
+                // rules: [{ validator: this.validateChecked, message: "약관에 동의하셔야합니다!" }]
               })(
                 <Checkbox>
                   저는 <a href="">약관</a>을 읽었고 동의합니다.
