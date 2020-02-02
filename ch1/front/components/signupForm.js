@@ -1,5 +1,4 @@
 import React, { Component, memo, useMemo } from "react"
-import Head from "next/head"
 import styled, { css } from "styled-components"
 
 import {

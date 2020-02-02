@@ -1,5 +1,6 @@
 import React from "react"
 import Head from "next/head"
+import PropTypes from "prop-types"
 import AppLayout from "../components/AppLayout"
 
 const MangSNS = ({ Component }) => {
@@ -17,6 +18,10 @@ const MangSNS = ({ Component }) => {
       </AppLayout>
     </>
   )
+}
+
+MangSNS.propTypes = {
+  Component: PropTypes.elementType
 }
 
 export default MangSNS

@@ -1,10 +1,6 @@
 import React, { memo } from "react"
-import AppLayout from "../components/AppLayout"
-import Link from "next/link"
-import Head from "next/head"
 import { Form } from "antd"
-import SignupForm from "./signupForm"
-import styled, { css, createGlobalStyle, keyframes } from "styled-components"
+import SignupForm from "../components/signupForm"
 
 const WrappedSignupForm = Form.create({ name: "register" })(SignupForm)
 
