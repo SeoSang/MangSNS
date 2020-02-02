@@ -18,8 +18,12 @@ const AppLayout = ({ children }) => {
             <a>프로필</a>
           </Link>
         </Menu.Item>
-        <Menu.Item key="mail">
-          <Input.Search enterButton style={{ verticalAlign: "middle" }} />
+        <Menu.Item key="search">
+          <Input.Search
+            enterButton
+            placeholder="검색어를 입력하세요."
+            style={{ verticalAlign: "middle" }}
+          />
         </Menu.Item>
       </Menu>
       <Link href="/signup">
