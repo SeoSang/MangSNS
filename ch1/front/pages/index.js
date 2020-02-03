@@ -1,4 +1,6 @@
 import React from "react"
+import ReactDOM from "react-dom"
+
 import Link from "next/link"
 import Head from "next/head"
 import AppLayout from "../components/AppLayout.js"
