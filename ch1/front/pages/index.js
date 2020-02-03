@@ -1,15 +1,32 @@
 import React from "react"
 import Link from "next/link"
+import PostForm from "../components/PostForm"
+
+import { Form, Input, Icon, Row, Col, Checkbox, Button, AutoComplete, Avatar, Card } from "antd"
+import PostCard from "../components/PostCard"
+
+const dummy = {
+  isLogin: true,
+  imagePaths: [],
+  mainPosts: [
+    {
+      User: {
+        id: 1,
+        nickname: "서상혁"
+      },
+      content: "첫번째 게시글",
+      img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726"
+    }
+  ]
+}
 
 const Home = () => {
   return (
     <>
-      <Link href="/users/create">
-        <a>Go to create.js</a>
-      </Link>
-      <div>
-        <h1>I am Home</h1>
-      </div>
+      {dummy.isLogin && <PostForm />}
+      {dummy.mainPosts.map(c => {
+        return <PostCard c={c} />
+      })}
     </>
   )
 }

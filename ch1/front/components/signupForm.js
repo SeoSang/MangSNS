@@ -56,9 +56,9 @@ class SignupForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       console.log("TCL: values", values)
       if (!err && !!values.agreement) {
-        console.log("TCL: values.agreement", values.agreement)
         console.log("Received values of form: ", values)
       }
+      console.log(this.props.form.getFieldValue())
     })
   }
 

@@ -2,11 +2,12 @@ import React from "react"
 import Link from "next/link"
 import LoginForm from "./loginForm"
 import { Menu, Input, Button, Row, Col, Avatar, Card, Form } from "antd"
+import UserProfile from "./UserProfile"
 
 const WrappedLoginForm = Form.create({ name: "login" })(LoginForm)
 
 const dummy = {
-  isLogin: false,
+  isLogin: true,
   nickname: "서상혁",
   Posts: [],
   Followings: [],
@@ -35,38 +36,14 @@ const AppLayout = ({ children }) => {
           />
         </Menu.Item>
       </Menu>
-      <Row>
-        <Col xs={24} md={6}>
-          {dummy.isLogin ? (
-            <Card
-              actions={[
-                <div key="twit">
-                  포스트
-                  <br />
-                  {dummy.Posts.length}
-                </div>,
-                <div key="Followings">
-                  팔로잉
-                  <br />
-                  {dummy.Followings.length}
-                </div>,
-                <div key="Followers">
-                  팔로워
-                  <br />
-                  {dummy.Followers.length}
-                </div>
-              ]}
-            >
-              <Card.Meta avatar={<Avatar>{dummy.nickname[0]}</Avatar>} title={dummy.nickname} />
-            </Card>
-          ) : (
-            <WrappedLoginForm />
-          )}
+      <Row gutter={8}>
+        <Col xs={24} md={5}>
+          {dummy.isLogin ? <UserProfile dummy={dummy} /> : <WrappedLoginForm />}
         </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} md={14}>
           {children}
         </Col>
-        <Col xs={24} md={6}>
+        <Col xs={24} md={5}>
           세번째
         </Col>
       </Row>
