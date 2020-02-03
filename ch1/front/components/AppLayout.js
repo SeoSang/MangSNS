@@ -28,6 +28,11 @@ const AppLayout = ({ children }) => {
             <a>프로필</a>
           </Link>
         </Menu.Item>
+        <Menu.Item key="mangwongg">
+          <Link href="/mangwongg">
+            <a>MangWonGG</a>
+          </Link>
+        </Menu.Item>
         <Menu.Item key="mail">
           <Input.Search enterButton style={{ verticalAlign: "middle" }} />
         </Menu.Item>
@@ -35,6 +40,16 @@ const AppLayout = ({ children }) => {
       <Row gutter={8}>
         <Col xs={24} md={5}>
           {dummy.isLogin ? <UserProfile dummy={dummy} /> : <WrappedLoginForm />}
+          <Link href="/login">
+            <a>
+              <Button>로그인</Button>
+            </a>
+          </Link>
+          <Link href="/signup">
+            <a>
+              <Button>회원가입</Button>
+            </a>
+          </Link>
         </Col>
         <Col xs={24} md={14}>
           {children}
@@ -43,16 +58,6 @@ const AppLayout = ({ children }) => {
           세번째
         </Col>
       </Row>
-      <Link href="/login">
-        <a>
-          <Button>로그인</Button>
-        </a>
-      </Link>
-      <Link href="/signup">
-        <a>
-          <Button>회원가입</Button>
-        </a>
-      </Link>
     </div>
   )
 }
