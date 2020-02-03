@@ -1,28 +1,29 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import PostForm from "../components/PostForm"
+import PostCard from "../components/PostCard"
 
-import Link from "next/link"
-import Head from "next/head"
-import AppLayout from "../components/AppLayout.js"
+const dummy = {
+  isLogin: true,
+  imagePaths: [],
+  mainPosts: [
+    {
+      User: {
+        id: 1,
+        nickname: "서상혁"
+      },
+      content: "첫번째 게시글",
+      img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726"
+    }
+  ]
+}
 
 const Home = () => {
   return (
     <>
-      <Head>
-        <title>MangSNS</title>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"
-        ></link>
-      </Head>
-      <AppLayout>
-        <Link href="/users/create">
-          <a>Go to create.js</a>
-        </Link>
-        <div>
-          <h1>I am Home</h1>
-        </div>
-      </AppLayout>
+      {dummy.isLogin && <PostForm />}
+      {dummy.mainPosts.map(c => {
+        return <PostCard c={c} />
+      })}
     </>
   )
 }
