@@ -22,7 +22,7 @@ const Home = () => {
     <>
       {dummy.isLogin && <PostForm />}
       {dummy.mainPosts.map(c => {
-        return <PostCard c={c} />
+        return <PostCard key={`Postcard ${c}`} c={c} />
       })}
     </>
   )
