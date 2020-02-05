@@ -1,22 +1,9 @@
-import React, { Component, memo, useMemo } from "react"
+import React, { Component, memo, useState } from "react"
 import styled, { css } from "styled-components"
 
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete
-} from "antd"
+import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "antd"
 
 const { Option } = Select
-const AutoCompleteOption = AutoComplete.Option
 const StyledForm = styled.div`
   border-radius: 15px;
   background-color: white;
@@ -45,30 +32,25 @@ const residences = [
   }
 ]
 
-class SignupForm extends Component {
-  state = {
-    confirmDirty: false,
-    autoCompleteResult: []
-  }
+const SignupForm = ({ form }) => {
+  const [confirmDirty, setConfirmDirty] = useState(false)
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault()
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    form.validateFieldsAndScroll((err, values) => {
       console.log("TCL: values", values)
       if (!err && !!values.agreement) {
         console.log("Received values of form: ", values)
       }
-      console.log(this.props.form.getFieldValue())
     })
   }
 
-  handleConfirmBlur = e => {
+  const handleConfirmBlur = e => {
     const { value } = e.target
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value })
+    setConfirmDirty(confirmDirty || !!value)
   }
 
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props
+  const compareToFirstPassword = (rule, value, callback) => {
     if (value && value !== form.getFieldValue("password")) {
       callback("Two passwords that you enter is inconsistent!")
     } else {
@@ -76,162 +58,152 @@ class SignupForm extends Component {
     }
   }
 
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props
-    if (value && this.state.confirmDirty) {
+  const validateToNextPassword = (rule, value, callback) => {
+    if (value && confirmDirty) {
       form.validateFields(["confirm"], { force: true })
     }
     callback()
   }
 
-  validateChecked = (rule, value, callback) => {
-    console.log(this.props.form)
-    const { form } = this.props
+  const validateChecked = (rule, value, callback) => {
     if (value === true) {
       form.validateFields(["agreement"], { force: true })
     }
     callback()
   }
 
-  render() {
-    const { getFieldDecorator } = this.props.form
-    const { autoCompleteResult } = this.state
+  const { getFieldDecorator } = form
 
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      }
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 }
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 }
     }
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0
-        },
-        sm: {
-          span: 16,
-          offset: 8
-        }
-      }
-    }
-    const prefixSelector = getFieldDecorator("prefix", {
-      initialValue: "82"
-    })(
-      <Select style={{ width: 70 }}>
-        <Option value="82">+82</Option>
-      </Select>
-    )
-
-    const websiteOptions = autoCompleteResult.map(website => (
-      <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
-    ))
-
-    return (
-      <>
-        <StyledForm>
-          <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-            <Form.Item label="E-mail">
-              {getFieldDecorator("email", {
-                rules: [
-                  {
-                    type: "email",
-                    message: "올바른 이메일 주소가 아닙니다!"
-                  },
-                  {
-                    required: true,
-                    message: "이메일을 입력해주세요!"
-                  }
-                ]
-              })(<Input />)}
-            </Form.Item>
-            <Form.Item label="비밀번호" hasFeedback>
-              {getFieldDecorator("password", {
-                rules: [
-                  {
-                    required: true,
-                    message: "비밀번호를 입력해주세요!"
-                  },
-                  {
-                    validator: this.validateToNextPassword
-                  }
-                ]
-              })(<Input.Password />)}
-            </Form.Item>
-            <Form.Item label="비밀번호 확인" hasFeedback>
-              {getFieldDecorator("confirm", {
-                rules: [
-                  {
-                    required: true,
-                    message: "비밀번호를 확인해주세요!"
-                  },
-                  {
-                    validator: this.compareToFirstPassword
-                  }
-                ]
-              })(<Input.Password onBlur={this.handleConfirmBlur} />)}
-            </Form.Item>
-            <Form.Item
-              label={
-                <span>
-                  닉네임&nbsp;
-                  <Tooltip title="무엇으로 불리고 싶으신가요?">
-                    <Icon type="question-circle-o" />
-                  </Tooltip>
-                </span>
-              }
-            >
-              {getFieldDecorator("nickname", {
-                rules: [
-                  {
-                    required: true,
-                    message: "닉네임을 입력해주세요!",
-                    whitespace: true
-                  }
-                ]
-              })(<Input />)}
-            </Form.Item>
-            <Form.Item label="거주지">
-              {getFieldDecorator("residence", {
-                initialValue: ["망원동", "성산동"],
-                rules: [
-                  {
-                    type: "array",
-                    required: true,
-                    message: "거주지를 입력해주세요!"
-                  }
-                ]
-              })(<Cascader options={residences} />)}
-            </Form.Item>
-            <Form.Item label="휴대전화">
-              {getFieldDecorator("phone", {
-                rules: [{ required: true, message: "핸드폰 번호를 입력해주세요!" }]
-              })(<Input addonBefore={prefixSelector} style={{ width: "100%" }} />)}
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-              {getFieldDecorator("agreement", {
-                valuePropName: "checked"
-                // rules: [{ validator: this.validateChecked, message: "약관에 동의하셔야합니다!" }]
-              })(
-                <Checkbox>
-                  저는 <a href="">약관</a>을 읽었고 동의합니다.
-                </Checkbox>
-              )}
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
-                가입하기
-              </Button>
-            </Form.Item>
-          </Form>
-        </StyledForm>
-      </>
-    )
   }
+  const tailFormItemLayout = {
+    wrapperCol: {
+      xs: {
+        span: 24,
+        offset: 0
+      },
+      sm: {
+        span: 16,
+        offset: 8
+      }
+    }
+  }
+  const prefixSelector = getFieldDecorator("prefix", {
+    initialValue: "82"
+  })(
+    <Select style={{ width: 70 }}>
+      <Option value="82">+82</Option>
+    </Select>
+  )
+
+  return (
+    <>
+      <StyledForm>
+        <Form {...formItemLayout} onSubmit={handleSubmit}>
+          <Form.Item label="E-mail">
+            {getFieldDecorator("email", {
+              rules: [
+                {
+                  type: "email",
+                  message: "올바른 이메일 주소가 아닙니다!"
+                },
+                {
+                  required: true,
+                  message: "이메일을 입력해주세요!"
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
+          <Form.Item label="비밀번호" hasFeedback>
+            {getFieldDecorator("password", {
+              rules: [
+                {
+                  required: true,
+                  message: "비밀번호를 입력해주세요!"
+                },
+                {
+                  validator: validateToNextPassword
+                }
+              ]
+            })(<Input.Password />)}
+          </Form.Item>
+          <Form.Item label="비밀번호 확인" hasFeedback>
+            {getFieldDecorator("confirm", {
+              rules: [
+                {
+                  required: true,
+                  message: "비밀번호를 확인해주세요!"
+                },
+                {
+                  validator: compareToFirstPassword
+                }
+              ]
+            })(<Input.Password onBlur={handleConfirmBlur} />)}
+          </Form.Item>
+          <Form.Item
+            label={
+              <span>
+                닉네임&nbsp;
+                <Tooltip title="무엇으로 불리고 싶으신가요?">
+                  <Icon type="question-circle-o" />
+                </Tooltip>
+              </span>
+            }
+          >
+            {getFieldDecorator("nickname", {
+              rules: [
+                {
+                  required: true,
+                  message: "닉네임을 입력해주세요!",
+                  whitespace: true
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
+          <Form.Item label="거주지">
+            {getFieldDecorator("residence", {
+              initialValue: ["망원동", "성산동"],
+              rules: [
+                {
+                  type: "array",
+                  required: true,
+                  message: "거주지를 입력해주세요!"
+                }
+              ]
+            })(<Cascader options={residences} />)}
+          </Form.Item>
+          <Form.Item label="휴대전화">
+            {getFieldDecorator("phone", {
+              rules: [{ required: true, message: "핸드폰 번호를 입력해주세요!" }]
+            })(<Input addonBefore={prefixSelector} style={{ width: "100%" }} />)}
+          </Form.Item>
+          <Form.Item {...tailFormItemLayout}>
+            {getFieldDecorator("agreement", {
+              valuePropName: "checked"
+              // rules: [{ validator: this.validateChecked, message: "약관에 동의하셔야합니다!" }]
+            })(
+              <Checkbox>
+                저는 <a href="">약관</a>을 읽었고 동의합니다.
+              </Checkbox>
+            )}
+          </Form.Item>
+          <Form.Item {...tailFormItemLayout}>
+            <Button type="primary" htmlType="submit">
+              가입하기
+            </Button>
+          </Form.Item>
+        </Form>
+      </StyledForm>
+    </>
+  )
 }
 
 export default memo(SignupForm)

@@ -31,12 +31,15 @@ MangSNS.propTypes = {
 
 export default withRedux((initialState, options) => {
   const middlewares = [] // store 에 기능을 추가하거나 변조!
-  const enhancer = compose(
-    applyMiddleware(...middlewares),
-    !options.isServer && window.__REDUX_DEVTOOLS_EXTENSION__ !== "undefined"
-      ? window.__REDUX_DEVTOOLS_EXTENSION__()
-      : f => f
+  const composeEnhancers =
+    (!options.isServer &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 })) ||
+    compose
+  const store = createStore(
+    reducer,
+    initialState,
+    composeEnhancers(applyMiddleware(...middlewares))
   )
-  const store = createStore(reducer, initialState, enhancer)
   return store
 })(MangSNS)

@@ -1,5 +1,15 @@
 export const initialState = {
-  mainPosts: []
+  imagePaths: [],
+  mainPosts: [
+    {
+      User: {
+        id: 1,
+        nickname: "서상혁"
+      },
+      content: "첫번째 게시글",
+      img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726"
+    }
+  ]
 }
 
 const ADD_POST = "ADD_POST"
