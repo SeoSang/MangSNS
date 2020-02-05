@@ -2,6 +2,8 @@ import React, { Component, memo, useState } from "react"
 import styled, { css } from "styled-components"
 
 import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "antd"
+import { useDispatch } from "react-redux"
+import { signUpAction } from "../reducers/user"
 
 const { Option } = Select
 const StyledForm = styled.div`
@@ -34,15 +36,18 @@ const residences = [
 
 const SignupForm = ({ form }) => {
   const [confirmDirty, setConfirmDirty] = useState(false)
+  const dispatch = useDispatch()
 
   const handleSubmit = e => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
-      console.log("TCL: values", values)
       if (!err && !!values.agreement) {
         console.log("Received values of form: ", values)
       }
     })
+    const formData = form.getFieldsValue()
+    dispatch(signUpAction(formData))
+    console.log("TCL: formData", formData)
   }
 
   const handleConfirmBlur = e => {

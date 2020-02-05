@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import Link from "next/link"
-import LoginForm from "./loginForm"
+import LoginForm from "./LoginForm"
 import { Menu, Input, Button, Row, Col, Avatar, Card, Form } from "antd"
 import UserProfile from "./UserProfile"
 import { useDispatch, useSelector } from "react-redux"
