@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "antd": "^3.26.7",
+    "axios": "^0.19.2",
     "global": "^4.4.0",
     "next": "^8.1.0",
     "next-redux-wrapper": "^4.0.1",

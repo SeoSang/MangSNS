@@ -25,7 +25,7 @@ export const addDummy = {
     content: "Hello",
     UserId: 1,
     User: {
-      nickname: "제로초"
+      nickname: "서상혁"
     }
   }
 }

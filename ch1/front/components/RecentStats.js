@@ -3,6 +3,26 @@ import { Row, Col, List, Typography, message, Avatar, Spin } from "antd"
 import reqwest from "reqwest"
 import styled, { css } from "styled-components"
 import InfiniteScroll from "react-infinite-scroller"
+import axios from "axios"
+
+const API_KEY = "RGAPI-93bb8d21-c283-49b0-a564-b26bfb50b52e"
+const SUMMONER = "일로와서앉아봐라"
+const SUMMONER_URL = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${SUMMONER}?api_key=${API_KEY}`
+
+export const getSummonerInfo = async summonerName => {
+  const res = await axios.get(SUMMONER_URL).catch(err => console.log(err))
+  console.log(res)
+  const accountId = res.data.accountId
+  console.log("TCL: accountId", accountId)
+  axios
+    .get(
+      `https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?api_key=${API_KEY}`
+    )
+    .then(res_1 => console.log(res_1))
+    .catch(err => console.log(err))
+}
+
+getSummonerInfo("마크짐")
 
 const fakeDataUrl = "https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo"
 
@@ -29,9 +49,8 @@ const RecentStats = () => {
   useEffect(() => {
     console.log("useEffect")
     fetchData(res => {
-      console.log("TCL: mangwongg -> res(data)", res)
       setData(res.results)
-      console.log("TCL: mangwongg -> res.results", res.results)
+      console.log("TCL: RecentStats -> res.results", res.results)
     })
   }, [])
 
@@ -78,7 +97,7 @@ const RecentStats = () => {
               <List.Item.Meta
                 avatar={
                   <Avatar
-                    style={{ backgroundPosition: "0px -2788px;" }}
+                    style={{ backgroundPosition: "0px -2788px" }}
                     src="https://opgg-static.akamaized.net/assets/champion82.png?image=q_auto&v=1579759199"
                   />
                 }
