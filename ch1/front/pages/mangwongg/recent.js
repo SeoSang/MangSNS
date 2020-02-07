@@ -1,6 +1,6 @@
 import React from "react"
 import { Row, Col, List, Typography, Card } from "antd"
-import RecenteStats from "../components/RecentStats"
+import RecenteStats from "../../components/RecentStats"
 import styled, { css } from "styled-components"
 import axios from "axios"
 

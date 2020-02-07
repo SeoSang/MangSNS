@@ -4,16 +4,16 @@ import LoginForm from "./LoginForm"
 import { Menu, Input, Button, Row, Col, Avatar, Card, Form } from "antd"
 import UserProfile from "./UserProfile"
 import { useDispatch, useSelector } from "react-redux"
-import { logoutAction } from "../reducers/user"
+import { logoutRequestAction } from "../reducers/user"
 
 const WrappedLoginForm = Form.create({ name: "login" })(LoginForm)
 
 const AppLayout = ({ children }) => {
   const dispatch = useDispatch()
   const { isLogin } = useSelector(state => state.user)
-  const { user } = useSelector(state => state.user)
+  const { me } = useSelector(state => state.user)
   const handleLogout = useCallback(() => {
-    dispatch(logoutAction)
+    dispatch(logoutRequestAction)
   }, [isLogin])
   return (
     <div>
@@ -39,7 +39,7 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={5} style={{ textAlign: "center" }}>
-          {isLogin ? <UserProfile user={user} /> : <WrappedLoginForm />}
+          {isLogin ? <UserProfile user={me} /> : <WrappedLoginForm />}
           {!isLogin ? (
             <Link href="/signup">
               <a>
