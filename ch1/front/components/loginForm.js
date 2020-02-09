@@ -2,8 +2,8 @@ import React, { Component, memo, useMemo, useState } from "react"
 import styled, { css } from "styled-components"
 
 import { Form, Input, Button, Icon, Row, Col, Typography } from "antd"
-import { loginAction } from "../reducers/user"
 import { useDispatch, useSelector } from "react-redux"
+import { loginRequestAction } from "../reducers/user"
 
 const { Title } = Typography
 
@@ -20,7 +20,7 @@ const StyledTitle = styled(Title)`
 `
 const LoginForm = ({ form }) => {
   const dispatch = useDispatch()
-  const { isLogin } = useSelector(state => state.user)
+  const { isLoggingIn } = useSelector(state => state.user)
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -29,7 +29,7 @@ const LoginForm = ({ form }) => {
         console.log("Received values of form: ", values)
       }
     })
-    dispatch(loginAction)
+    dispatch(loginRequestAction)
     console.log(form.getFieldValue)
   }
 
@@ -87,7 +87,7 @@ const LoginForm = ({ form }) => {
           })(<Input.Password />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isLoggingIn}>
             로그인
           </Button>
         </Form.Item>

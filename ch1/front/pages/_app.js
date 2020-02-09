@@ -31,8 +31,7 @@ MangSNS.propTypes = {
   store: PropTypes.object
 }
 
-// dispatch 후 액션이 실행되기 전 (두 작업 사이에)  middleware 의 역할 수행
-export default withRedux((initialState, options) => {
+const middle = (initialState, options) => {
   const sagaMiddleware = createSagaMiddleware()
   const middlewares = [sagaMiddleware]
   const composeEnhancers =
@@ -49,4 +48,7 @@ export default withRedux((initialState, options) => {
   )
   sagaMiddleware.run(rootSaga)
   return store
-})(MangSNS)
+}
+
+// dispatch 후 액션이 실행되기 전 (두 작업 사이에)  middleware 의 역할 수행
+export default withRedux(middle)(MangSNS)

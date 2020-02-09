@@ -3,10 +3,12 @@
 import { combineReducers } from "redux"
 import user from "./user"
 import post from "./post"
+import mwgg from "./mwgg"
 
 const rootReducer = combineReducers({
   user,
-  post
+  post,
+  mwgg
 })
 
 export default rootReducer

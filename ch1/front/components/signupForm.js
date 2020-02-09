@@ -2,7 +2,7 @@ import React, { Component, memo, useState } from "react"
 import styled, { css } from "styled-components"
 
 import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "antd"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { signUpAction } from "../reducers/user"
 
 const { Option } = Select
@@ -37,6 +37,7 @@ const residences = [
 const SignupForm = ({ form }) => {
   const [confirmDirty, setConfirmDirty] = useState(false)
   const dispatch = useDispatch()
+  const { isSigningUp } = useSelector(state => state.user)
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -201,7 +202,7 @@ const SignupForm = ({ form }) => {
             )}
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={isSigningUp}>
               가입하기
             </Button>
           </Form.Item>

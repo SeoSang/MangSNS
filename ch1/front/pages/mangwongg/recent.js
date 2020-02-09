@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Row, Col, List, Typography, Card } from "antd"
-import RecenteStats from "../components/RecentStats"
+import RecenteStats from "../../components/RecentStats"
 import styled, { css } from "styled-components"
 import axios from "axios"
+import { useSelector, useDispatch } from "react-redux"
 
 const { Title } = Typography
 
@@ -23,11 +24,40 @@ const BolderRow = styled(Row)`
   vertical-align: middle;
 `
 
-const mangwongg = () => {
+const Recent = () => {
+  const dispatch = useDispatch()
+  const { summonerName } = useSelector(state => state.mwgg)
+  const [tier, setTier] = useState("")
+  const [kda, setKda] = useState(0)
+
+  const getSummonerData = async () => {
+    console.log(summonerName)
+    const apiKey = "RGAPI-93bb8d21-c283-49b0-a564-b26bfb50b52e"
+    const url = `/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${apiKey}`
+    const config = {
+      headers: { "Access-Control-Allow-Origin": "*" }
+    }
+    const data = await axios
+      .get(url, config)
+      .then(response => console.log(response))
+      .catch(err => console.log(err))
+
+    console.log("data : ", data)
+  }
+
+  useEffect(() => {
+    getSummonerData()
+  }, [])
+
   return (
     <div>
       <BolderRow>
-        <Title level={3}>소환사 이름</Title>
+        <Title level={4}>소환사 이름</Title>
+      </BolderRow>
+      <BolderRow style={{ margin: "3px 0px" }}>
+        <Title level={3} style={{ marginTop: "0.5em" }}>
+          {summonerName}
+        </Title>
       </BolderRow>
       <Row>
         <BolderCol style={{ height: "300px" }} xs={12} md={10}>
@@ -53,4 +83,4 @@ const mangwongg = () => {
   )
 }
 
-export default mangwongg
+export default Recent
