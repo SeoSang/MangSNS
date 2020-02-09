@@ -1,30 +1,42 @@
-import React, { useCallback, useState, useMemo } from "react"
-import { Card, Button, Icon, Avatar, Form, TextArea, List, Input } from "antd"
+import React, { useCallback, useState, useMemo, useEffect } from "react"
+import { Card, Button, Icon, Avatar, Form, TextArea, List, Input, Comment } from "antd"
 import { useSelector, useDispatch } from "react-redux"
+import { ADD_COMMENT_REQUEST } from "../reducers/post"
 
 const PostCard = ({ c }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false)
   const [commentText, setCommentText] = useState("")
   const { me } = useSelector(state => state.user)
+  const { commentAdded } = useSelector(state => state.post)
   const dispatch = useDispatch()
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened(prev => !prev)
   }, [])
 
-  const onSubmitComment = useCallback(e => {
-    e.preventDefault()
-    if (!me) {
-      return alert("로그인이 필요합니다!")
-    }
-    dispatch({
-      type: ADD_COMMENT_REQUEST
-    })
-  }, [])
+  const onSubmitComment = useCallback(
+    e => {
+      e.preventDefault()
+      if (!me) {
+        return alert("로그인이 필요합니다!")
+      }
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        data: {
+          postId: c.id
+        }
+      })
+    },
+    [me && me.id]
+  )
 
   const onChangeCommentText = useCallback(e => {
     setCommentText(e.target.value)
   }, [])
+
+  useEffect(() => {
+    if (commentAdded) setCommentText("")
+  }, [commentAdded])
 
   return (
     <>
@@ -58,14 +70,13 @@ const PostCard = ({ c }) => {
           <List
             header={`${c.Comments ? c.Comments.length : 0} 댓글`}
             itemLayout="horizontal"
-            dataSource={c.Comment || []}
+            dataSource={c.Comments || []}
             renderItem={item => (
               <li>
                 <Comment
                   author={item.User.nickname}
                   avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
                   content={item.content}
-                  datetime={item.createdAt}
                 />
               </li>
             )}
