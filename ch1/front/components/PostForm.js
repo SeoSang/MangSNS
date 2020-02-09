@@ -1,19 +1,43 @@
-import React from "react"
+import React, { useCallback, useState, useEffect } from "react"
 import { Form, Input, Icon, Row, Col, Checkbox, Button, AutoComplete, Avatar, Card } from "antd"
 import { useDispatch, useSelector } from "react-redux"
+import { ADD_POST_REQUEST } from "../reducers/post"
 
 const PostForm = () => {
+  const [text, setText] = useState("")
   const dispatch = useDispatch()
-  const { imagePaths, mainPosts } = useSelector(state => state.post)
-  const { isLogin } = useSelector(state => state.user)
+  const { postAdded, isAddingPost, imagePaths, mainPosts } = useSelector(state => state.post)
+
+  const onChangeTextArea = useCallback(e => {
+    setText(e.target.value)
+  }, [])
+
+  const onSubmitForm = useCallback(e => {
+    e.preventDefault()
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: text,
+    })
+  }, [])
+
+  useEffect(() => {
+    console.log("useEffect")
+    if (postAdded) setText("")
+  }, [postAdded])
+
   return (
-    <Form style={{ margin: "10px 0 " }} encType="multipart/form-data">
-      <Input.TextArea maxLength={140} placeholder="어떤 일이 있으셨나요?"></Input.TextArea>
+    <Form style={{ margin: "10px 0 " }} encType='multipart/form-data' onSubmit={onSubmitForm}>
+      <Input.TextArea
+        maxLength={140}
+        placeholder='어떤 일이 있으셨나요?'
+        onChange={onChangeTextArea}
+        value={text}
+      ></Input.TextArea>
       <div>
-        <Input type="file" multiple hidden />
+        <Input type='file' multiple hidden />
         <Button>이미지 업로드</Button>
-        <Button type="primary" style={{ float: "right" }} htmlType="submit">
-          하이
+        <Button type='primary' style={{ float: "right" }} htmlType='submit' loading={isAddingPost}>
+          올리기
         </Button>
       </div>
       <br></br>

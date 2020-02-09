@@ -8,7 +8,7 @@ import {
   loginFailureAction,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
-  LOG_OUT_FAILURE
+  LOG_OUT_FAILURE,
 } from "../reducers/user"
 import axios from "axios"
 
@@ -49,12 +49,13 @@ function* logout() {
     // yield call(logoutAPI)
     yield delay(200)
     yield put({
-      type: LOG_OUT_SUCCESS
+      type: LOG_OUT_SUCCESS,
     })
   } catch (e) {
     console.error(e)
     yield put({
-      type: LOG_OUT_FAILURE
+      type: LOG_OUT_FAILURE,
+      error: e,
     })
   }
 }
@@ -72,7 +73,7 @@ function* signUp() {
     yield put(signUpSuccessAction)
   } catch (e) {
     console.log("signUp ERROR : ", e)
-    yield put(signUpFailureAction)
+    yield put(signUpFailureAction(e))
   }
 }
 

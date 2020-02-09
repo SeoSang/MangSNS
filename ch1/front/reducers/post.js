@@ -4,14 +4,26 @@ export const initialState = {
     {
       User: {
         id: 1,
-        nickname: "서상혁"
+        nickname: "서상혁",
       },
       content: "첫번째 게시글",
-      img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726"
-    }
+      img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726",
+      createdAt: 0,
+    },
   ], //화면에 보일 포스터들,
   addPostErrorReason: false, // 포스트 업로드 실패 사유
-  isAddingPost: false // 포스터 업로드중
+  isAddingPost: false, // 포스터 업로드중
+  postAdded: false, // 포스터 업로드됨
+}
+
+const dummyPost = {
+  User: {
+    id: 2,
+    nickname: "서상혁2",
+  },
+  content: "나는 더미입니다.",
+  img: "http://www.animaltogether.com/news/photo/201908/345_769_1716.jpg",
+  createdAt: 1,
 }
 
 // 새로운 포스팅
@@ -60,14 +72,38 @@ export const RETWEET_SUCCESS = "RETWEET_SUCCESS"
 export const RETWEET_FAILURE = "RETWEET_FAILURE"
 
 export const addPost = {
-  type: ADD_POST_REQUEST
+  type: ADD_POST_REQUEST,
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_POST_REQUEST: {
+      return {
+        ...state,
+        isAddingPost: true,
+        addPostErrorReason: "",
+        postAdded: false,
+      }
+    }
+    case ADD_POST_SUCCESS: {
+      return {
+        ...state,
+        isAddingPost: false,
+        mainPosts: [dummyPost, ...state.mainPosts],
+        postAdded: true,
+      }
+    }
+    case ADD_POST_FAILURE: {
+      return {
+        ...state,
+        isAddingPost: false,
+        addPostErrorReason: action.error,
+        postAdded: false,
+      }
+    }
     default: {
       return {
-        ...state
+        ...state,
       }
     }
   }

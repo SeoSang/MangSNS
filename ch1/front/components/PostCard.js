@@ -1,16 +1,15 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { Card, Button, Icon, Avatar } from "antd"
 
 const PostCard = ({ c }) => {
   return (
     <Card
-      key={+c.createdAt}
-      cover={c.img && <img alt="example" src={c.img} />}
+      cover={c.img && <img alt='example' src={c.img} />}
       actions={[
-        <Icon type="retweet" key="retweet" />,
-        <Icon type="heart" key="heart" />,
-        <Icon type="message" key="message" />,
-        <Icon type="ellipsis" key="ellipsis" />
+        <Icon type='retweet' key='retweet' />,
+        <Icon type='heart' key='heart' />,
+        <Icon type='message' key='message' />,
+        <Icon type='ellipsis' key='ellipsis' />,
       ]}
       extra={<Button>팔로우</Button>}
     >

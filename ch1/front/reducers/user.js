@@ -3,21 +3,21 @@ const dummyUser = {
   Posts: [],
   Followings: [],
   Followers: [],
-  signUpData: {}
+  signUpData: {},
 }
 
 export const initialState = {
-  isLogin: false,
+  isLogin: true,
   isLoggingIn: false,
   isLoggingOut: false,
   loginErrorReason: "",
-  signedUp: false,
+  isSignedUp: false,
   isSigningUp: false,
   signUpErrorReason: "",
-  me: null,
+  me: dummyUser,
   followingList: [],
   followerList: [],
-  userInfo: null
+  userInfo: null,
 }
 
 // ------------- 비동기 액션들 -----------------
@@ -65,31 +65,32 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE"
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME"
 
 export const loginRequestAction = {
-  type: LOG_IN_REQUEST
+  type: LOG_IN_REQUEST,
 }
 export const loginSuccessAction = {
-  type: LOG_IN_SUCCESS
+  type: LOG_IN_SUCCESS,
 }
 export const loginFailureAction = {
-  type: LOG_IN_FAILURE
+  type: LOG_IN_FAILURE,
 }
 export const logoutRequestAction = {
-  type: LOG_OUT_REQUEST
+  type: LOG_OUT_REQUEST,
 }
 export const signUpRequestAction = data => {
   return {
     type: SIGN_UP_REQUEST,
-    data
+    data,
   }
 }
 export const signUpSuccessAction = data => {
   return {
-    type: SIGN_UP_SUCCESS
+    type: SIGN_UP_SUCCESS,
   }
 }
 export const signUpFailureAction = data => {
   return {
-    type: SIGN_UP_SUCCESS
+    type: SIGN_UP_SUCCESS,
+    error: data,
   }
 }
 
@@ -100,7 +101,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loginData: action.data,
-        isLoggingIn: true
+        isLoggingIn: true,
       }
     }
     case LOG_IN_SUCCESS: {
@@ -108,7 +109,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLogin: true,
         isLoggingIn: false,
-        me: dummyUser
+        me: dummyUser,
       }
     }
     case LOG_IN_FAILURE: {
@@ -117,14 +118,14 @@ const reducer = (state = initialState, action) => {
         isLogin: false,
         isLoggingIn: false,
         me: null,
-        loginErrorReason: action.error
+        loginErrorReason: action.error,
       }
     }
     // 로그아웃
     case LOG_OUT_REQUEST: {
       return {
         ...state,
-        isLoggingOut: true
+        isLoggingOut: true,
       }
     }
     case LOG_OUT_SUCCESS: {
@@ -132,7 +133,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggingOut: false,
         isLogin: false,
-        me: null
+        me: null,
       }
     }
     case LOG_OUT_FAILURE: {
@@ -140,7 +141,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggingOut: false,
         isLogin: false,
-        me: null
+        me: null,
       }
     }
 
@@ -148,7 +149,8 @@ const reducer = (state = initialState, action) => {
     case SIGN_UP_REQUEST: {
       return {
         ...state,
-        isSigningUp: true
+        isSigningUp: true,
+        signUpErrorReason: "",
       }
     }
     case SIGN_UP_SUCCESS: {
@@ -157,19 +159,20 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         signUpData: action.data,
-        isSigningUp: false
+        isSigningUp: false,
+        isSignedUp: true,
       }
     }
     case SIGN_UP_FAILURE: {
       return {
         ...state,
         isSigningUp: false,
-        signUpErrorReason: action.error
+        signUpErrorReason: action.error,
       }
     }
     default: {
       return {
-        ...state
+        ...state,
       }
     }
   }
