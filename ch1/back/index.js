@@ -1,6 +1,8 @@
 const express = require("express")
+const db = require("./models")
 
 const app = express()
+db.sequelize.sync()
 
 app.get("/", (req, res) => {
   // '/' 는 로컬호스트 뒤에 붙는 주소.  => 응답 : Hello, server
