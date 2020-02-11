@@ -9,6 +9,7 @@ import {
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
+  SIGN_UP_SUCCESS,
 } from "../reducers/user"
 import axios from "axios"
 
@@ -64,13 +65,16 @@ function* watchLogout() {
   yield takeLatest(LOG_OUT_REQUEST, logout)
 }
 
-function* signUpAPI() {}
+function* signUpAPI(signUpData) {
+  return axios.post("http://localhost:4539/api/user", signUpData)
+}
 
-function* signUp() {
+function* signUp(action) {
   try {
-    // yield call(signUpAPI)
-    yield delay(2000)
-    yield put(signUpSuccessAction)
+    yield call(signUpAPI, action.data)
+    yield put({
+      type: SIGN_UP_SUCCESS,
+    })
   } catch (e) {
     console.log("signUp ERROR : ", e)
     yield put(signUpFailureAction(e))

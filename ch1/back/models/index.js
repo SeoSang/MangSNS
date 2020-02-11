@@ -1,9 +1,7 @@
 // js로 db를 컨트롤하자
 const Sequelize = require("sequelize")
 const env = process.env.NODE_ENV || "development"
-console.log("TCL: env", env)
 const config = require("../config/config.json")[env]
-console.log("TCL: config", config)
 const db = {}
 
 let sequelize = new Sequelize(config.database, config.username, config.password, config)

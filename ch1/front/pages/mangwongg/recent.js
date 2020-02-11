@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux"
 const { Title } = Typography
 
 const dummy = {
-  kda: ["3/1/2", "11/4/5", "10/1/2"]
+  kda: ["3/1/2", "11/4/5", "10/1/2"],
 }
 
 const BolderCol = styled(Col)`
@@ -33,9 +33,9 @@ const Recent = () => {
   const getSummonerData = async () => {
     console.log(summonerName)
     const apiKey = "RGAPI-93bb8d21-c283-49b0-a564-b26bfb50b52e"
-    const url = `/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${apiKey}`
+    const url = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${apiKey}`
     const config = {
-      headers: { "Access-Control-Allow-Origin": "*" }
+      headers: { "Access-Control-Allow-Origin": "*" },
     }
     const data = await axios
       .get(url, config)
@@ -65,12 +65,12 @@ const Recent = () => {
             최근전적
           </Title>
           <BolderCol xs={12} md={12}>
-            <Card title="승률" bordered={false}>
+            <Card title='승률' bordered={false}>
               <p>승률 그래프</p>
             </Card>
           </BolderCol>
           <BolderCol xs={12} md={12}>
-            <Card title="KDA" bordered={false}>
+            <Card title='KDA' bordered={false}>
               <p>KDA</p>
             </Card>
           </BolderCol>
