@@ -2,6 +2,7 @@ import React from "react"
 import { Card, Avatar } from "antd"
 
 const UserProfile = ({ user }) => {
+  console.log(user)
   return (
     <Card
       actions={[

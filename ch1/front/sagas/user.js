@@ -1,6 +1,7 @@
 import { all, fork, takeLatest, put, call, takeEvery, delay } from "redux-saga/effects"
 import {
   LOG_IN_REQUEST,
+  LOG_IN_FAILURE,
   SIGN_UP_REQUEST,
   signUpFailureAction,
   signUpSuccessAction,
@@ -10,21 +11,32 @@ import {
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
   SIGN_UP_SUCCESS,
+  LOG_IN_SUCCESS,
 } from "../reducers/user"
 import axios from "axios"
 
-function loginAPI() {
+axios.defaults.baseURL = "http://localhost:4539/api"
+function loginAPI(loginData) {
   // 서버에 요청을 보냄
-  // return axios.post("/login")
+  return axios.post("/user/login", loginData, {
+    withCredentials: true, // 쿠키 주고받을 수 있다.
+  })
 }
-function* login() {
+function* login(action) {
   try {
-    // yield call(loginAPI) 아직 동작안함
-    yield delay(2000)
-    yield put(loginSuccessAction) // put 은 dispatch
+    const result = yield call(loginAPI, action.data)
+    console.log("TCL: function*login -> result", result)
+    yield put({
+      type: LOG_IN_SUCCESS,
+      data: result.data,
+    }) // put 은 dispatch
   } catch (e) {
-    console.error(e)
-    yield put(loginFailureAction)
+    console.log(e)
+    console.log(action.data)
+    yield put({
+      type: LOG_IN_FAILURE,
+      error: e,
+    })
   }
 }
 function* watchLogin() {
@@ -66,7 +78,7 @@ function* watchLogout() {
 }
 
 function* signUpAPI(signUpData) {
-  return axios.post("http://localhost:4539/api/user", signUpData)
+  return axios.post("/user", signUpData)
 }
 
 function* signUp(action) {

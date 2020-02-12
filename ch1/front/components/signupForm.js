@@ -48,7 +48,7 @@ const SignupForm = ({ form }) => {
     })
     const formData = form.getFieldsValue()
     dispatch(signUpRequestAction(formData))
-    console.log("TCL: formData", formData)
+    console.log("TCL: formData (signup)", formData)
   }
 
   const handleConfirmBlur = e => {

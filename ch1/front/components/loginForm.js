@@ -29,8 +29,9 @@ const LoginForm = ({ form }) => {
         console.log("Received values of form: ", values)
       }
     })
-    dispatch(loginRequestAction)
-    console.log(form.getFieldValue)
+    const formData = form.getFieldsValue()
+    console.log("TCL: formData (login )", formData)
+    dispatch(loginRequestAction(formData))
   }
 
   const { getFieldDecorator } = form
@@ -38,56 +39,56 @@ const LoginForm = ({ form }) => {
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 8 }
+      sm: { span: 8 },
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 14 }
-    }
+      sm: { span: 14 },
+    },
   }
   const tailFormItemLayout = {
     wrapperCol: {
       xs: {
         span: 24,
-        offset: 0
+        offset: 0,
       },
       sm: {
         span: 24,
-        offset: 0
-      }
-    }
+        offset: 0,
+      },
+    },
   }
 
   return (
     <StyledFormDiv>
       <StyledTitle level={3}>로그인</StyledTitle>
-      <Form {...formItemLayout} onSubmit={handleSubmit} labelAlign="left">
-        <Form.Item label="E-mail">
+      <Form {...formItemLayout} onSubmit={handleSubmit} labelAlign='left'>
+        <Form.Item label='E-mail'>
           {getFieldDecorator("email", {
             rules: [
               {
                 type: "email",
-                message: "올바른 이메일 주소가 아닙니다!"
+                message: "올바른 이메일 주소가 아닙니다!",
               },
               {
                 required: true,
-                message: "이메일을 입력해주세요!"
-              }
-            ]
+                message: "이메일을 입력해주세요!",
+              },
+            ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="비밀번호" hasFeedback>
+        <Form.Item label='비밀번호' hasFeedback>
           {getFieldDecorator("password", {
             rules: [
               {
                 required: true,
-                message: "비밀번호를 입력해주세요!"
-              }
-            ]
+                message: "비밀번호를 입력해주세요!",
+              },
+            ],
           })(<Input.Password />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" loading={isLoggingIn}>
+          <Button type='primary' htmlType='submit' loading={isLoggingIn}>
             로그인
           </Button>
         </Form.Item>

@@ -64,8 +64,11 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE"
 
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME"
 
-export const loginRequestAction = {
-  type: LOG_IN_REQUEST,
+export const loginRequestAction = data => {
+  return {
+    type: LOG_IN_REQUEST,
+    data,
+  }
 }
 export const loginSuccessAction = {
   type: LOG_IN_SUCCESS,
@@ -109,7 +112,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLogin: true,
         isLoggingIn: false,
-        me: dummyUser,
+        me: action.data,
       }
     }
     case LOG_IN_FAILURE: {
@@ -154,8 +157,6 @@ const reducer = (state = initialState, action) => {
       }
     }
     case SIGN_UP_SUCCESS: {
-      console.log("I got DATA")
-      console.table(action.data)
       return {
         ...state,
         signUpData: action.data,

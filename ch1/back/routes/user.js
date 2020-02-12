@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const db = require("../models")
 const bcrypt = require("bcrypt")
+const passport = require("passport")
 
 router.get("/", (req, res) => {}) // request 요청 response 응답
 router.post("/", async (req, res, next) => {
@@ -36,11 +37,51 @@ router.get("/:id", (req, res) => {
   // ex) api/user/3
 })
 router.get("/login", (req, res) => {})
-router.post("/login", (req, res) => {})
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.error(err)
+      return next(err)
+    }
+    if (info) {
+      return res.status(401).send(info.reason)
+    }
+    return req.login(user, async loginErr => {
+      if (loginErr) return next(loginErr)
+      const fullUser = await db.User.findOne({
+        where: { id: user.id },
+        include: [
+          {
+            model: db.Post,
+            as: "Posts",
+            attributes: ["id"],
+          },
+          {
+            model: db.User,
+            as: "Followings",
+            attributes: ["id"],
+          },
+          {
+            model: db.User,
+            as: "Followers",
+            attributes: ["id"],
+          },
+        ],
+      })
+      const filteredUser = Object.assign({}, fullUser.toJSON()) // user 는 다른 객체
+      delete filteredUser.password
+      return res.json(filteredUser)
+    })
+  })(req, res, next)
+})
 router.delete("/login", (req, res) => {})
 
 router.get("/logout", (req, res) => {})
-router.post("/logout", (req, res) => {})
+router.post("/logout", (req, res) => {
+  req.logout()
+  req.session.destroy()
+  res.send("logout 성공!")
+})
 router.delete("/logout", (req, res) => {})
 
 router.get("/:id/follow", (req, res) => {})
