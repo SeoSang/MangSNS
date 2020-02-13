@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 const Home = () => {
   const dispatch = useDispatch()
-  const { isLogin, user } = useSelector(state => state.user)
+  const { me, user } = useSelector(state => state.user)
   const { mainPosts } = useSelector(state => state.post)
   const newDate = useMemo(() => {
     return new Date()
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {user ? <div>로그인했습니다. {user.nickname}</div> : <div> 로그인 해주세요</div>}
-      {isLogin && <PostForm />}
+      {me && <PostForm />}
       {mainPosts.map(c => {
         return <PostCard key={`Postcard ${c.createdAt}`} c={c} />
       })}

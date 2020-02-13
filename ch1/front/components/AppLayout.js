@@ -1,20 +1,27 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useEffect } from "react"
 import Link from "next/link"
 import LoginForm from "./LoginForm"
 import { Menu, Input, Button, Row, Col, Avatar, Card, Form } from "antd"
 import UserProfile from "./UserProfile"
 import { useDispatch, useSelector } from "react-redux"
-import { logoutRequestAction } from "../reducers/user"
+import { logoutRequestAction, LOAD_USER_REQUEST } from "../reducers/user"
 
 const WrappedLoginForm = Form.create({ name: "login" })(LoginForm)
 
 const AppLayout = ({ children }) => {
   const dispatch = useDispatch()
-  const { isLogin } = useSelector(state => state.user)
   const { me } = useSelector(state => state.user)
   const handleLogout = useCallback(() => {
     dispatch(logoutRequestAction)
-  }, [isLogin])
+  }, [me])
+
+  useEffect(() => {
+    if (!me)
+      dispatch({
+        type: LOAD_USER_REQUEST,
+      })
+  }, [])
+
   return (
     <div>
       <Menu mode='horizontal'>
@@ -39,8 +46,8 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={5} style={{ textAlign: "center" }}>
-          {isLogin ? <UserProfile user={me} /> : <WrappedLoginForm />}
-          {!isLogin ? (
+          {me ? <UserProfile user={me} /> : <WrappedLoginForm />}
+          {!me ? (
             <Link href='/signup'>
               <a>
                 <Button>회원가입</Button>

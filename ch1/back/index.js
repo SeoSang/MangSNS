@@ -12,7 +12,7 @@ const passportConfig = require("./passport")
 const db = require("./models")
 const app = express()
 
-dotenv.config({ path: __dirname + "/.env" })
+dotenv.config()
 db.sequelize.sync()
 passportConfig()
 
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true })) // form으로 넘어온 데이�
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(
   expressSession({
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET, // 암호화
     cookie: {

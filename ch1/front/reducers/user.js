@@ -1,20 +1,11 @@
-const dummyUser = {
-  nickname: "서상혁",
-  Posts: [],
-  Followings: [],
-  Followers: [],
-  signUpData: {},
-}
-
 export const initialState = {
-  isLogin: true,
   isLoggingIn: false,
   isLoggingOut: false,
   loginErrorReason: "",
   isSignedUp: false,
   isSigningUp: false,
   signUpErrorReason: "",
-  me: dummyUser,
+  me: null,
   followingList: [],
   followerList: [],
   userInfo: null,
@@ -110,7 +101,6 @@ const reducer = (state = initialState, action) => {
     case LOG_IN_SUCCESS: {
       return {
         ...state,
-        isLogin: true,
         isLoggingIn: false,
         me: action.data,
       }
@@ -118,7 +108,6 @@ const reducer = (state = initialState, action) => {
     case LOG_IN_FAILURE: {
       return {
         ...state,
-        isLogin: false,
         isLoggingIn: false,
         me: null,
         loginErrorReason: action.error,
@@ -135,7 +124,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggingOut: false,
-        isLogin: false,
         me: null,
       }
     }
@@ -143,11 +131,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggingOut: false,
-        isLogin: false,
-        me: null,
       }
     }
-
     // 회원가입
     case SIGN_UP_REQUEST: {
       return {
@@ -169,6 +154,23 @@ const reducer = (state = initialState, action) => {
         ...state,
         isSigningUp: false,
         signUpErrorReason: action.error,
+      }
+    }
+    // 유저 로드
+    case LOAD_USER_REQUEST: {
+      return {
+        ...state,
+      }
+    }
+    case LOAD_USER_SUCCESS: {
+      return {
+        ...state,
+        me: action.data,
+      }
+    }
+    case LOAD_USER_FAILURE: {
+      return {
+        ...state,
       }
     }
     default: {

@@ -4,18 +4,20 @@ import {
   LOG_IN_FAILURE,
   SIGN_UP_REQUEST,
   signUpFailureAction,
-  signUpSuccessAction,
-  loginSuccessAction,
-  loginFailureAction,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
   SIGN_UP_SUCCESS,
   LOG_IN_SUCCESS,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
+  LOAD_USER_REQUEST,
 } from "../reducers/user"
 import axios from "axios"
 
 axios.defaults.baseURL = "http://localhost:4539/api"
+
+// ----------- 로그인 -----------
 function loginAPI(loginData) {
   // 서버에 요청을 보냄
   return axios.post("/user/login", loginData, {
@@ -55,12 +57,20 @@ function* watchLogin() {
   // 막 클릭하거나 해서 생기는 버그 막아줄 수 있다.
 }
 
-function* logoutAPI() {}
+// ----------- 로그아웃-----------
+function* logoutAPI() {
+  return axios.post(
+    "/user/logout",
+    {},
+    {
+      withCredentials: true, // 쿠키 주고받을 수 있다.
+    },
+  )
+}
 
 function* logout() {
   try {
-    // yield call(logoutAPI)
-    yield delay(200)
+    yield call(logoutAPI)
     yield put({
       type: LOG_OUT_SUCCESS,
     })
@@ -77,6 +87,7 @@ function* watchLogout() {
   yield takeLatest(LOG_OUT_REQUEST, logout)
 }
 
+// ----------- 회원가입 -----------
 function* signUpAPI(signUpData) {
   return axios.post("/user", signUpData)
 }
@@ -97,8 +108,38 @@ function* watchSignup() {
   yield takeEvery(SIGN_UP_REQUEST, signUp)
 }
 
+// ----------- 유저 정보 로드 -----------
+
+function* loadUserAPI() {
+  return axios.get("/user/", {}, { withCredentials: true })
+}
+
+function* loadUser() {
+  try {
+    const result = yield call(loadUserAPI)
+    console.log("TCL: function*loadUser -> result", result)
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    })
+    console.log("put 성공 , result = ", result)
+  } catch (e) {
+    console.log("loadUser ERROR : ", e)
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchLoadUser() {
+  yield takeEvery(LOAD_USER_REQUEST, loadUser)
+}
+
+// ----------- 총괄 -----------
+
 export default function* userSaga() {
-  yield all([fork(watchLogin), fork(watchSignup), fork(watchLogout)]) // fork 는 비동기호출
+  yield all([fork(watchLogin), fork(watchSignup), fork(watchLogout), fork(watchLoadUser)]) // fork 는 비동기호출
   //  call(watchLogin) 얘도 함수 실행   (동기호출)  응답 올때까지 기다린다.
   // watchLogin() 이렇게 해도 됨.
 }

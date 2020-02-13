@@ -1,10 +1,18 @@
 const express = require("express")
-const router = express.Router()
-const db = require("../models")
 const bcrypt = require("bcrypt")
 const passport = require("passport")
+const db = require("../models")
+const router = express.Router()
 
-router.get("/", (req, res) => {}) // request 요청 response 응답
+router.get("/", (req, res) => {
+  console.log("TCL: req.user", req.session)
+  if (!req.user) {
+    return res.status(401).send("로그인이 필요합니다.")
+  }
+  const user = Object.assign({}, req.user.toJSON())
+  delete user.password
+  return res.json(user)
+}) // request 요청 response 응답
 router.post("/", async (req, res, next) => {
   // 회원가입
   try {
@@ -25,6 +33,7 @@ router.post("/", async (req, res, next) => {
       residence: req.body.residence.join(","),
     })
     console.log("새로운유저입니다 : ", newUser)
+    res.redirect("/")
     return res.status(200).json(newUser)
   } catch (e) {
     console.error(e)
@@ -38,6 +47,7 @@ router.get("/:id", (req, res) => {
 })
 router.get("/login", (req, res) => {})
 router.post("/login", (req, res, next) => {
+  console.log("TCL: req.session", req.session)
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error(err)

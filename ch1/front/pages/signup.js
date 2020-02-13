@@ -7,7 +7,7 @@ import { useSelector } from "react-redux"
 const WrappedSignupForm = Form.create({ name: "register" })(SignupForm)
 
 const Signup = () => {
-  const { isLogin, me } = useSelector(state => state.user)
+  const { me } = useSelector(state => state.user)
   useEffect(() => {
     if (me) {
       alert("이미 로그인이 된 상태입니다!")
