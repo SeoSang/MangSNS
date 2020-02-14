@@ -14,8 +14,13 @@ import {
   LOAD_USER_REQUEST,
 } from "../reducers/user"
 import axios from "axios"
+import { useRouter } from "next/router"
 
 axios.defaults.baseURL = "http://localhost:4539/api"
+
+function goHome() {
+  return useRouter().push("/")
+}
 
 // ----------- 로그인 -----------
 function loginAPI(loginData) {
@@ -58,7 +63,8 @@ function* watchLogin() {
 }
 
 // ----------- 로그아웃-----------
-function* logoutAPI() {
+
+function logoutAPI() {
   return axios.post(
     "/user/logout",
     {},
@@ -74,6 +80,7 @@ function* logout() {
     yield put({
       type: LOG_OUT_SUCCESS,
     })
+    yield alert("로그아웃 성공!")
   } catch (e) {
     console.error(e)
     yield put({
@@ -88,7 +95,7 @@ function* watchLogout() {
 }
 
 // ----------- 회원가입 -----------
-function* signUpAPI(signUpData) {
+function signUpAPI(signUpData) {
   return axios.post("/user", signUpData)
 }
 
@@ -98,6 +105,8 @@ function* signUp(action) {
     yield put({
       type: SIGN_UP_SUCCESS,
     })
+    yield alert("회원가입 성공!")
+    yield call(goHome)
   } catch (e) {
     console.log("signUp ERROR : ", e)
     yield put(signUpFailureAction(e))
@@ -110,7 +119,7 @@ function* watchSignup() {
 
 // ----------- 유저 정보 로드 -----------
 
-function* loadUserAPI() {
+function loadUserAPI() {
   return axios.get("/user/", {}, { withCredentials: true })
 }
 
@@ -122,9 +131,9 @@ function* loadUser() {
       type: LOAD_USER_SUCCESS,
       data: result.data,
     })
-    console.log("put 성공 , result = ", result)
+    yield console.log("put 성공 , result = ", result)
   } catch (e) {
-    console.log("loadUser ERROR : ", e)
+    yield console.log("loadUser ERROR : ", e)
     yield put({
       type: LOAD_USER_FAILURE,
       error: e,

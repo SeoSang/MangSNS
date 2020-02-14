@@ -3,14 +3,14 @@ const morgan = require("morgan") // 로그 저장됨
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const expressSession = require("express-session")
-const userAPIRouter = require("./routes/user")
-const postAPIRouter = require("./routes/post")
-const postsAPIRouter = require("./routes/posts")
 const dotenv = require("dotenv")
 const passport = require("passport")
 const passportConfig = require("./passport")
 const db = require("./models")
 const app = express()
+const userAPIRouter = require("./routes/user")
+const postAPIRouter = require("./routes/post")
+const postsAPIRouter = require("./routes/posts")
 
 dotenv.config()
 db.sequelize.sync()
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true })) // form으로 넘어온 데이�
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(
   expressSession({
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET, // 암호화
     cookie: {

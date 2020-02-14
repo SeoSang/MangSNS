@@ -43,12 +43,10 @@ const SignupForm = ({ form }) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err && !!values.agreement) {
-        console.log("Received values of form: ", values)
       }
     })
     const formData = form.getFieldsValue()
     dispatch(signUpRequestAction(formData))
-    console.log("TCL: formData (signup)", formData)
   }
 
   const handleConfirmBlur = e => {

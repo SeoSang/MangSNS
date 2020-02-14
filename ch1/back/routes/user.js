@@ -5,7 +5,7 @@ const db = require("../models")
 const router = express.Router()
 
 router.get("/", (req, res) => {
-  console.log("TCL: req.user", req.session)
+  console.log("routes__user.js: req", req.session)
   if (!req.user) {
     return res.status(401).send("로그인이 필요합니다.")
   }
@@ -54,33 +54,40 @@ router.post("/login", (req, res, next) => {
       return next(err)
     }
     if (info) {
+      console.log(info.reason)
       return res.status(401).send(info.reason)
     }
     return req.login(user, async loginErr => {
-      if (loginErr) return next(loginErr)
-      const fullUser = await db.User.findOne({
-        where: { id: user.id },
-        include: [
-          {
-            model: db.Post,
-            as: "Posts",
-            attributes: ["id"],
-          },
-          {
-            model: db.User,
-            as: "Followings",
-            attributes: ["id"],
-          },
-          {
-            model: db.User,
-            as: "Followers",
-            attributes: ["id"],
-          },
-        ],
-      })
-      const filteredUser = Object.assign({}, fullUser.toJSON()) // user 는 다른 객체
-      delete filteredUser.password
-      return res.json(filteredUser)
+      try {
+        if (loginErr) {
+          return next(loginErr)
+        }
+        const fullUser = await db.User.findOne({
+          where: { id: user.id },
+          include: [
+            {
+              model: db.Post,
+              as: "Posts",
+              attributes: ["id"],
+            },
+            {
+              model: db.User,
+              as: "Followings",
+              attributes: ["id"],
+            },
+            {
+              model: db.User,
+              as: "Followers",
+              attributes: ["id"],
+            },
+          ],
+          attributes: ["id", "nickname", "email"],
+        })
+        console.log(fullUser)
+        return res.json(fullUser)
+      } catch (e) {
+        next(e)
+      }
     })
   })(req, res, next)
 })
@@ -89,8 +96,10 @@ router.delete("/login", (req, res) => {})
 router.get("/logout", (req, res) => {})
 router.post("/logout", (req, res) => {
   req.logout()
+  console.log("routes__user.js : logout req.session", req.session)
   req.session.destroy()
   res.send("logout 성공!")
+  console.log("routes__user.js : logout req.session", req.session)
 })
 router.delete("/logout", (req, res) => {})
 
