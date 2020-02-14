@@ -120,7 +120,7 @@ function* watchSignup() {
 // ----------- 유저 정보 로드 -----------
 
 function loadUserAPI() {
-  return axios.get("/user/", {}, { withCredentials: true })
+  return axios.get("/user/", { withCredentials: true })
 }
 
 function* loadUser() {
