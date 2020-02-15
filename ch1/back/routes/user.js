@@ -5,7 +5,6 @@ const db = require("../models")
 const router = express.Router()
 
 router.get("/", (req, res) => {
-  console.log("routes__user.js: req", req.session)
   if (!req.user) {
     return res.status(401).send("로그인이 필요합니다.")
   }
@@ -47,7 +46,6 @@ router.get("/:id", (req, res) => {
 })
 router.get("/login", (req, res) => {})
 router.post("/login", (req, res, next) => {
-  console.log("TCL: req.session", req.session)
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error(err)
@@ -83,7 +81,6 @@ router.post("/login", (req, res, next) => {
           ],
           attributes: ["id", "nickname", "email"],
         })
-        console.log(fullUser)
         return res.json(fullUser)
       } catch (e) {
         next(e)
@@ -96,10 +93,8 @@ router.delete("/login", (req, res) => {})
 router.get("/logout", (req, res) => {})
 router.post("/logout", (req, res) => {
   req.logout()
-  console.log("routes__user.js : logout req.session", req.session)
   req.session.destroy()
   res.send("logout 성공!")
-  console.log("routes__user.js : logout req.session", req.session)
 })
 router.delete("/logout", (req, res) => {})
 

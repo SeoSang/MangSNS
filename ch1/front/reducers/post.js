@@ -4,12 +4,12 @@ export const initialState = {
       id: 1,
       User: {
         id: 1,
-        nickname: "제로초"
+        nickname: "제로초",
       },
       content: "첫 번째 게시글",
       img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726",
-      Comments: []
-    }
+      Comments: [],
+    },
   ], // 화면에 보일 포스트들
   imagePaths: [], // 미리보기 이미지 경로
   addPostErrorReason: "", // 포스트 업로드 실패 사유
@@ -17,27 +17,17 @@ export const initialState = {
   postAdded: false, // 포스트 업로드 성공
   isAddingComment: false,
   addCommentErrorReason: "",
-  commentAdded: false
-}
-
-const dummyPost = {
-  User: {
-    id: 2,
-    nickname: "서상혁2"
-  },
-  content: "나는 더미입니다.",
-  img: "http://www.animaltogether.com/news/photo/201908/345_769_1716.jpg",
-  createdAt: new Date()
+  commentAdded: false,
 }
 
 const dummyComment = {
   id: 1,
   User: {
     id: 1,
-    nickname: "서상혁3"
+    nickname: "서상혁3",
   },
   createdAt: new Date(),
-  content: "가짜 댓글입니다."
+  content: "가짜 댓글입니다.",
 }
 
 // 새로운 포스팅
@@ -46,9 +36,9 @@ export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS"
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE"
 
 // 포스트 불러오기
-export const LOAD_MAIN_POST_REQUEST = "LOAD_MAIN_POST_REQUEST"
-export const LOAD_MAIN_POST_SUCCESS = "LOAD_MAIN_POST_SUCCESS"
-export const LOAD_MAIN_POST_FAILURE = "LOAD_MAIN_POST_FAILURE"
+export const LOAD_MAIN_POSTS_REQUEST = "LOAD_MAIN_POSTS_REQUEST"
+export const LOAD_MAIN_POSTS_SUCCESS = "LOAD_MAIN_POSTS_SUCCESS"
+export const LOAD_MAIN_POSTS_FAILURE = "LOAD_MAIN_POSTS_FAILURE"
 
 //
 export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAG_POSTS_REQUEST"
@@ -86,7 +76,7 @@ export const RETWEET_SUCCESS = "RETWEET_SUCCESS"
 export const RETWEET_FAILURE = "RETWEET_FAILURE"
 
 export const addPost = {
-  type: ADD_POST_REQUEST
+  type: ADD_POST_REQUEST,
 }
 
 const reducer = (state = initialState, action) => {
@@ -96,15 +86,15 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAddingPost: true,
         addPostErrorReason: "",
-        postAdded: false
+        postAdded: false,
       }
     }
     case ADD_POST_SUCCESS: {
       return {
         ...state,
         isAddingPost: false,
-        mainPosts: [dummyPost, ...state.mainPosts],
-        postAdded: true
+        mainPosts: [action.data, ...state.mainPosts],
+        postAdded: true,
       }
     }
     case ADD_POST_FAILURE: {
@@ -112,7 +102,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAddingPost: false,
         addPostErrorReason: action.error,
-        postAdded: false
+        postAdded: false,
+      }
+    }
+    // 포스트 불러오기
+    case LOAD_MAIN_POSTS_REQUEST: {
+      return {
+        ...state,
+        mainPosts: [],
+      }
+    }
+    case LOAD_MAIN_POSTS_SUCCESS: {
+      return {
+        ...state,
+        mainPosts: [action.data, ...state.mainPosts],
+      }
+    }
+    case LOAD_MAIN_POSTS_FAILURE: {
+      return {
+        ...state,
       }
     }
     case ADD_COMMENT_REQUEST: {
@@ -120,7 +128,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAddingComment: true,
         addCommentErrorReason: "",
-        commentAdded: false
+        commentAdded: false,
       }
     }
     case ADD_COMMENT_SUCCESS: {
@@ -133,7 +141,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAddingComment: false,
         mainPosts,
-        commentAdded: true
+        commentAdded: true,
       }
     }
     case ADD_COMMENT_FAILURE: {
@@ -141,12 +149,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAddingComment: false,
         addCommentErrorReason: action.error,
-        commentAdded: false
+        commentAdded: false,
       }
     }
     default: {
       return {
-        ...state
+        ...state,
       }
     }
   }

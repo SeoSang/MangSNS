@@ -4,13 +4,10 @@ const local = require("./local")
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
-    console.log("passport__index.js: user", user)
-    console.log("passport__index.js: done", done)
     return done(null, user.id)
   })
   passport.deserializeUser(async (id, done) => {
     try {
-      console.log("deserial")
       const user = await db.User.findOne({
         where: { id },
         include: [

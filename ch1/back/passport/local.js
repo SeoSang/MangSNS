@@ -12,10 +12,6 @@ module.exports = () => {
         session: true, // 세션에 저장 여부
       },
       async (email, password, done) => {
-        console.log("-----local.js test-------")
-        console.log(email)
-        console.log(password)
-        console.log(done)
         try {
           const user = await db.User.findOne({ where: { email } })
           if (!user) {
