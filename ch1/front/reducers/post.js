@@ -10,7 +10,7 @@ export const initialState = {
       img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726",
       Comments: [],
     },
-  ], // 화면에 보일 포스트들
+  ],
   imagePaths: [], // 미리보기 이미지 경로
   addPostErrorReason: "", // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
@@ -42,8 +42,8 @@ export const LOAD_MAIN_POSTS_FAILURE = "LOAD_MAIN_POSTS_FAILURE"
 
 //
 export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAG_POSTS_REQUEST"
-export const LOAD_HASHTAG_POST_SUCCESS = "LOAD_HASHTAG_POST_SUCCESS"
-export const LOAD_HASHTAG_POST_FAILURE = "LOAD_HASHTAG_POST_FAILURE"
+export const LOAD_HASHTAG_POSTS_SUCCESS = "LOAD_HASHTAG_POSTS_SUCCESS"
+export const LOAD_HASHTAG_POSTS_FAILURE = "LOAD_HASHTAG_POSTS_FAILURE"
 
 export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST"
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS"
@@ -75,10 +75,6 @@ export const RETWEET_REQUEST = "RETWEET_REQUEST"
 export const RETWEET_SUCCESS = "RETWEET_SUCCESS"
 export const RETWEET_FAILURE = "RETWEET_FAILURE"
 
-export const addPost = {
-  type: ADD_POST_REQUEST,
-}
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST_REQUEST: {
@@ -102,7 +98,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAddingPost: false,
         addPostErrorReason: action.error,
-        postAdded: false,
       }
     }
     // 포스트 불러오기
@@ -115,7 +110,7 @@ const reducer = (state = initialState, action) => {
     case LOAD_MAIN_POSTS_SUCCESS: {
       return {
         ...state,
-        mainPosts: [action.data, ...state.mainPosts],
+        mainPosts: action.data,
       }
     }
     case LOAD_MAIN_POSTS_FAILURE: {

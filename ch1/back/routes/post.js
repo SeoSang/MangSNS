@@ -1,24 +1,31 @@
 const express = require("express")
-const router = express.Router()
 const db = require("../models")
+const router = express.Router()
 
 router.post("/", async (req, res, next) => {
+  console.log("TCL: req", req)
+  // POST /api/post
   try {
     const hashtags = req.body.content.match(/#[^\s]+/g)
     const newPost = await db.Post.create({
-      content: req.body.content,
+      content: req.body.content, // ex) '제로초 파이팅 #구독 #좋아요 눌러주세요'
       UserId: req.user.id,
     })
     if (hashtags) {
-      hashtags.map(tag =>
-        db.Hashtag.findOrCreate({
-          where: { name: tag.slice(1).toLowerCase() },
-        }),
+      const result = await Promise.all(
+        hashtags.map(tag =>
+          db.Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          }),
+        ),
       )
+      console.log(result)
       await newPost.addHashtags(result.map(r => r[0]))
-      // sequelize 가 DB 테이블으 관계에 따라 함수 만들어줌 (addHashtags, removeHashtags , getPosts등등)
     }
-    const fullPost = await db.Post.findone({
+    // const User = await newPost.getUser();
+    // newPost.User = User;
+    // res.json(newPost);
+    const fullPost = await db.Post.findOne({
       where: { id: newPost.id },
       include: [
         {
@@ -26,10 +33,10 @@ router.post("/", async (req, res, next) => {
         },
       ],
     })
-    console.log("TCL: fullPost", fullPost)
     res.json(fullPost)
   } catch (e) {
     console.error(e)
+    next(e)
   }
 })
 

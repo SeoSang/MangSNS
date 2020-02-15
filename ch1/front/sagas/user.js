@@ -32,7 +32,6 @@ function loginAPI(loginData) {
 function* login(action) {
   try {
     const result = yield call(loginAPI, action.data)
-    console.log("TCL: function*login -> result", result)
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data,
@@ -126,14 +125,11 @@ function loadUserAPI() {
 function* loadUser() {
   try {
     const result = yield call(loadUserAPI)
-    console.log("TCL: function*loadUser -> result", result)
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data,
     })
-    yield console.log("put 성공 , result = ", result)
   } catch (e) {
-    yield console.log("loadUser ERROR : ", e)
     yield put({
       type: LOAD_USER_FAILURE,
       error: e,

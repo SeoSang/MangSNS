@@ -20,7 +20,7 @@ function addPostAPI(postData) {
 }
 function* addPost(action) {
   try {
-    const result = call(addPostAPI, action.data)
+    const result = yield call(addPostAPI, action.data)
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
@@ -37,7 +37,7 @@ function* watchAddPost() {
 }
 
 // 댓글 달렸을 때
-function* addCommentAPI() {}
+function addCommentAPI() {}
 function* addComment(action) {
   // action 은 ADD_COMMENT_REQUEST 에서 옴 (dispatch에서 넣어준 데이터)
   // yield call(addPostAPI)
@@ -64,7 +64,7 @@ function* watchAddComment() {
 function loadMainPostsAPI() {
   return axios.get("/posts")
 }
-function* loadMainPosts(action) {
+function* loadMainPosts() {
   try {
     const result = yield call(loadMainPostsAPI)
     yield put({

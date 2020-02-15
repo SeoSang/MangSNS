@@ -4,6 +4,10 @@ import { useSelector, useDispatch } from "react-redux"
 import { ADD_COMMENT_REQUEST } from "../reducers/post"
 
 const PostCard = ({ c }) => {
+  console.log("TCL: PostCard -> c", c)
+  if (c == undefined) return <></>
+  console.log("-----PostCard실행-----")
+  console.log("TCL: PostCard -> c", c.User.nickname)
   const [commentFormOpened, setCommentFormOpened] = useState(false)
   const [commentText, setCommentText] = useState("")
   const { me } = useSelector(state => state.user)
@@ -23,11 +27,11 @@ const PostCard = ({ c }) => {
       dispatch({
         type: ADD_COMMENT_REQUEST,
         data: {
-          postId: c.id
-        }
+          postId: c.id,
+        },
       })
     },
-    [me && me.id]
+    [me && me.id],
   )
 
   const onChangeCommentText = useCallback(e => {
@@ -42,12 +46,12 @@ const PostCard = ({ c }) => {
     <>
       <Card
         key={+c.createdAt}
-        cover={c.img && <img alt="example" src={c.img} />}
+        cover={c.img && <img alt='example' src={c.img} />}
         actions={[
-          <Icon type="retweet" key="retweet" />,
-          <Icon type="heart" key="heart" />,
-          <Icon type="message" key="message" onClick={onToggleComment} />,
-          <Icon type="ellipsis" key="ellipsis" />
+          <Icon type='retweet' key='retweet' />,
+          <Icon type='heart' key='heart' />,
+          <Icon type='message' key='message' onClick={onToggleComment} />,
+          <Icon type='ellipsis' key='ellipsis' />,
         ]}
         extra={<Button>팔로우</Button>}
       >
@@ -63,13 +67,13 @@ const PostCard = ({ c }) => {
             <Form.Item>
               <Input.TextArea rows={4} value={commentText} onChange={onChangeCommentText} />
             </Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type='primary' htmlType='submit'>
               보내기
             </Button>
           </Form>
           <List
             header={`${c.Comments ? c.Comments.length : 0} 댓글`}
-            itemLayout="horizontal"
+            itemLayout='horizontal'
             dataSource={c.Comments || []}
             renderItem={item => (
               <li>
