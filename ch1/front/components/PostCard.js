@@ -2,6 +2,7 @@ import React, { useCallback, useState, useMemo, useEffect } from "react"
 import { Card, Button, Icon, Avatar, Form, TextArea, List, Input, Comment } from "antd"
 import { useSelector, useDispatch } from "react-redux"
 import { ADD_COMMENT_REQUEST } from "../reducers/post"
+import Link from "next/link"
 
 const PostCard = ({ c }) => {
   console.log("TCL: PostCard -> c", c)
@@ -58,7 +59,20 @@ const PostCard = ({ c }) => {
         <Card.Meta
           avatar={<Avatar>{c.User.nickname[0]}</Avatar>}
           title={c.User.nickname}
-          description={c.content}
+          description={
+            <div>
+              {c.content.split(/(#[^\s]+)/g).map(v => {
+                if (v.match(/#[^\s]+/)) {
+                  return (
+                    <Link href='/hashtag' key={v}>
+                      <a>{v}</a>
+                    </Link>
+                  )
+                }
+                return v
+              })}
+            </div>
+          }
         />
       </Card>
       {commentFormOpened && (

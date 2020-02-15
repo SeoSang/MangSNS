@@ -40,6 +40,8 @@ router.post("/", async (req, res, next) => {
   }
 })
 
+router.get("/:id", (req, res) => {})
+
 router.get("/api/user/:id/post", (req, res) => {})
 router.post("/api/user/:id/post", (req, res) => {})
 router.delete("/api/user/:id/post", (req, res) => {})

@@ -15,6 +15,9 @@ const PostForm = () => {
   const onSubmitForm = useCallback(
     e => {
       e.preventDefault()
+      if (!text || !text.trim()) {
+        return alert("빈 게시글은 작성할 수 없습니다!")
+      }
       dispatch({
         type: ADD_POST_REQUEST,
         data: {

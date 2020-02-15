@@ -1,16 +1,5 @@
 export const initialState = {
-  mainPosts: [
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: "제로초",
-      },
-      content: "첫 번째 게시글",
-      img: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726",
-      Comments: [],
-    },
-  ],
+  mainPosts: [],
   imagePaths: [], // 미리보기 이미지 경로
   addPostErrorReason: "", // 포스트 업로드 실패 사유
   isAddingPost: false, // 포스트 업로드 중
@@ -18,16 +7,6 @@ export const initialState = {
   isAddingComment: false,
   addCommentErrorReason: "",
   commentAdded: false,
-}
-
-const dummyComment = {
-  id: 1,
-  User: {
-    id: 1,
-    nickname: "서상혁3",
-  },
-  createdAt: new Date(),
-  content: "가짜 댓글입니다.",
 }
 
 // 새로운 포스팅

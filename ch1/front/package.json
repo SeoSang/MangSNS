@@ -4,7 +4,7 @@
   "description": "SNS for MangWon people!",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "nodemon",
     "build": "next build",
     "start": "next start"
   },
@@ -13,7 +13,12 @@
   "dependencies": {
     "antd": "^3.26.7",
     "axios": "^0.19.2",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "global": "^4.4.0",
+    "morgan": "^1.9.1",
     "next": "^8.1.0",
     "next-redux-wrapper": "^4.0.1",
     "prop-types": "^15.7.2",
