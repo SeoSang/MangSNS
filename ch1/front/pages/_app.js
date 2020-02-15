@@ -9,18 +9,18 @@ import { createStore, compose, applyMiddleware } from "redux"
 import reducer from "../reducers"
 import rootSaga from "../sagas"
 
-const MangSNS = ({ Component, store }) => {
+const MangSNS = ({ Component, store, pageProps }) => {
   return (
     <Provider store={store}>
       <Head>
         <title>MangSNS</title>
         <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css"
+          rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css'
         ></link>
       </Head>
       <AppLayout>
-        <Component />
+        <Component {...pageProps} />
       </AppLayout>
     </Provider>
   )
@@ -28,7 +28,18 @@ const MangSNS = ({ Component, store }) => {
 
 MangSNS.propTypes = {
   Component: PropTypes.elementType,
-  store: PropTypes.object
+  store: PropTypes.object,
+  pageProps: PropTypes.object.isRequired,
+}
+
+MangSNS.getInitialProps = async context => {
+  // 제일먼저 실행되는 사이클 (프론트, 서버 둘다 실행됨)
+  const { ctx } = context
+  let pageProps = {}
+  if (context.Component.getInitialProps) {
+    pageProps = await context.Component.getInitialProps(ctx)
+  }
+  return { pageProps }
 }
 
 const middle = (initialState, options) => {
@@ -44,7 +55,7 @@ const middle = (initialState, options) => {
   const store = createStore(
     reducer,
     initialState,
-    composeEnhancers(applyMiddleware(...middlewares))
+    composeEnhancers(applyMiddleware(...middlewares)),
   )
   sagaMiddleware.run(rootSaga)
   return store
