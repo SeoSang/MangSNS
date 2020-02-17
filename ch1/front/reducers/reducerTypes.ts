@@ -133,8 +133,10 @@ export interface PostState {
 
 export interface MainPost {
   id: number
+  User?: { id: number; nickname: string }
   content: string
   Comments?: string[]
+  img?: string
 }
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST" as const
@@ -225,3 +227,24 @@ export type PostActionTypes =
   | AddCommentRequestAction
   | AddCommentSuccessAction
   | AddCommentFailureAction
+
+// ------------ mwgg ------------
+
+export interface MwggState {
+  users: MwggUserInfo[]
+  summonerName: string | null
+}
+
+export interface MwggUserInfo {
+  userName: string
+  summonerNames: [] | string[]
+}
+
+export const ADD_SUMMONER_NAME = "ADD_SUMMONER_NAME" as const
+
+export interface AddSummonerNameAction {
+  type: typeof ADD_SUMMONER_NAME
+  summonerName: string
+}
+
+export type MwggActionTypes = AddSummonerNameAction
