@@ -32,6 +32,7 @@ const LoginForm = ({ form }) => {
     const formData = form.getFieldsValue()
     console.log("TCL: formData (login )", formData)
     dispatch(loginRequestAction(formData))
+    console.log("TCL: LoginForm -> formData", formData)
   }
 
   const { getFieldDecorator } = form
