@@ -24,9 +24,6 @@ export const initialState: UserState = {
   isSigningUp: false,
   signUpErrorReason: "",
   me: null,
-  followingList: [],
-  followerList: [],
-  userInfo: null,
 }
 
 // 로그인 액션들

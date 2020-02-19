@@ -3,7 +3,6 @@ import {
   LOG_IN_REQUEST,
   LOG_IN_FAILURE,
   SIGN_UP_REQUEST,
-  signUpFailureAction,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
@@ -12,7 +11,8 @@ import {
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
   LOAD_USER_REQUEST,
-} from "../reducers/user"
+} from "../reducers/reducerTypes"
+import { signUpFailureAction } from "../reducers/user"
 import axios from "axios"
 import { useRouter } from "next/router"
 
@@ -129,6 +129,7 @@ function* loadUser() {
       type: LOAD_USER_SUCCESS,
       data: result.data,
     })
+    yield console.log("--- saga_user.js -> loadUser", result.data)
   } catch (e) {
     yield put({
       type: LOAD_USER_FAILURE,

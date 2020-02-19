@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react"
 import { Form, Input, Icon, Row, Col, Checkbox, Button, AutoComplete, Avatar, Card } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { ADD_POST_REQUEST } from "../reducers/post"
+import { ADD_POST_REQUEST } from "../reducers/reducerTypes"
 
 const PostForm = () => {
   const [text, setText] = useState("")

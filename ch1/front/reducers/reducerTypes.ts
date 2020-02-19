@@ -50,10 +50,18 @@ export interface UserState {
   isSigningUp: boolean
   signUpErrorReason: string | null
   // TODO : any 없애기
-  me: any
-  followingList: []
-  followerList: []
-  userInfo: any
+  me: {
+    id: number
+    nickname: string
+    email: string
+    phone: string
+    residence: string
+    createdAt: string
+    updatedAt: string
+    Posts: { id: number }[]
+    Followings: any[]
+    Followers: any[]
+  } | null
 }
 
 export interface LoginRequestAction {

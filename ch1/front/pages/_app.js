@@ -6,7 +6,7 @@ import AppLayout from "../components/AppLayout"
 import { Provider } from "react-redux"
 import createSagaMiddleware from "redux-saga"
 import { createStore, compose, applyMiddleware } from "redux"
-import reducer from "../reducers"
+import reducer from "../reducers/index.ts"
 import rootSaga from "../sagas"
 
 const MangSNS = ({ Component, store, pageProps }) => {

@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo, useEffect } from "react"
 import { Card, Button, Icon, Avatar, Form, TextArea, List, Input, Comment } from "antd"
 import { useSelector, useDispatch } from "react-redux"
-import { ADD_COMMENT_REQUEST } from "../reducers/post"
+import { ADD_COMMENT_REQUEST } from "../reducers/reducerTypes"
 import Link from "next/link"
 
 const PostCard = ({ c }) => {

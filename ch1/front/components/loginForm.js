@@ -3,7 +3,7 @@ import styled, { css } from "styled-components"
 
 import { Form, Input, Button, Icon, Row, Col, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { loginRequestAction } from "../reducers/user"
+import { loginRequestAction } from "../reducers/user.ts"
 
 const { Title } = Typography
 

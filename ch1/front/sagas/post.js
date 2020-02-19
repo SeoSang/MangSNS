@@ -9,7 +9,7 @@ import {
   LOAD_MAIN_POSTS_REQUEST,
   LOAD_MAIN_POSTS_SUCCESS,
   LOAD_MAIN_POSTS_FAILURE,
-} from "../reducers/post"
+} from "../reducers/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
 
