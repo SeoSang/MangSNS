@@ -17,6 +17,9 @@ import {
   LOAD_HASHTAG_POSTS_REQUEST,
   LOAD_HASHTAG_POSTS_SUCCESS,
   LOAD_HASHTAG_POSTS_FAILURE,
+  LOAD_COMMENTS_REQUEST,
+  LOAD_COMMENTS_SUCCESS,
+  LOAD_COMMENTS_FAILURE,
 } from "./reducerTypes"
 
 export const initialState: PostState = {
@@ -91,7 +94,11 @@ const reducer = (state = initialState, action: PostActionTypes) => {
     case ADD_COMMENT_SUCCESS: {
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
       const post = state.mainPosts[postIndex]
-      const Comments = [...post.Comments]
+      console.log("------reducers__post.ts / action.data => ", action.data)
+      console.log("------reducers__post.ts / post.Comments => ", post.Comments)
+      const Comments = post.Comments
+        ? [...post.Comments, action.data.comment]
+        : [action.data.comment]
       const mainPosts = [...state.mainPosts]
       mainPosts[postIndex] = { ...post, Comments }
       return {
@@ -107,6 +114,18 @@ const reducer = (state = initialState, action: PostActionTypes) => {
         isAddingComment: false,
         addCommentErrorReason: action.error,
         commentAdded: false,
+      }
+    }
+    case LOAD_COMMENTS_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
+      const post = state.mainPosts[postIndex]
+      const Comments = action.data.comments
+      const mainPosts = [...state.mainPosts]
+      mainPosts[postIndex] = { ...post, Comments }
+      console.log("----reducers__post.ts / mainPosts[postIndex] => ", mainPosts[postIndex])
+      return {
+        ...state,
+        mainPosts,
       }
     }
     default: {

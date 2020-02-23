@@ -147,7 +147,7 @@ export interface MainPost {
   id: number
   User?: { id: number; nickname: string }
   content: string
-  Comments?: string[]
+  Comments?: any
   img?: string
 }
 
@@ -191,9 +191,9 @@ export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST" as const
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS" as const
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE" as const
 
-export const LOAD_COMMENT_REQUEST = "LOAD_COMMENT_REQUEST" as const
-export const LOAD_COMMENT_SUCCESS = "LOAD_COMMENT_SUCCESS" as const
-export const LOAD_COMMENT_FAILURE = "LOAD_COMMENT_FAILURE" as const
+export const LOAD_COMMENTS_REQUEST = "LOAD_COMMENTS_REQUEST" as const
+export const LOAD_COMMENTS_SUCCESS = "LOAD_COMMENTS_SUCCESS" as const
+export const LOAD_COMMENTS_FAILURE = "LOAD_COMMENTS_FAILURE" as const
 
 export const RETWEET_REQUEST = "RETWEET_REQUEST" as const
 export const RETWEET_SUCCESS = "RETWEET_SUCCESS" as const
@@ -245,13 +245,29 @@ export interface LoadHashtagPostsFailureAction {
 }
 export interface AddCommentRequestAction {
   type: typeof ADD_COMMENT_REQUEST
+  data: { postId: number; content: string }
 }
 export interface AddCommentSuccessAction {
   type: typeof ADD_COMMENT_SUCCESS
-  data: any
+  data: { postId: number; comment: any }
 }
 export interface AddCommentFailureAction {
   type: typeof ADD_COMMENT_FAILURE
+  error?: any
+}
+export interface LoadCommentsRequestAction {
+  type: typeof LOAD_COMMENTS_REQUEST
+  data: { postId: number }
+}
+export interface LoadCommentsSuccessAction {
+  type: typeof LOAD_COMMENTS_SUCCESS
+  data: {
+    postId: number
+    comments?: any
+  }
+}
+export interface LoadCommentsFailureAction {
+  type: typeof LOAD_COMMENTS_FAILURE
   error?: any
 }
 
@@ -271,6 +287,9 @@ export type PostActionTypes =
   | LoadHashtagPostsRequestAction
   | LoadHashtagPostsSuccessAction
   | LoadHashtagPostsFailureAction
+  | LoadCommentsRequestAction
+  | LoadCommentsSuccessAction
+  | LoadCommentsFailureAction
 // ------------ mwgg ------------
 
 export interface MwggState {

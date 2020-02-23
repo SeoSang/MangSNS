@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo, useEffect } from "react"
 import { Card, Button, Icon, Avatar, Form, TextArea, List, Input, Comment } from "antd"
 import { useSelector, useDispatch } from "react-redux"
-import { ADD_COMMENT_REQUEST } from "../reducers/reducerTypes"
+import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST } from "../reducers/reducerTypes"
 import Link from "next/link"
 
 const PostCard = ({ post }) => {
@@ -14,6 +14,12 @@ const PostCard = ({ post }) => {
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened(prev => !prev)
+    if (!commentFormOpened) {
+      dispatch({
+        type: LOAD_COMMENTS_REQUEST,
+        data: post.id,
+      })
+    }
   }, [])
 
   const onSubmitComment = useCallback(
@@ -22,14 +28,15 @@ const PostCard = ({ post }) => {
       if (!me) {
         return alert("로그인이 필요합니다!")
       }
-      dispatch({
+      return dispatch({
         type: ADD_COMMENT_REQUEST,
         data: {
           postId: post.id,
+          content: commentText,
         },
       })
     },
-    [me && me.id],
+    [me && me.id, commentText],
   )
 
   const onChangeCommentText = useCallback(e => {
@@ -105,11 +112,11 @@ const PostCard = ({ post }) => {
                   author={item.User.nickname}
                   avatar={
                     <Link
-                      href={{ pathname: "/user", query: { id: post.User.id } }}
-                      as={`/user/${post.User.id}`}
+                      href={{ pathname: "/user", query: { id: item.User.id } }}
+                      as={`/user/${item.User.id}`}
                     >
                       <a>
-                        <Avatar>{post.User.nickname[0]}</Avatar>
+                        <Avatar>{item.User.nickname[0]}</Avatar>
                       </a>
                     </Link>
                   }

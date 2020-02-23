@@ -15,6 +15,9 @@ import {
   LOAD_USER_POSTS_SUCCESS,
   LOAD_USER_POSTS_FAILURE,
   LOAD_USER_POSTS_REQUEST,
+  LOAD_COMMENTS_REQUEST,
+  LOAD_COMMENTS_SUCCESS,
+  LOAD_COMMENTS_FAILURE,
 } from "../reducers/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
@@ -43,19 +46,26 @@ function* watchAddPost() {
 }
 
 // 댓글 달렸을 때
-function addCommentAPI() {}
+function addCommentAPI(data) {
+  return axios.post(
+    `/post/${data.postId}/comment`,
+    { content: data.content },
+    { withCredentials: true },
+  )
+}
 function* addComment(action) {
-  // action 은 ADD_COMMENT_REQUEST 에서 옴 (dispatch에서 넣어준 데이터)
-  // yield call(addPostAPI)
+  const result = yield call(addCommentAPI, action.data)
   yield delay(2000)
   try {
     yield put({
       type: ADD_COMMENT_SUCCESS,
       data: {
         postId: action.data.postId,
+        comment: result.data,
       },
     })
   } catch (e) {
+    console.error(e)
     yield put({
       type: ADD_COMMENT_FAILURE,
       error: e,
@@ -110,6 +120,30 @@ function* watchLoadUserPosts() {
   yield takeLatest(LOAD_USER_POSTS_REQUEST, loadUserPosts)
 }
 
+function loadCommentsAPI(postId) {
+  return axios.get(`/post/${postId}/comments`)
+}
+function* loadComments(action) {
+  try {
+    const result = yield call(loadCommentsAPI, action.data)
+    yield put({
+      type: LOAD_COMMENTS_SUCCESS,
+      data: {
+        postId: action.data,
+        comments: result.data,
+      },
+    })
+  } catch (e) {
+    yield put({
+      type: LOAD_COMMENTS_FAILURE,
+      error: e,
+    })
+  }
+}
+function* watchLoadComments() {
+  yield takeLatest(LOAD_COMMENTS_REQUEST, loadComments)
+}
+
 // 해쉬태그 포스트 불러오기
 function loadHashtagPostsAPI(tag) {
   return axios.get(`/hashtag/${tag}`)
@@ -139,5 +173,6 @@ export default function* postSaga() {
     fork(watchLoadMainPosts),
     fork(watchLoadHashtagPosts),
     fork(watchLoadUserPosts),
+    fork(watchLoadComments),
   ])
 }

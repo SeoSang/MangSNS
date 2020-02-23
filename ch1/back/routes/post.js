@@ -40,14 +40,65 @@ router.post("/", async (req, res, next) => {
   }
 })
 
-router.get("/:id", (req, res) => {})
-
-router.get("/api/user/:id/post", (req, res) => {})
-router.post("/api/user/:id/post", (req, res) => {})
-router.delete("/api/user/:id/post", (req, res) => {})
-
-router.get("/api/user/:id/hashtag", (req, res) => {})
-router.post("/api/user/:id/hashtag", (req, res) => {})
-router.delete("/api/user/:id/hashtag", (req, res) => {})
+router.get("/:id/comments", async (req, res, next) => {
+  try {
+    const post = await db.Post.findOne({
+      where: { id: req.params.id },
+    })
+    if (!post) {
+      return res.status(404).send("없는 포스트입니다.")
+    }
+    const comments = await db.Comment.findAll({
+      where: { PostId: req.params.id },
+      order: [["createdAt", "ASC"]],
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "nickname"],
+        },
+      ],
+    })
+    return res.json(comments)
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+router.post("/:id/comment", async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send("로그인 해주세요!")
+    }
+    const post = await db.Post.findOne({
+      where: { id: req.params.id },
+    })
+    if (!post) {
+      return res.status(404).send("없는 포스트입니다.")
+    }
+    const newComment = await db.Comment.create({
+      PostId: post.id,
+      UserId: req.user.id,
+      content: req.body.content,
+    })
+    await post.addComment(newComment.id)
+    const comment = await db.Comment.findOne({
+      where: {
+        id: newComment.id,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "email"],
+        },
+      ],
+    })
+    console.log("-----routes__post.js : comment =>")
+    console.log(comment)
+    return res.json(comment)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+})
 
 module.exports = router
