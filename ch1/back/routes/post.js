@@ -1,8 +1,10 @@
 const express = require("express")
 const db = require("../models")
+const { isLoggedIn, isNotLoggedIn } = require("./middleware")
 const router = express.Router()
 
-router.post("/", async (req, res, next) => {
+// 포스트 추가
+router.post("/", isLoggedIn, async (req, res, next) => {
   console.log("TCL: req", req)
   // POST /api/post
   try {
@@ -64,11 +66,8 @@ router.get("/:id/comments", async (req, res, next) => {
     next(error)
   }
 })
-router.post("/:id/comment", async (req, res, next) => {
+router.post("/:id/comment", isLoggedIn, async (req, res, next) => {
   try {
-    if (!req.user) {
-      return res.status(401).send("로그인 해주세요!")
-    }
     const post = await db.Post.findOne({
       where: { id: req.params.id },
     })
@@ -88,7 +87,7 @@ router.post("/:id/comment", async (req, res, next) => {
       include: [
         {
           model: db.User,
-          attributes: ["id", "email"],
+          attributes: ["id", "nickname"],
         },
       ],
     })

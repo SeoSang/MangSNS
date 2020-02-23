@@ -1,18 +1,18 @@
 const express = require("express")
 const bcrypt = require("bcrypt")
 const passport = require("passport")
+const { isLoggedIn, isNotLoggedIn } = require("./middleware")
 const db = require("../models")
 const router = express.Router()
 
+// 유저정보 가져오기
 router.get("/", (req, res) => {
-  if (!req.user) {
-    return res.status(401).send("로그인이 필요합니다.")
-  }
   const user = Object.assign({}, req.user.toJSON())
   delete user.password
   return res.json(user)
 }) // request 요청 response 응답
-router.post("/", async (req, res, next) => {
+
+router.post("/", isNotLoggedIn, async (req, res, next) => {
   // 회원가입
   try {
     const exUser = await db.User.findOne({
@@ -41,7 +41,8 @@ router.post("/", async (req, res, next) => {
   }
 })
 
-router.get("/:id", async (req, res, next) => {
+// 유저정보 확인
+router.get("/:id", isLoggedIn, async (req, res, next) => {
   try {
     const user = await db.User.findOne({
       where: { id: parseInt(req.params.id, 10) },

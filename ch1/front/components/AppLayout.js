@@ -4,8 +4,8 @@ import LoginForm from "./LoginForm"
 import { Menu, Input, Button, Row, Col, Avatar, Card, Form } from "antd"
 import UserProfile from "./UserProfile"
 import { useDispatch, useSelector } from "react-redux"
-import { logoutRequestAction } from "../reducers/user.ts"
 import { LOAD_USER_REQUEST } from "../reducers/reducerTypes.ts"
+import { LOG_OUT_REQUEST } from "../reducers/reducerTypes"
 
 const WrappedLoginForm = Form.create({ name: "login" })(LoginForm)
 
@@ -13,7 +13,9 @@ const AppLayout = ({ children }) => {
   const dispatch = useDispatch()
   const { me } = useSelector(state => state.user)
   const handleLogout = useCallback(() => {
-    dispatch(logoutRequestAction)
+    dispatch({
+      type: LOG_OUT_REQUEST,
+    })
   }, [me])
 
   useEffect(() => {
