@@ -41,9 +41,40 @@ router.post("/", async (req, res, next) => {
   }
 })
 
-router.get("/:id", (req, res) => {
-  // ex) api/user/3
+router.get("/:id", async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: { id: parseInt(req.params.id, 10) },
+      include: [
+        {
+          model: db.Post,
+          as: "Posts",
+          attributes: ["id"],
+        },
+        {
+          model: db.User,
+          as: "Followings",
+          attributes: ["id"],
+        },
+        {
+          model: db.User,
+          as: "Followers",
+          attributes: ["id"],
+        },
+      ],
+      attributes: ["id", "nickname"],
+    })
+    const jsonUser = user.toJSON()
+    jsonUser.Posts = jsonUser.Posts ? jsonUser.Posts.length : 0
+    jsonUser.Followings = jsonUser.Followings ? jsonUser.Followings.length : 0
+    jsonUser.Followers = jsonUser.Followers ? jsonUser.Followers.length : 0
+    res.json(jsonUser)
+  } catch (error) {
+    console.error(error)
+    next(e)
+  }
 })
+
 router.get("/login", (req, res) => {})
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
@@ -97,6 +128,29 @@ router.post("/logout", (req, res) => {
   res.send("logout 성공!")
 })
 router.delete("/logout", (req, res) => {})
+router.get("/:id/posts", async (req, res, next) => {
+  try {
+    const posts = await db.Post.findAll({
+      where: {
+        UserId: parseInt(req.params.id, 10),
+        RetweetId: null,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "nickname"],
+        },
+      ],
+    })
+    res.json(posts)
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+
+router.post("/:id/follow", (req, res) => {})
+router.delete("/:id/follow", (req, res) => {})
 
 router.get("/:id/follow", (req, res) => {})
 router.post("/:id/follow", (req, res) => {})
