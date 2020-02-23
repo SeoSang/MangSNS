@@ -118,16 +118,17 @@ function* watchSignup() {
 
 // ----------- 유저 정보 로드 -----------
 
-function loadUserAPI() {
-  return axios.get("/user/", { withCredentials: true })
+function loadUserAPI(userId) {
+  return axios.get(userId ? `/user/${userId}` : "/user/", { withCredentials: true })
 }
 
-function* loadUser() {
+function* loadUser(action) {
   try {
-    const result = yield call(loadUserAPI)
+    const result = yield call(loadUserAPI, action.data)
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data,
+      me: !action.data,
     })
     yield console.log("--- saga_user.js -> loadUser", result.data)
   } catch (e) {

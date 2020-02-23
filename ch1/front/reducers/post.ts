@@ -11,6 +11,12 @@ import {
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
+  LOAD_USER_POSTS_REQUEST,
+  LOAD_USER_POSTS_SUCCESS,
+  LOAD_USER_POSTS_FAILURE,
+  LOAD_HASHTAG_POSTS_REQUEST,
+  LOAD_HASHTAG_POSTS_SUCCESS,
+  LOAD_HASHTAG_POSTS_FAILURE,
 } from "./reducerTypes"
 
 export const initialState: PostState = {
@@ -50,18 +56,25 @@ const reducer = (state = initialState, action: PostActionTypes) => {
       }
     }
     // 포스트 불러오기
+    case LOAD_USER_POSTS_REQUEST:
+    case LOAD_HASHTAG_POSTS_REQUEST:
     case LOAD_MAIN_POSTS_REQUEST: {
       return {
         ...state,
         mainPosts: [],
       }
     }
-    case LOAD_MAIN_POSTS_SUCCESS: {
+    // 포스트 불러오기
+    case LOAD_USER_POSTS_SUCCESS:
+    case LOAD_MAIN_POSTS_SUCCESS:
+    case LOAD_HASHTAG_POSTS_SUCCESS: {
       return {
         ...state,
         mainPosts: action.data,
       }
     }
+    case LOAD_USER_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_FAILURE:
     case LOAD_MAIN_POSTS_FAILURE: {
       return {
         ...state,

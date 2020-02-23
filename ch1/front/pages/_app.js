@@ -35,7 +35,6 @@ MangSNS.propTypes = {
 MangSNS.getInitialProps = async context => {
   // 제일먼저 실행되는 사이클 (프론트, 서버 둘다 실행됨)
   const { ctx } = context
-  console.log("TCL: context.Component.getInitialProps", context.Component.getInitialProps)
   let pageProps = {}
   if (context.Component.getInitialProps) {
     pageProps = await context.Component.getInitialProps(ctx)

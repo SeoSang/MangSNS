@@ -11,6 +11,7 @@ const app = express()
 const userAPIRouter = require("./routes/user")
 const postAPIRouter = require("./routes/post")
 const postsAPIRouter = require("./routes/posts")
+const hashtagAPIRouter = require("./routes/hashtag")
 
 dotenv.config()
 db.sequelize.sync()
@@ -45,6 +46,7 @@ app.use(passport.session()) // expressSession 아래에다가 해야댐
 app.use("/api/user", userAPIRouter)
 app.use("/api/post", postAPIRouter)
 app.use("/api/posts", postsAPIRouter)
+app.use("/api/hashtag", hashtagAPIRouter)
 
 app.listen(4539, () => {
   console.log("Hello server, http://localhost:4539")

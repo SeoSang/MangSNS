@@ -4,11 +4,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { ADD_COMMENT_REQUEST } from "../reducers/reducerTypes"
 import Link from "next/link"
 
-const PostCard = ({ c }) => {
-  console.log("TCL: PostCard -> c", c)
-  if (c == undefined) return <></>
-  console.log("-----PostCard실행-----")
-  console.log("TCL: PostCard -> c", c.User.nickname)
+const PostCard = ({ post }) => {
+  if (post == undefined) return <></>
   const [commentFormOpened, setCommentFormOpened] = useState(false)
   const [commentText, setCommentText] = useState("")
   const { me } = useSelector(state => state.user)
@@ -28,7 +25,7 @@ const PostCard = ({ c }) => {
       dispatch({
         type: ADD_COMMENT_REQUEST,
         data: {
-          postId: c.id,
+          postId: post.id,
         },
       })
     },
@@ -46,8 +43,8 @@ const PostCard = ({ c }) => {
   return (
     <>
       <Card
-        key={+c.createdAt}
-        cover={c.img && <img alt='example' src={c.img} />}
+        key={+post.createdAt}
+        cover={post.img && <img alt='example' src={post.img} />}
         actions={[
           <Icon type='retweet' key='retweet' />,
           <Icon type='heart' key='heart' />,
@@ -57,14 +54,27 @@ const PostCard = ({ c }) => {
         extra={<Button>팔로우</Button>}
       >
         <Card.Meta
-          avatar={<Avatar>{c.User.nickname[0]}</Avatar>}
-          title={c.User.nickname}
+          avatar={
+            <Link
+              href={{ pathname: "/user", query: { id: post.User.id } }}
+              as={`/user/${post.User.id}`}
+            >
+              <a>
+                <Avatar>{post.User.nickname[0]}</Avatar>
+              </a>
+            </Link>
+          }
+          title={post.User.nickname}
           description={
             <div>
-              {c.content.split(/(#[^\s]+)/g).map(v => {
+              {post.content.split(/(#[^\s]+)/g).map(v => {
                 if (v.match(/#[^\s]+/)) {
                   return (
-                    <Link href='/hashtag' key={v}>
+                    <Link
+                      href={{ pathname: "/hashtag", query: { tag: v.slice(1) } }}
+                      key={v}
+                      as={`/hashtag/${v.slice(1)}`}
+                    >
                       <a>{v}</a>
                     </Link>
                   )
@@ -86,14 +96,23 @@ const PostCard = ({ c }) => {
             </Button>
           </Form>
           <List
-            header={`${c.Comments ? c.Comments.length : 0} 댓글`}
+            header={`${post.Comments ? post.Comments.length : 0} 댓글`}
             itemLayout='horizontal'
-            dataSource={c.Comments || []}
+            dataSource={post.Comments || []}
             renderItem={item => (
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={
+                    <Link
+                      href={{ pathname: "/user", query: { id: post.User.id } }}
+                      as={`/user/${post.User.id}`}
+                    >
+                      <a>
+                        <Avatar>{post.User.nickname[0]}</Avatar>
+                      </a>
+                    </Link>
+                  }
                   content={item.content}
                 />
               </li>

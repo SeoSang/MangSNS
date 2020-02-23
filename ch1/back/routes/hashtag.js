@@ -1,19 +1,20 @@
 const express = require("express")
-const router = express.Router()
 const db = require("../models")
+const router = express.Router()
 
-router.get("/", async (req, res, next) => {
+router.get("/:tag", async (req, res, next) => {
+  console.log("---routes__hashtag.js -> req.params.tag")
   try {
     const posts = await db.Post.findAll({
       include: [
         {
+          model: db.Hashtag,
+          where: { name: decodeURIComponent(req.params.tag) },
+        },
+        {
           model: db.User,
           attributes: ["id", "nickname"],
         },
-      ],
-      order: [
-        ["createdAt", "DESC"],
-        ["updatedAt", "DESC"],
       ],
     })
     res.json(posts)
@@ -22,9 +23,5 @@ router.get("/", async (req, res, next) => {
     next(e)
   }
 })
-
-router.get("/api/user/:id/posts", (req, res) => {})
-router.post("/api/user/:id/posts", (req, res) => {})
-router.delete("/api/user/:id/posts", (req, res) => {})
 
 module.exports = router

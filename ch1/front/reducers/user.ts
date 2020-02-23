@@ -24,6 +24,7 @@ export const initialState: UserState = {
   isSigningUp: false,
   signUpErrorReason: "",
   me: null,
+  userInfo: null,
 }
 
 // 로그인 액션들
@@ -151,9 +152,15 @@ const reducer = (state = initialState, action: UserActionTypes) => {
       }
     }
     case LOAD_USER_SUCCESS: {
+      if (action.me) {
+        return {
+          ...state,
+          me: action.data,
+        }
+      }
       return {
         ...state,
-        me: action.data,
+        userInfo: action.data,
       }
     }
     case LOAD_USER_FAILURE: {

@@ -50,18 +50,20 @@ export interface UserState {
   isSigningUp: boolean
   signUpErrorReason: string | null
   // TODO : any 없애기
-  me: {
-    id: number
-    nickname: string
-    email: string
-    phone: string
-    residence: string
-    createdAt: string
-    updatedAt: string
-    Posts: { id: number }[]
-    Followings: any[]
-    Followers: any[]
-  } | null
+  me: Me | null
+  userInfo: null | Me
+}
+export interface Me {
+  id: number
+  nickname: string
+  email: string
+  phone: string
+  residence: string
+  createdAt: string
+  updatedAt: string
+  Posts: { id: number }[]
+  Followings: any[]
+  Followers: any[]
 }
 
 export interface LoginRequestAction {
@@ -89,10 +91,12 @@ export interface LogoutFailureAction {
 }
 export interface LoadUserRequestAction {
   type: typeof LOAD_USER_REQUEST
+  data?: number
 }
 export interface LoadUserSuccessAction {
   type: typeof LOAD_USER_SUCCESS
-  data: any
+  data: Me
+  me?: Me
 }
 export interface LoadUserFailureAction {
   type: typeof LOAD_USER_FAILURE
@@ -151,12 +155,16 @@ export const ADD_POST_REQUEST = "ADD_POST_REQUEST" as const
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS" as const
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE" as const
 
-// 포스트 불러오기
+// 메인포스트 불러오기
 export const LOAD_MAIN_POSTS_REQUEST = "LOAD_MAIN_POSTS_REQUEST" as const
 export const LOAD_MAIN_POSTS_SUCCESS = "LOAD_MAIN_POSTS_SUCCESS" as const
 export const LOAD_MAIN_POSTS_FAILURE = "LOAD_MAIN_POSTS_FAILURE" as const
 
-//
+// 특정 포스트 불러오기
+export const LOAD_USER_POSTS_REQUEST = "LOAD_USER_POSTS_REQUEST" as const
+export const LOAD_USER_POSTS_SUCCESS = "LOAD_USER_POSTS_SUCCESS" as const
+export const LOAD_USER_POSTS_FAILURE = "LOAD_USER_POSTS_FAILURE" as const
+
 export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAG_POSTS_REQUEST" as const
 export const LOAD_HASHTAG_POSTS_SUCCESS = "LOAD_HASHTAG_POSTS_SUCCESS" as const
 export const LOAD_HASHTAG_POSTS_FAILURE = "LOAD_HASHTAG_POSTS_FAILURE" as const
@@ -196,7 +204,7 @@ export interface AddPostRequestAction {
 }
 export interface AddPostSuccessAction {
   type: typeof ADD_POST_SUCCESS
-  data: any
+  data: MainPost
 }
 export interface AddPostFailureAction {
   type: typeof ADD_POST_FAILURE
@@ -207,10 +215,32 @@ export interface LoadMainPostsRequestAction {
 }
 export interface LoadMainPostsSuccessAction {
   type: typeof LOAD_MAIN_POSTS_SUCCESS
-  data: any
+  data: MainPost[] | []
 }
 export interface LoadMainPostsFailureAction {
   type: typeof LOAD_MAIN_POSTS_FAILURE
+  error?: any
+}
+export interface LoadUserPostsRequestAction {
+  type: typeof LOAD_USER_POSTS_REQUEST
+}
+export interface LoadUserPostsSuccessAction {
+  type: typeof LOAD_USER_POSTS_SUCCESS
+  data: MainPost[] | []
+}
+export interface LoadUserPostsFailureAction {
+  type: typeof LOAD_USER_POSTS_FAILURE
+  error?: any
+}
+export interface LoadHashtagPostsRequestAction {
+  type: typeof LOAD_HASHTAG_POSTS_REQUEST
+}
+export interface LoadHashtagPostsSuccessAction {
+  type: typeof LOAD_HASHTAG_POSTS_SUCCESS
+  data: MainPost[] | []
+}
+export interface LoadHashtagPostsFailureAction {
+  type: typeof LOAD_HASHTAG_POSTS_FAILURE
   error?: any
 }
 export interface AddCommentRequestAction {
@@ -235,7 +265,12 @@ export type PostActionTypes =
   | AddCommentRequestAction
   | AddCommentSuccessAction
   | AddCommentFailureAction
-
+  | LoadUserPostsRequestAction
+  | LoadUserPostsSuccessAction
+  | LoadUserPostsFailureAction
+  | LoadHashtagPostsRequestAction
+  | LoadHashtagPostsSuccessAction
+  | LoadHashtagPostsFailureAction
 // ------------ mwgg ------------
 
 export interface MwggState {

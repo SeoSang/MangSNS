@@ -1,14 +1,13 @@
 import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
-import { LOAD_HASHTAG_POSTS_REQUEST } from "../reducers/post"
+import { LOAD_HASHTAG_POSTS_REQUEST } from "../reducers/reducerTypes"
 import PostCard from "../components/PostCard"
 
 const Hashtag = ({ tag }) => {
-  console.log(tag)
   const dispatch = useDispatch()
   const { mainPosts } = useSelector(state => state.post)
-
+  console.log("pages__hashtag.js : ", mainPosts)
   useEffect(() => {
     dispatch({
       type: LOAD_HASHTAG_POSTS_REQUEST,
@@ -17,8 +16,8 @@ const Hashtag = ({ tag }) => {
   }, [])
   return (
     <div>
-      {mainPosts.map(c => (
-        <PostCard key={+c.createdAt} post={c} />
+      {mainPosts.map(post => (
+        <PostCard key={post.createdAt} post={post} />
       ))}
     </div>
   )

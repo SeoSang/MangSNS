@@ -19,9 +19,9 @@ const Home = () => {
     <>
       {me ? <div>안녕하세요 {me.nickname} 님</div> : <div> 로그인 해주세요</div>}
       {me && <PostForm />}
-      {mainPosts.map(c => {
+      {mainPosts.map(post => {
         console.log("TCL: Home -> mainPosts", mainPosts)
-        return <PostCard key={`Postcard ${c}`} c={c} />
+        return <PostCard key={`Postcard ${post.createdAt}`} post={post} />
       })}
     </>
   )

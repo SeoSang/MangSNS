@@ -2,9 +2,8 @@ import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 import { Avatar, Card } from "antd"
-import { LOAD_USER_POSTS_REQUEST } from "../reducers/post"
-import { LOAD_USER_REQUEST } from "../reducers/user"
 import PostCard from "../components/PostCard"
+import { LOAD_USER_REQUEST, LOAD_USER_POSTS_REQUEST } from "../reducers/reducerTypes"
 
 const User = ({ id }) => {
   const dispatch = useDispatch()
@@ -46,8 +45,8 @@ const User = ({ id }) => {
           <Card.Meta avatar={<Avatar>{userInfo.nickname[0]}</Avatar>} title={userInfo.nickname} />
         </Card>
       ) : null}
-      {mainPosts.map(c => (
-        <PostCard key={+c.createdAt} post={c} />
+      {mainPosts.map(post => (
+        <PostCard key={post.createdAt} post={post} />
       ))}
     </div>
   )
