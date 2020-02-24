@@ -20,6 +20,9 @@ import {
   LOAD_COMMENTS_REQUEST,
   LOAD_COMMENTS_SUCCESS,
   LOAD_COMMENTS_FAILURE,
+  UPLOAD_IMAGES_REQUEST,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
 } from "./reducerTypes"
 
 export const initialState: PostState = {
@@ -56,6 +59,22 @@ const reducer = (state = initialState, action: PostActionTypes) => {
         ...state,
         isAddingPost: false,
         addPostErrorReason: action.error,
+      }
+    }
+    case UPLOAD_IMAGES_REQUEST: {
+      return {
+        ...state,
+      }
+    }
+    case UPLOAD_IMAGES_SUCCESS: {
+      return {
+        ...state,
+        imagePaths: [...state.imagePaths, ...action.data],
+      }
+    }
+    case UPLOAD_IMAGES_FAILURE: {
+      return {
+        ...state,
       }
     }
     // 포스트 불러오기

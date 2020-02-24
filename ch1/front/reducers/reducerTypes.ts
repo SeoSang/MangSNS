@@ -255,6 +255,18 @@ export interface AddCommentFailureAction {
   type: typeof ADD_COMMENT_FAILURE
   error?: any
 }
+export interface UploadImagesRequestAction {
+  type: typeof UPLOAD_IMAGES_REQUEST
+  data: { image: string[] | null | string }
+}
+export interface UploadImagesSuccessAction {
+  type: typeof UPLOAD_IMAGES_SUCCESS
+  data: string[] | null
+}
+export interface UploadImagesFailureAction {
+  type: typeof UPLOAD_IMAGES_FAILURE
+  error?: any
+}
 export interface LoadCommentsRequestAction {
   type: typeof LOAD_COMMENTS_REQUEST
   data: { postId: number }
@@ -290,6 +302,9 @@ export type PostActionTypes =
   | LoadCommentsRequestAction
   | LoadCommentsSuccessAction
   | LoadCommentsFailureAction
+  | UploadImagesRequestAction
+  | UploadImagesSuccessAction
+  | UploadImagesFailureAction
 // ------------ mwgg ------------
 
 export interface MwggState {

@@ -18,6 +18,9 @@ import {
   LOAD_COMMENTS_REQUEST,
   LOAD_COMMENTS_SUCCESS,
   LOAD_COMMENTS_FAILURE,
+  UPLOAD_IMAGES_REQUEST,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
 } from "../reducers/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
@@ -166,6 +169,28 @@ function* watchLoadHashtagPosts() {
   yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts)
 }
 
+// 이미지 업로드
+function uploadImagesAPI(formData) {
+  return axios.post(`/post/images/`, formData, { withCredentials: true })
+}
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data)
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      data: result.data, // image 주소
+    })
+  } catch (e) {
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      error: e,
+    })
+  }
+}
+function* watchUploadImages() {
+  yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages)
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -174,5 +199,6 @@ export default function* postSaga() {
     fork(watchLoadHashtagPosts),
     fork(watchLoadUserPosts),
     fork(watchLoadComments),
+    fork(watchUploadImages),
   ])
 }

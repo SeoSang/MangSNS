@@ -1,5 +1,7 @@
 const express = require("express")
 const db = require("../models")
+const path = require("path")
+const multer = require("multer")
 const { isLoggedIn, isNotLoggedIn } = require("./middleware")
 const router = express.Router()
 
@@ -98,6 +100,26 @@ router.post("/:id/comment", isLoggedIn, async (req, res, next) => {
     console.error(e)
     next(e)
   }
+})
+
+// multer 설정
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads") // null 은 서버에러
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname)
+      const basename = path.basename(file.originalname, ext)
+      done(null, basename + new Date().valueOf() + ext) // 동일한 이름일 경우를 대비하여 , 날짜 추가.
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+})
+
+// 이미지처리
+router.post("/images", isLoggedIn, upload.array("image"), async (req, res, next) => {
+  res.json(req.files.map(v => v.filename))
 })
 
 module.exports = router
