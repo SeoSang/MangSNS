@@ -173,8 +173,6 @@ export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST" as const
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS" as const
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE" as const
 
-export const REMOVE_IMAGE = "REMOVE_IMAGE" as const
-
 export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST" as const
 export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS" as const
 export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE" as const
@@ -198,6 +196,8 @@ export const LOAD_COMMENTS_FAILURE = "LOAD_COMMENTS_FAILURE" as const
 export const RETWEET_REQUEST = "RETWEET_REQUEST" as const
 export const RETWEET_SUCCESS = "RETWEET_SUCCESS" as const
 export const RETWEET_FAILURE = "RETWEET_FAILURE" as const
+
+export const REMOVE_IMAGE = "REMOVE_IMAGE" as const
 
 export interface AddPostRequestAction {
   type: typeof ADD_POST_REQUEST
@@ -282,6 +282,10 @@ export interface LoadCommentsFailureAction {
   type: typeof LOAD_COMMENTS_FAILURE
   error?: any
 }
+export interface RemoveImageAction {
+  type: typeof REMOVE_IMAGE
+  index: number
+}
 
 export type PostActionTypes =
   | AddPostRequestAction
@@ -305,6 +309,7 @@ export type PostActionTypes =
   | UploadImagesRequestAction
   | UploadImagesSuccessAction
   | UploadImagesFailureAction
+  | RemoveImageAction
 // ------------ mwgg ------------
 
 export interface MwggState {

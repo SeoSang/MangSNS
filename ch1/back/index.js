@@ -19,6 +19,7 @@ passportConfig()
 
 // api는 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
 app.use(morgan("dev")) // 로그 저장용
+app.use("/", express.static("uploads"))
 app.use(
   cors({
     origin: true,

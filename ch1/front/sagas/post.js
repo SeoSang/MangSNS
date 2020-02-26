@@ -171,7 +171,7 @@ function* watchLoadHashtagPosts() {
 
 // 이미지 업로드
 function uploadImagesAPI(formData) {
-  return axios.post(`/post/images/`, formData, { withCredentials: true })
+  return axios.post(`/post/images`, formData, { withCredentials: true })
 }
 function* uploadImages(action) {
   try {

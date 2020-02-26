@@ -23,6 +23,7 @@ import {
   UPLOAD_IMAGES_REQUEST,
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
+  REMOVE_IMAGE,
 } from "./reducerTypes"
 
 export const initialState: PostState = {
@@ -145,6 +146,12 @@ const reducer = (state = initialState, action: PostActionTypes) => {
       return {
         ...state,
         mainPosts,
+      }
+    }
+    case REMOVE_IMAGE: {
+      return {
+        ...state,
+        imagePaths: state.imagePaths.filter((v, i) => i !== action.index),
       }
     }
     default: {

@@ -118,7 +118,7 @@ const upload = multer({
 })
 
 // 이미지처리
-router.post("/images", isLoggedIn, upload.array("image"), async (req, res, next) => {
+router.post("/images", upload.array("image"), (req, res) => {
   res.json(req.files.map(v => v.filename))
 })
 

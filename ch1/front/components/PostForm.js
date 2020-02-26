@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from "react"
 import { Form, Input, Icon, Row, Col, Checkbox, Button, AutoComplete, Avatar, Card } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST } from "../reducers/reducerTypes"
+import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from "../reducers/reducerTypes"
 
 const PostForm = () => {
   const [text, setText] = useState("")
@@ -51,6 +51,16 @@ const PostForm = () => {
     imageInput.current.click()
   }, [imageInput.current])
 
+  const onRemoveImage = useCallback(
+    index => () => {
+      dispatch({
+        type: REMOVE_IMAGE,
+        index,
+      })
+    },
+    [],
+  )
+
   return (
     <Form style={{ margin: "10px 0 " }} encType='multipart/form-data' onSubmit={onSubmitForm}>
       <Input.TextArea
@@ -71,9 +81,9 @@ const PostForm = () => {
         {imagePaths.map((v, i) => {
           return (
             <div key={v} style={{ display: "inline-block" }}>
-              <img src={"http://localhost:3065/" + v} style={{ width: "200px" }} alt={v} />
+              <img src={"http://localhost:4539/" + v} style={{ width: "200px" }} alt={v} />
               <div>
-                <Button>제거</Button>
+                <Button onClick={onRemoveImage(i)}>제거</Button>
               </div>
             </div>
           )
