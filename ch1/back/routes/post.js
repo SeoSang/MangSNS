@@ -5,8 +5,22 @@ const multer = require("multer")
 const { isLoggedIn, isNotLoggedIn } = require("./middleware")
 const router = express.Router()
 
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads") // null 은 서버에러
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname)
+      const basename = path.basename(file.originalname, ext)
+      done(null, basename + new Date().valueOf() + ext) // 동일한 이름일 경우를 대비하여 , 날짜 추가.
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+})
+
 // 포스트 추가
-router.post("/", isLoggedIn, async (req, res, next) => {
+router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   console.log("TCL: req", req)
   // POST /api/post
   try {
@@ -26,6 +40,19 @@ router.post("/", isLoggedIn, async (req, res, next) => {
       console.log(result)
       await newPost.addHashtags(result.map(r => r[0]))
     }
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        const images = await Promise.all(
+          req.body.image.map(image => {
+            return db.Image.create({ src: image })
+          }),
+        )
+        await newPost.addImages(images) // image 가여러개므로 addImages (시퀄라이즈 문법)
+      } else {
+        const image = await db.Image.create({ src: req.body.image })
+        await newPost.addImage(image)
+      }
+    }
     // const User = await newPost.getUser();
     // newPost.User = User;
     // res.json(newPost);
@@ -34,6 +61,9 @@ router.post("/", isLoggedIn, async (req, res, next) => {
       include: [
         {
           model: db.User,
+        },
+        {
+          model: db.Image,
         },
       ],
     })
@@ -103,19 +133,6 @@ router.post("/:id/comment", isLoggedIn, async (req, res, next) => {
 })
 
 // multer 설정
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads") // null 은 서버에러
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname)
-      const basename = path.basename(file.originalname, ext)
-      done(null, basename + new Date().valueOf() + ext) // 동일한 이름일 경우를 대비하여 , 날짜 추가.
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 },
-})
 
 // 이미지처리
 router.post("/images", upload.array("image"), (req, res) => {

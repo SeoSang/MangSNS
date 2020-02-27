@@ -19,11 +19,15 @@ const PostForm = () => {
       if (!text || !text.trim()) {
         return alert("빈 게시글은 작성할 수 없습니다!")
       }
+
+      const formData = new FormData()
+      imagePaths.forEach(i => {
+        formData.append("image", i)
+      })
+      formData.append("content", text)
       dispatch({
         type: ADD_POST_REQUEST,
-        data: {
-          content: text,
-        },
+        data: formData,
       })
     },
     [text],

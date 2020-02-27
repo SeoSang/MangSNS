@@ -11,6 +11,7 @@
   "author": "seosang",
   "license": "MIT",
   "dependencies": {
+    "@zeit/next-typescript": "^1.1.1",
     "antd": "^3.26.7",
     "awesome-typescript-loader": "^5.2.1",
     "axios": "^0.19.2",

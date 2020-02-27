@@ -3,6 +3,9 @@ import { Card, Button, Icon, Avatar, Form, TextArea, List, Input, Comment } from
 import { useSelector, useDispatch } from "react-redux"
 import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST } from "../reducers/reducerTypes"
 import Link from "next/link"
+import PostImages from "./PostImages"
+
+const BACKEND_HTTP = "http://localhost:4539/"
 
 const PostCard = ({ post }) => {
   if (post == undefined) return <></>
@@ -51,7 +54,7 @@ const PostCard = ({ post }) => {
     <>
       <Card
         key={+post.createdAt}
-        cover={post.img && <img alt='example' src={post.img} />}
+        cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <Icon type='retweet' key='retweet' />,
           <Icon type='heart' key='heart' />,

@@ -25,8 +25,8 @@ import {
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
 
-function addPostAPI(postData) {
-  return axios.post("/post", postData, {
+function addPostAPI(formData) {
+  return axios.post("/post", formData, {
     withCredentials: true,
   })
 }
