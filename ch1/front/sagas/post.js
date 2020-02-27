@@ -21,6 +21,15 @@ import {
   UPLOAD_IMAGES_REQUEST,
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
+  UNLIKE_POST_SUCCESS,
+  UNLIKE_POST_FAILURE,
+  UNLIKE_POST_REQUEST,
+  LIKE_POST_REQUEST,
+  LIKE_POST_FAILURE,
+  LIKE_POST_SUCCESS,
+  RETWEET_REQUEST,
+  RETWEET_FAILURE,
+  RETWEET_SUCCESS,
 } from "../reducers/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
@@ -191,6 +200,77 @@ function* watchUploadImages() {
   yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages)
 }
 
+function unlikePostAPI(postId) {
+  return axios.delete(`/post/${postId}/like`, { withCredentials: true })
+}
+function* unlikePost(action) {
+  try {
+    const result = yield call(unlikePostAPI, action.data)
+    yield put({
+      type: UNLIKE_POST_SUCCESS,
+      data: {
+        userId: result.data.userId,
+        postId: action.data,
+      },
+    })
+  } catch (e) {
+    yield put({
+      type: UNLIKE_POST_FAILURE,
+      error: e,
+    })
+  }
+}
+function* watchUnlikePost() {
+  yield takeLatest(UNLIKE_POST_REQUEST, unlikePost)
+}
+
+function likePostAPI(postId) {
+  return axios.post(`/post/${postId}/like`, postId, { withCredentials: true })
+}
+function* likePost(action) {
+  try {
+    const result = yield call(likePostAPI, action.data)
+    yield put({
+      type: LIKE_POST_SUCCESS,
+      data: {
+        userId: result.data.userId,
+        postId: action.data,
+      },
+    })
+  } catch (e) {
+    yield put({
+      type: LIKE_POST_FAILURE,
+      error: e,
+    })
+  }
+}
+function* watchLikePost() {
+  yield takeLatest(LIKE_POST_REQUEST, likePost)
+}
+
+function retweetAPI(postId) {
+  return axios.post(`/post/${postId}/retweet`, {}, { withCredentials: true }) // post 요청때에는 데이터 없어도 무언가 보내야댐
+}
+function* retweet(action) {
+  try {
+    const result = yield call(retweetAPI, action.data)
+    console.log("__sagas__post.js__result.data => ", result.data)
+    yield put({
+      type: RETWEET_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    yield put({
+      type: RETWEET_FAILURE,
+      error: e,
+    })
+    alert(e.response.data && e.response.data)
+  }
+}
+function* watchRetweet() {
+  yield takeLatest(RETWEET_REQUEST, retweet)
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
@@ -200,5 +280,8 @@ export default function* postSaga() {
     fork(watchLoadUserPosts),
     fork(watchLoadComments),
     fork(watchUploadImages),
+    fork(watchUnlikePost),
+    fork(watchLikePost),
+    fork(watchRetweet),
   ])
 }

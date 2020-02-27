@@ -1,1 +1,3 @@
-GET http://localhost:4539/api/posts
+# GET http://localhost:4539/api/posts
+
+POST http://localhost:4539/api/post/8/like

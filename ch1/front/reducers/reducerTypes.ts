@@ -141,6 +141,8 @@ export interface PostState {
   isAddingComment: boolean
   addCommentErrorReason: string | null
   commentAdded: boolean
+  likeErrorReason: string | null
+  unlikeErrorReason: string | null
 }
 
 export interface MainPost {
@@ -149,6 +151,7 @@ export interface MainPost {
   content: string
   Comments?: any
   img?: string
+  Likers?: { id: number }[] | null
 }
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST" as const
@@ -287,6 +290,43 @@ export interface RemoveImageAction {
   index: number
 }
 
+export interface UnlikePostRequestAction {
+  type: typeof UNLIKE_POST_REQUEST
+  data: number
+}
+export interface UnlikePostSuccessAction {
+  type: typeof UNLIKE_POST_SUCCESS
+  data: { userId: number; postId: number }
+}
+export interface UnlikePostFailureAction {
+  type: typeof UNLIKE_POST_FAILURE
+  error?: any
+}
+export interface LikePostRequestAction {
+  type: typeof LIKE_POST_REQUEST
+  data: number
+}
+export interface LikePostSuccessAction {
+  type: typeof LIKE_POST_SUCCESS
+  data: { userId: number; postId: number }
+}
+export interface LikePostFailureAction {
+  type: typeof LIKE_POST_FAILURE
+  error?: any
+}
+export interface RetweetRequestAction {
+  type: typeof RETWEET_REQUEST
+  data: number // PostId
+}
+export interface RetweetSuccessAction {
+  type: typeof RETWEET_SUCCESS
+  data: MainPost // retweet Id
+}
+export interface RetweetFailureAction {
+  type: typeof RETWEET_FAILURE
+  error?: any
+}
+
 export type PostActionTypes =
   | AddPostRequestAction
   | AddPostSuccessAction
@@ -310,6 +350,15 @@ export type PostActionTypes =
   | UploadImagesSuccessAction
   | UploadImagesFailureAction
   | RemoveImageAction
+  | UnlikePostRequestAction
+  | UnlikePostSuccessAction
+  | UnlikePostFailureAction
+  | LikePostRequestAction
+  | LikePostSuccessAction
+  | LikePostFailureAction
+  | RetweetRequestAction
+  | RetweetSuccessAction
+  | RetweetFailureAction
 // ------------ mwgg ------------
 
 export interface MwggState {
