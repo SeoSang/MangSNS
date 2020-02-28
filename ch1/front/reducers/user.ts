@@ -14,6 +14,12 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
+  FOLLOW_USER_REQUEST,
+  FOLLOW_USER_SUCCESS,
+  FOLLOW_USER_FAILURE,
+  UNFOLLOW_USER_REQUEST,
+  UNFOLLOW_USER_SUCCESS,
+  UNFOLLOW_USER_FAILURE,
 } from "./reducerTypes"
 
 export const initialState: UserState = {
@@ -25,56 +31,6 @@ export const initialState: UserState = {
   signUpErrorReason: "",
   me: null,
   userInfo: null,
-}
-
-// 로그인 액션들
-export const loginRequestAction = (data: any): UserActionTypes => {
-  return {
-    type: LOG_IN_REQUEST,
-    data,
-  }
-}
-export const loginSuccessAction = (data: any): UserActionTypes => {
-  return {
-    type: LOG_IN_SUCCESS,
-    data,
-  }
-}
-export const loginFailureAction = (): UserActionTypes => {
-  return {
-    type: LOG_IN_FAILURE,
-  }
-}
-
-// 로그아웃 액션들
-export const logoutRequestAction = (): UserActionTypes => {
-  return {
-    type: LOG_OUT_REQUEST,
-  }
-}
-export const logoutSuccessAction = (): UserActionTypes => {
-  return {
-    type: LOG_OUT_SUCCESS,
-  }
-}
-
-export const signUpRequestAction = (data: any): UserActionTypes => {
-  return {
-    type: SIGN_UP_REQUEST,
-    data,
-  }
-}
-export const signUpSuccessAction = (data: any): UserActionTypes => {
-  return {
-    type: SIGN_UP_SUCCESS,
-    data,
-  }
-}
-export const signUpFailureAction = (error: string): UserActionTypes => {
-  return {
-    type: SIGN_UP_FAILURE,
-    error,
-  }
 }
 
 const reducer = (state = initialState, action: UserActionTypes) => {
@@ -164,6 +120,45 @@ const reducer = (state = initialState, action: UserActionTypes) => {
       }
     }
     case LOAD_USER_FAILURE: {
+      return {
+        ...state,
+      }
+    }
+    // 팔로우와 언팔로우
+    case FOLLOW_USER_REQUEST: {
+      return {
+        ...state,
+      }
+    }
+    case FOLLOW_USER_SUCCESS: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Followings: [{ id: action.data }, ...state.me.Followings],
+        },
+      }
+    }
+    case FOLLOW_USER_FAILURE: {
+      return {
+        ...state,
+      }
+    }
+    case UNFOLLOW_USER_REQUEST: {
+      return {
+        ...state,
+      }
+    }
+    case UNFOLLOW_USER_SUCCESS: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Followings: state.me.Followings.filter(v => v.id !== action.data),
+        },
+      }
+    }
+    case UNFOLLOW_USER_FAILURE: {
       return {
         ...state,
       }

@@ -114,6 +114,30 @@ export interface SignUpFailureAction {
   type: typeof SIGN_UP_FAILURE
   error?: string
 }
+export interface FollowUserRequestAction {
+  type: typeof FOLLOW_USER_REQUEST
+  data: number
+}
+export interface FollowUserSuccessAction {
+  type: typeof FOLLOW_USER_SUCCESS
+  data: any
+}
+export interface FollowUserFailureAction {
+  type: typeof FOLLOW_USER_FAILURE
+  error?: string
+}
+export interface UnfollowUserRequestAction {
+  type: typeof UNFOLLOW_USER_REQUEST
+  data: number
+}
+export interface UnfollowUserSuccessAction {
+  type: typeof UNFOLLOW_USER_SUCCESS
+  data: any
+}
+export interface UnfollowUserFailureAction {
+  type: typeof UNFOLLOW_USER_FAILURE
+  error?: string
+}
 
 export type UserActionTypes =
   | LoginRequestAction
@@ -128,6 +152,12 @@ export type UserActionTypes =
   | SignUpRequestAction
   | SignUpSuccessAction
   | SignUpFailureAction
+  | FollowUserRequestAction
+  | FollowUserSuccessAction
+  | FollowUserFailureAction
+  | UnfollowUserRequestAction
+  | UnfollowUserSuccessAction
+  | UnfollowUserFailureAction
 
 // ---------------- Post ----------------
 

@@ -11,6 +11,13 @@ import {
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
   LOAD_USER_REQUEST,
+  FOLLOW_USER_REQUEST,
+  FOLLOW_USER_SUCCESS,
+  FOLLOW_USER_FAILURE,
+  UNFOLLOW_USER_REQUEST,
+  UNFOLLOW_USER_FAILURE,
+  UNFOLLOW_USER_SUCCESS,
+  SIGN_UP_FAILURE,
 } from "../reducers/reducerTypes"
 import { signUpFailureAction } from "../reducers/user"
 import axios from "axios"
@@ -108,7 +115,10 @@ function* signUp(action) {
     yield call(goHome)
   } catch (e) {
     console.log("signUp ERROR : ", e)
-    yield put(signUpFailureAction(e))
+    yield put({
+      type: SIGN_UP_FAILURE,
+      error: e,
+    })
   }
 }
 
@@ -143,10 +153,64 @@ function* watchLoadUser() {
   yield takeEvery(LOAD_USER_REQUEST, loadUser)
 }
 
+// 팔로우와 언팔로우
+
+function followUserAPI(userId) {
+  return axios.post(`/user/${userId}/follow`, {}, { withCredentials: true })
+}
+
+function* followUser(action) {
+  try {
+    const result = yield call(followUserAPI, action.data)
+    yield put({
+      type: FOLLOW_USER_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    yield put({
+      type: FOLLOW_USER_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchFollowUser() {
+  yield takeEvery(FOLLOW_USER_REQUEST, followUser)
+}
+function unfollowUserAPI(userId) {
+  return axios.delete(`/user/${userId}/unfollow`, { withCredentials: true })
+}
+
+function* unfollowUser(action) {
+  try {
+    const result = yield call(unfollowUserAPI, action.data)
+    yield put({
+      type: UNFOLLOW_USER_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    yield put({
+      type: UNFOLLOW_USER_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchUnfollowUser() {
+  yield takeEvery(UNFOLLOW_USER_REQUEST, unfollowUser)
+}
+
 // ----------- 총괄 -----------
 
 export default function* userSaga() {
-  yield all([fork(watchLogin), fork(watchSignup), fork(watchLogout), fork(watchLoadUser)]) // fork 는 비동기호출
+  yield all([
+    fork(watchLogin),
+    fork(watchSignup),
+    fork(watchLogout),
+    fork(watchLoadUser),
+    fork(watchFollowUser),
+    fork(watchUnfollowUser),
+  ]) // fork 는 비동기호출
   //  call(watchLogin) 얘도 함수 실행   (동기호출)  응답 올때까지 기다린다.
   // watchLogin() 이렇게 해도 됨.
 }
