@@ -94,7 +94,7 @@ const PostCard = ({ post }) => {
     },
     [],
   )
-  const onUnFollow = useCallback(
+  const onUnfollow = useCallback(
     userId => () => {
       dispatch({
         type: UNFOLLOW_USER_REQUEST,
