@@ -1,7 +1,12 @@
 import React, { useCallback, useState, useMemo, useEffect } from "react"
 import { Card, Button, Icon, Avatar, Form, TextArea, List, Input, Comment } from "antd"
 import { useSelector, useDispatch } from "react-redux"
-import { ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST } from "../reducers/reducerTypes"
+import {
+  ADD_COMMENT_REQUEST,
+  LOAD_COMMENTS_REQUEST,
+  FOLLOW_USER_REQUEST,
+  UNFOLLOW_USER_REQUEST,
+} from "../reducers/reducerTypes"
 import Link from "next/link"
 
 const PostCard = ({ post }) => {
@@ -43,6 +48,25 @@ const PostCard = ({ post }) => {
     setCommentText(e.target.value)
   }, [])
 
+  const onFollow = useCallback(
+    userId => () => {
+      dispatch({
+        type: FOLLOW_USER_REQUEST,
+        data: userId,
+      })
+    },
+    [],
+  )
+  const onUnFollow = useCallback(
+    userId => () => {
+      dispatch({
+        type: UNFOLLOW_USER_REQUEST,
+        data: userId,
+      })
+    },
+    [],
+  )
+
   useEffect(() => {
     if (commentAdded) setCommentText("")
   }, [commentAdded])
@@ -58,7 +82,14 @@ const PostCard = ({ post }) => {
           <Icon type='message' key='message' onClick={onToggleComment} />,
           <Icon type='ellipsis' key='ellipsis' />,
         ]}
-        extra={<Button>팔로우</Button>}
+        extra={
+          !me || post.User.id === me.id ? null : me.Followings &&
+            me.Followings.find(v => v.id === post.User.id) ? (
+            <Button onClick={onUnfollow(post.User.id)}>언팔로우</Button>
+          ) : (
+            <Button onClick={onFollow(post.User.id)}>팔로우</Button>
+          )
+        }
       >
         <Card.Meta
           avatar={

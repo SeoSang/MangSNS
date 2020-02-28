@@ -3,7 +3,7 @@ import styled, { css } from "styled-components"
 
 import { Form, Input, Button, Icon, Row, Col, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { loginRequestAction } from "../reducers/user.ts"
+import { LOG_IN_REQUEST } from "../reducers/reducerTypes"
 
 const { Title } = Typography
 
@@ -31,7 +31,10 @@ const LoginForm = ({ form }) => {
     })
     const formData = form.getFieldsValue()
     console.log("TCL: formData (login )", formData)
-    dispatch(loginRequestAction(formData))
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: formData,
+    })
     console.log("TCL: LoginForm -> formData", formData)
   }
 
