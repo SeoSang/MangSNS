@@ -30,6 +30,9 @@ import {
   REMOVE_FOLLOWER_REQUEST,
   REMOVE_FOLLOWER_SUCCESS,
   REMOVE_FOLLOWER_FAILURE,
+  EDIT_NICKNAME_SUCCESS,
+  EDIT_NICKNAME_REQUEST,
+  EDIT_NICKNAME_FAILURE,
 } from "./reducerTypes"
 
 export const initialState: UserState = {
@@ -43,6 +46,7 @@ export const initialState: UserState = {
   userInfo: null,
   followerList: [],
   followingList: [],
+  isEditingNickname: false,
 }
 
 const reducer = (state = initialState, action: UserActionTypes) => {
@@ -226,6 +230,28 @@ const reducer = (state = initialState, action: UserActionTypes) => {
     case REMOVE_FOLLOWER_FAILURE: {
       return {
         ...state,
+      }
+    }
+    case EDIT_NICKNAME_REQUEST: {
+      return {
+        ...state,
+        isEditingNickname: true,
+      }
+    }
+    case EDIT_NICKNAME_SUCCESS: {
+      return {
+        ...state,
+        isEditingNickname: false,
+        me: {
+          ...state.me,
+          nickname: action.data,
+        },
+      }
+    }
+    case EDIT_NICKNAME_FAILURE: {
+      return {
+        ...state,
+        isEditingNickname: false,
       }
     }
     case ADD_POST_TO_ME: {

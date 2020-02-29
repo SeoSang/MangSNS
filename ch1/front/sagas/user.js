@@ -27,6 +27,9 @@ import {
   LOAD_FOLLOWERS_FAILURE,
   LOAD_FOLLOWERS_SUCCESS,
   REMOVE_FOLLOWER_REQUEST,
+  EDIT_NICKNAME_SUCCESS,
+  EDIT_NICKNAME_FAILURE,
+  EDIT_NICKNAME_REQUEST,
 } from "../reducers/reducerTypes"
 import { signUpFailureAction } from "../reducers/user"
 import axios from "axios"
@@ -299,6 +302,27 @@ function* watchRemoveFollower() {
   yield takeEvery(REMOVE_FOLLOWER_REQUEST, removeFollower)
 }
 
+function editNicknameAPI(nickname) {
+  return axios.patch(`/user/nickname`, { nickname }, { withCredentials: true }) // post 요청때에는 데이터 없어도 무언가 보내야댐
+}
+function* editNickname(action) {
+  try {
+    const result = yield call(editNicknameAPI, action.data)
+    yield put({
+      type: EDIT_NICKNAME_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    yield put({
+      type: EDIT_NICKNAME_FAILURE,
+      error: e,
+    })
+  }
+}
+function* watchEditNickname() {
+  yield takeLatest(EDIT_NICKNAME_REQUEST, editNickname)
+}
+
 // ----------- 총괄 -----------
 
 export default function* userSaga() {
@@ -312,6 +336,7 @@ export default function* userSaga() {
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
     fork(watchRemoveFollower),
+    fork(watchEditNickname),
   ]) // fork 는 비동기호출
   //  call(watchLogin) 얘도 함수 실행   (동기호출)  응답 올때까지 기다린다.
   // watchLogin() 이렇게 해도 됨.

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, useState } from "react"
 import { List, Icon, Input, Card, Form, Button } from "antd"
 import NickNameEditForm from "../components/NickNameEditForm"
 import { useDispatch, useSelector } from "react-redux"
@@ -10,10 +10,11 @@ import {
   REMOVE_FOLLOWER_REQUEST,
   UNFOLLOW_USER_REQUEST,
 } from "../reducers/reducerTypes"
+import { StoreState } from "../reducers"
 
 const Profile = () => {
-  const { me, followingList, followerList } = useSelector(state => state.user)
-  const { mainPosts } = useSelector(state => state.post)
+  const { me, followingList, followerList } = useSelector((state: StoreState) => state.user)
+  const { mainPosts } = useSelector((state: StoreState) => state.post)
   const dispatch = useDispatch()
   useEffect(() => {
     if (me) {

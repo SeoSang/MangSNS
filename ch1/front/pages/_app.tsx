@@ -6,7 +6,7 @@ import AppLayout from "../components/AppLayout"
 import { Provider } from "react-redux"
 import createSagaMiddleware from "redux-saga"
 import { createStore, compose, applyMiddleware } from "redux"
-import reducer from "../reducers/index.ts"
+import reducer from "../reducers/index"
 import rootSaga from "../sagas"
 
 const MangSNS = ({ Component, store, pageProps }) => {
@@ -21,7 +21,6 @@ const MangSNS = ({ Component, store, pageProps }) => {
         <link
           rel='stylesheet'
           type='text/css'
-          charset='UTF-8'
           href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css'
         />
         <link
@@ -60,8 +59,8 @@ const middle = (initialState, options) => {
     process.env.NODE_ENV === "production"
       ? compose(applyMiddleware(...middlewares))
       : (!options.isServer &&
-          window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-          window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 })) ||
+          (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+          (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 })) ||
         compose
   const store = createStore(
     reducer,

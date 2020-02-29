@@ -43,6 +43,10 @@ export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST" as const
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS" as const
 export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE" as const
 
+export const EDIT_NICKNAME_REQUEST = "EDIT_NICKNAME_REQUEST" as const
+export const EDIT_NICKNAME_SUCCESS = "EDIT_NICKNAME_SUCCESS" as const
+export const EDIT_NICKNAME_FAILURE = "EDIT_NICKNAME_FAILURE" as const
+
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME" as const
 
 export interface UserState {
@@ -57,6 +61,7 @@ export interface UserState {
   userInfo: null | UserInfo
   followingList: UserInfo[] | [] // 팔로잉 리스트
   followerList: UserInfo[] | [] // 팔로워 리스트
+  isEditingNickname: boolean
 }
 export interface UserInfo {
   id: number
@@ -177,6 +182,18 @@ export interface RemoveFollowerFailureAction {
   type: typeof REMOVE_FOLLOWER_FAILURE
   error?: string
 }
+export interface EditNicknameRequestAction {
+  type: typeof EDIT_NICKNAME_REQUEST
+  data: string
+}
+export interface EditNicknameSuccessAction {
+  type: typeof EDIT_NICKNAME_SUCCESS
+  data: string
+}
+export interface EditNicknameFailureAction {
+  type: typeof EDIT_NICKNAME_FAILURE
+  error?: string
+}
 
 export interface AddPostToMeAction {
   type: typeof ADD_POST_TO_ME
@@ -212,6 +229,9 @@ export type UserActionTypes =
   | RemoveFollowerRequestAction
   | RemoveFollowerSuccessAction
   | RemoveFollowerFailureAction
+  | EditNicknameRequestAction
+  | EditNicknameSuccessAction
+  | EditNicknameFailureAction
 
 // ---------------- Post ----------------
 
@@ -236,6 +256,8 @@ export interface MainPost {
   Comments?: any
   img?: string
   Likers?: { id: number }[] | null
+  createdAt?: any
+  deletedAt?: any
 }
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST" as const

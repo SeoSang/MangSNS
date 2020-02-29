@@ -31,6 +31,7 @@ import {
   RETWEET_FAILURE,
   RETWEET_SUCCESS,
   ADD_POST_TO_ME,
+  EDIT_NICKNAME_REQUEST,
 } from "../reducers/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"

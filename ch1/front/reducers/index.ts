@@ -4,8 +4,15 @@ import { combineReducers } from "redux"
 import user from "./user"
 import post from "./post"
 import mwgg from "./mwgg"
+import { UserState, PostState } from "./reducerTypes"
 
-const rootReducer = combineReducers({
+export interface StoreState {
+  user: UserState
+  post: PostState
+  mwgg: any
+}
+
+const rootReducer = combineReducers<StoreState>({
   user,
   post,
   mwgg,
