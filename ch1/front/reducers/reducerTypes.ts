@@ -16,9 +16,12 @@ export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS" as const
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE" as const
 
 // 팔로우 불러오기
-export const LOAD_FOLLOW_REQUEST = "LOAD_FOLLOW_REQUEST" as const
-export const LOAD_FOLLOW_SUCCESS = "LOAD_FOLLOW_SUCCESS" as const
-export const LOAD_FOLLOW_FAILURE = "LOAD_FOLLOW_FAILURE" as const
+export const LOAD_FOLLOWERS_REQUEST = "LOAD_FOLLOWERS_REQUEST" as const
+export const LOAD_FOLLOWERS_SUCCESS = "LOAD_FOLLOWERS_SUCCESS" as const
+export const LOAD_FOLLOWERS_FAILURE = "LOAD_FOLLOWERS_FAILURE" as const
+export const LOAD_FOLLOWINGS_REQUEST = "LOAD_FOLLOWINGS_REQUEST" as const
+export const LOAD_FOLLOWINGS_SUCCESS = "LOAD_FOLLOWINGS_SUCCESS" as const
+export const LOAD_FOLLOWINGS_FAILURE = "LOAD_FOLLOWINGS_FAILURE" as const
 
 // 팔로우 신청
 export const FOLLOW_USER_REQUEST = "FOLLOW_USER_REQUEST" as const
@@ -50,20 +53,22 @@ export interface UserState {
   isSigningUp: boolean
   signUpErrorReason: string | null
   // TODO : any 없애기
-  me: Me | null
-  userInfo: null | Me
+  me: UserInfo | null
+  userInfo: null | UserInfo
+  followingList: UserInfo[] | [] // 팔로잉 리스트
+  followerList: UserInfo[] | [] // 팔로워 리스트
 }
-export interface Me {
+export interface UserInfo {
   id: number
   nickname: string
-  email: string
-  phone: string
-  residence: string
-  createdAt: string
-  updatedAt: string
-  Posts: { id: number }[]
-  Followings: any[]
-  Followers: any[]
+  email?: string
+  phone?: string
+  residence?: string
+  createdAt?: string
+  updatedAt?: string
+  Posts?: { id: number }[]
+  Followings?: any[]
+  Followers?: any[]
 }
 
 export interface LoginRequestAction {
@@ -95,8 +100,8 @@ export interface LoadUserRequestAction {
 }
 export interface LoadUserSuccessAction {
   type: typeof LOAD_USER_SUCCESS
-  data: Me
-  me?: Me
+  data: UserInfo
+  me?: UserInfo
 }
 export interface LoadUserFailureAction {
   type: typeof LOAD_USER_FAILURE
@@ -139,6 +144,45 @@ export interface UnfollowUserFailureAction {
   error?: string
 }
 
+export interface LoadFollowersRequestAction {
+  type: typeof LOAD_FOLLOWERS_REQUEST
+}
+export interface LoadFollowersSuccessAction {
+  type: typeof LOAD_FOLLOWERS_SUCCESS
+  data: any
+}
+export interface LoadFollowersFailureAction {
+  type: typeof LOAD_FOLLOWERS_FAILURE
+  error?: string
+}
+export interface LoadFollowingsRequestAction {
+  type: typeof LOAD_FOLLOWINGS_REQUEST
+}
+export interface LoadFollowingsSuccessAction {
+  type: typeof LOAD_FOLLOWINGS_SUCCESS
+  data: any
+}
+export interface LoadFollowingsFailureAction {
+  type: typeof LOAD_FOLLOWINGS_FAILURE
+  error?: string
+}
+export interface RemoveFollowerRequestAction {
+  type: typeof REMOVE_FOLLOWER_REQUEST
+}
+export interface RemoveFollowerSuccessAction {
+  type: typeof REMOVE_FOLLOWER_SUCCESS
+  data: any
+}
+export interface RemoveFollowerFailureAction {
+  type: typeof REMOVE_FOLLOWER_FAILURE
+  error?: string
+}
+
+export interface AddPostToMeAction {
+  type: typeof ADD_POST_TO_ME
+  data: number
+}
+
 export type UserActionTypes =
   | LoginRequestAction
   | LoginSuccessAction
@@ -158,6 +202,16 @@ export type UserActionTypes =
   | UnfollowUserRequestAction
   | UnfollowUserSuccessAction
   | UnfollowUserFailureAction
+  | AddPostToMeAction
+  | LoadFollowersRequestAction
+  | LoadFollowersSuccessAction
+  | LoadFollowersFailureAction
+  | LoadFollowingsRequestAction
+  | LoadFollowingsSuccessAction
+  | LoadFollowingsFailureAction
+  | RemoveFollowerRequestAction
+  | RemoveFollowerSuccessAction
+  | RemoveFollowerFailureAction
 
 // ---------------- Post ----------------
 

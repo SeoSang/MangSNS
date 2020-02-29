@@ -30,6 +30,7 @@ import {
   RETWEET_REQUEST,
   RETWEET_FAILURE,
   RETWEET_SUCCESS,
+  ADD_POST_TO_ME,
 } from "../reducers/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
@@ -45,6 +46,10 @@ function* addPost(action) {
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
+    })
+    yield put({
+      type: ADD_POST_TO_ME,
+      data: result.data.id,
     })
   } catch (e) {
     yield put({

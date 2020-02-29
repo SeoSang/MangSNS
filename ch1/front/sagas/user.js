@@ -18,6 +18,15 @@ import {
   UNFOLLOW_USER_FAILURE,
   UNFOLLOW_USER_SUCCESS,
   SIGN_UP_FAILURE,
+  REMOVE_FOLLOWER_SUCCESS,
+  REMOVE_FOLLOWER_FAILURE,
+  LOAD_FOLLOWINGS_REQUEST,
+  LOAD_FOLLOWINGS_FAILURE,
+  LOAD_FOLLOWINGS_SUCCESS,
+  LOAD_FOLLOWERS_REQUEST,
+  LOAD_FOLLOWERS_FAILURE,
+  LOAD_FOLLOWERS_SUCCESS,
+  REMOVE_FOLLOWER_REQUEST,
 } from "../reducers/reducerTypes"
 import { signUpFailureAction } from "../reducers/user"
 import axios from "axios"
@@ -195,9 +204,99 @@ function* unfollowUser(action) {
     })
   }
 }
-
 function* watchUnfollowUser() {
   yield takeEvery(UNFOLLOW_USER_REQUEST, unfollowUser)
+}
+
+// 팔로우 관련
+function loadFollowersAPI(userId) {
+  // 서버에 요청을 보내는 부분
+  return axios.get(`/user/${userId}/followers`, {
+    withCredentials: true,
+  })
+}
+
+function* loadFollowers(action) {
+  try {
+    // yield call(loadFollowersAPI);
+    const result = yield call(loadFollowersAPI, action.data)
+    yield put({
+      // put은 dispatch 동일
+      type: LOAD_FOLLOWERS_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    // loginAPI 실패
+    console.error(e)
+    yield put({
+      type: LOAD_FOLLOWERS_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchLoadFollowers() {
+  yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers)
+}
+
+function loadFollowingsAPI(userId) {
+  // 서버에 요청을 보내는 부분
+  return axios.get(`/user/${userId}/followings`, {
+    withCredentials: true,
+  })
+}
+
+function* loadFollowings(action) {
+  try {
+    // yield call(loadFollowersAPI);
+    const result = yield call(loadFollowingsAPI, action.data)
+    yield put({
+      // put은 dispatch 동일
+      type: LOAD_FOLLOWINGS_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    // loginAPI 실패
+    console.error(e)
+    yield put({
+      type: LOAD_FOLLOWINGS_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchLoadFollowings() {
+  yield takeEvery(LOAD_FOLLOWINGS_REQUEST, loadFollowings)
+}
+
+function removeFollowerAPI(userId) {
+  // 서버에 요청을 보내는 부분
+  return axios.delete(`/user/${userId}/follower`, {
+    withCredentials: true,
+  })
+}
+
+function* removeFollower(action) {
+  try {
+    // yield call(loadFollowersAPI);
+    const result = yield call(removeFollowerAPI, action.data)
+    yield put({
+      // put은 dispatch 동일
+      type: REMOVE_FOLLOWER_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    // loginAPI 실패
+    console.error(e)
+    yield put({
+      type: REMOVE_FOLLOWER_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchRemoveFollower() {
+  yield takeEvery(REMOVE_FOLLOWER_REQUEST, removeFollower)
 }
 
 // ----------- 총괄 -----------
@@ -210,6 +309,9 @@ export default function* userSaga() {
     fork(watchLoadUser),
     fork(watchFollowUser),
     fork(watchUnfollowUser),
+    fork(watchLoadFollowers),
+    fork(watchLoadFollowings),
+    fork(watchRemoveFollower),
   ]) // fork 는 비동기호출
   //  call(watchLogin) 얘도 함수 실행   (동기호출)  응답 올때까지 기다린다.
   // watchLogin() 이렇게 해도 됨.

@@ -182,8 +182,47 @@ router.delete("/:id/unfollow", isLoggedIn, async (req, res, next) => {
   }
 })
 
-router.get("/:id/follower", (req, res) => {})
-router.post("/:id/follower", (req, res) => {})
-router.delete("/:id/follower", (req, res) => {})
+router.get("/:id/followings", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: { id: req.params.id },
+    })
+    const followings = await user.getFollowings({
+      attributes: ["id", "nickname"],
+    })
+
+    res.json(followings)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+})
+router.get("/:id/followers", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: { id: req.params.id },
+    })
+    const followers = await user.getFollowers({
+      attributes: ["id", "nickname"],
+    })
+
+    res.json(followers)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+})
+router.delete("/:id/follower", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: { id: req.params.id },
+    })
+    await user.removeFollower(req.params.id)
+    res.send(req.params.id)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+})
 
 module.exports = router

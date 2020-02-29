@@ -33,6 +33,7 @@ import {
   RETWEET_REQUEST,
   RETWEET_SUCCESS,
   RETWEET_FAILURE,
+  ADD_POST_TO_ME,
 } from "./reducerTypes"
 
 export const initialState: PostState = {
@@ -226,6 +227,7 @@ const reducer = (state = initialState, action: PostActionTypes) => {
         imagePaths: state.imagePaths.filter((v, i) => i !== action.index),
       }
     }
+
     default: {
       return {
         ...state,
