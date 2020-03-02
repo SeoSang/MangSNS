@@ -135,7 +135,7 @@ const reducer = (state = initialState, action: UserActionTypes) => {
         ...state,
         me: {
           ...state.me,
-          Followings: [{ id: action.data }, ...state.me.Followings],
+          Followings: [{ id: action.data }, ...state.me!.Followings],
         },
       }
     }
@@ -154,7 +154,7 @@ const reducer = (state = initialState, action: UserActionTypes) => {
         ...state,
         me: {
           ...state.me,
-          Followings: state.me.Followings.filter(v => v.id !== action.data),
+          Followings: state.me!.Followings.filter(v => v.id !== action.data),
         },
       }
     }

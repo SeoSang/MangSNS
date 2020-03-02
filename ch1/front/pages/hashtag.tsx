@@ -3,17 +3,11 @@ import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 import { LOAD_HASHTAG_POSTS_REQUEST } from "../reducers/reducerTypes"
 import PostCard from "../components/PostCard"
+import { StoreState } from "../reducers"
+import { Context } from "vm"
 
 const Hashtag = ({ tag }) => {
-  const dispatch = useDispatch()
-  const { mainPosts } = useSelector(state => state.post)
-  console.log("pages__hashtag.js : ", mainPosts)
-  useEffect(() => {
-    dispatch({
-      type: LOAD_HASHTAG_POSTS_REQUEST,
-      data: tag,
-    })
-  }, [])
+  const { mainPosts } = useSelector((state: StoreState) => state.post)
   return (
     <div>
       {mainPosts.map(post => (
@@ -27,7 +21,11 @@ Hashtag.propTypes = {
   tag: PropTypes.string.isRequired,
 }
 
-Hashtag.getInitialProps = async context => {
+Hashtag.getInitialProps = async (context: Context) => {
+  context.store.dispatch({
+    type: LOAD_HASHTAG_POSTS_REQUEST,
+    data: context.query.tag,
+  })
   return { tag: context.query.tag }
 }
 
