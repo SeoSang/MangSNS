@@ -4,7 +4,7 @@ import Link from "next/link"
 const PostCardContent = ({ postData }) => {
   return (
     <div>
-      {postData.split(/(#[^\s]+)/g).map(v => {
+      {postData.split(/(#[^\s]+)/g).map((v: string) => {
         if (v.match(/#[^\s]+/)) {
           return (
             <Link

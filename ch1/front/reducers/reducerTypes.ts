@@ -366,11 +366,11 @@ export interface AddCommentFailureAction {
 }
 export interface UploadImagesRequestAction {
   type: typeof UPLOAD_IMAGES_REQUEST
-  data: { image: string[] | null | string }
+  data: { image: string[] | string }
 }
 export interface UploadImagesSuccessAction {
   type: typeof UPLOAD_IMAGES_SUCCESS
-  data: string[] | null
+  data: string[]
 }
 export interface UploadImagesFailureAction {
   type: typeof UPLOAD_IMAGES_FAILURE

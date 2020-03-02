@@ -1,10 +1,11 @@
-import React, { Component, memo, useMemo, useState } from "react"
-import styled, { css } from "styled-components"
+import React, { Component, memo, useMemo, useState, ErrorInfo, FC } from "react"
+import styled from "styled-components"
 
 import { Form, Input, Button, Icon, Row, Col, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { LOG_IN_REQUEST } from "../reducers/reducerTypes"
-
+import { StoreState } from "../reducers"
+import { FormComponentProps } from "antd/lib/form"
 const { Title } = Typography
 
 const StyledFormDiv = styled.div`
@@ -18,13 +19,13 @@ const StyledFormDiv = styled.div`
 const StyledTitle = styled(Title)`
   text-align: center;
 `
-const LoginForm = ({ form }) => {
+const LoginForm: FC<FormComponentProps> = ({ form }) => {
   const dispatch = useDispatch()
-  const { isLoggingIn } = useSelector(state => state.user)
+  const { isLoggingIn } = useSelector((state: StoreState) => state.user)
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
-    form.validateFieldsAndScroll((err, values) => {
+    form.validateFieldsAndScroll((err: any, values) => {
       if (!err && !!values.agreement) {
         console.log("Received values of form: ", values)
       }

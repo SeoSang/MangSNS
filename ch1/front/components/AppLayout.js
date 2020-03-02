@@ -18,13 +18,6 @@ const AppLayout = ({ children }) => {
     })
   }, [me])
 
-  useEffect(() => {
-    if (!me)
-      dispatch({
-        type: LOAD_USER_REQUEST,
-      })
-  }, [])
-
   return (
     <div>
       <Menu mode='horizontal'>

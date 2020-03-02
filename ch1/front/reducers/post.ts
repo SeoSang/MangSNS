@@ -83,7 +83,7 @@ const reducer = (state = initialState, action: PostActionTypes) => {
     case LIKE_POST_SUCCESS: {
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
       const post = state.mainPosts[postIndex]
-      const Likers = [{ id: action.data.userId }, ...post.Likers]
+      const Likers = [{ id: action.data.userId }, ...post.Likers!]
       const mainPosts = [...state.mainPosts]
       mainPosts[postIndex] = { ...post, Likers }
       return {
@@ -105,7 +105,7 @@ const reducer = (state = initialState, action: PostActionTypes) => {
     case UNLIKE_POST_SUCCESS: {
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
       const post = state.mainPosts[postIndex]
-      const Likers = post.Likers.filter(v => v.id !== action.data.userId)
+      const Likers = post.Likers ? post.Likers.filter(v => v.id !== action.data.userId) : []
       const mainPosts = [...state.mainPosts]
       mainPosts[postIndex] = { ...post, Likers }
       return {

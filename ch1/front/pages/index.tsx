@@ -3,17 +3,11 @@ import PostForm from "../components/PostForm"
 import PostCard from "../components/PostCard"
 import { useDispatch, useSelector } from "react-redux"
 import { LOAD_MAIN_POSTS_REQUEST } from "../reducers/reducerTypes"
+import { StoreState } from "../reducers"
 
 const Home = () => {
-  const dispatch = useDispatch()
-  const { me } = useSelector(state => state.user)
-  const { mainPosts } = useSelector(state => state.post)
-
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MAIN_POSTS_REQUEST,
-    })
-  }, [])
+  const { me } = useSelector((state: StoreState) => state.user)
+  const { mainPosts } = useSelector((state: StoreState) => state.post)
 
   return (
     <>
@@ -24,6 +18,12 @@ const Home = () => {
       })}
     </>
   )
+}
+
+Home.getInitialProps = async context => {
+  context.store.dispatch({
+    type: LOAD_MAIN_POSTS_REQUEST,
+  })
 }
 
 export default Home

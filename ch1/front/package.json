@@ -11,6 +11,8 @@
   "author": "seosang",
   "license": "MIT",
   "dependencies": {
+    "@types/next-redux-saga": "^3.0.2",
+    "@types/styled-components": "^5.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "antd": "^3.26.7",
     "awesome-typescript-loader": "^5.2.1",
@@ -22,6 +24,7 @@
     "global": "^4.4.0",
     "morgan": "^1.9.1",
     "next": "^9.2.1",
+    "next-redux-saga": "^4.1.2",
     "next-redux-wrapper": "^4.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
