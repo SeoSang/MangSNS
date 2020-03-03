@@ -5,14 +5,19 @@ import withRedux from "next-redux-wrapper"
 import AppLayout from "../components/AppLayout"
 import { Provider } from "react-redux"
 import createSagaMiddleware from "redux-saga"
-import { createStore, compose, applyMiddleware, CombinedState, Store } from "redux"
+import { createStore, compose, applyMiddleware, CombinedState, Store, Middleware } from "redux"
 import reducer, { StoreState } from "../reducers/index"
 import rootSaga from "../sagas"
 import withReduxSaga from "next-redux-saga"
 import { Context } from "vm"
 import { NextComponentType } from "next"
-import { AppContextType, AppInitialProps, AppPropsType } from "next/dist/next-server/lib/utils"
-import { LOAD_USER_REQUEST } from "../reducers/reducerTypes"
+import {
+  AppContextType,
+  AppInitialProps,
+  AppPropsType,
+  NextApiRequest,
+} from "next/dist/next-server/lib/utils"
+import { LOAD_USER_REQUEST, AllActionTypes } from "./mytypes/reducerTypes"
 import axios from "axios"
 
 export interface MyAppPropsType extends AppPropsType {
@@ -69,9 +74,9 @@ MangSNS.getInitialProps = async (context: Context) => {
 
 const middle = (initialState: StoreState, options: any) => {
   const sagaMiddleware = createSagaMiddleware()
-  const middlewares = [
+  const middlewares: Middleware[] = [
     sagaMiddleware,
-    store => next => action => {
+    store => (next: any) => (action: AllActionTypes) => {
       console.log(action)
       next(action) // 엑션 로그받는 미들웨어
     },

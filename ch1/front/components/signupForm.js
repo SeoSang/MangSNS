@@ -3,7 +3,7 @@ import styled, { css } from "styled-components"
 
 import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { signUpRequestAction } from "../reducers/user.ts"
+import { SIGN_UP_REQUEST } from "../reducers/reducerTypes"
 
 const { Option } = Select
 const StyledForm = styled.div`
@@ -46,7 +46,10 @@ const SignupForm = ({ form }) => {
       }
     })
     const formData = form.getFieldsValue()
-    dispatch(signUpRequestAction(formData))
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: formData,
+    })
   }
 
   const handleConfirmBlur = e => {

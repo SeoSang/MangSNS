@@ -3,10 +3,12 @@ import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 import { Avatar, Card } from "antd"
 import PostCard from "../components/PostCard"
-import { LOAD_USER_REQUEST, LOAD_USER_POSTS_REQUEST } from "../reducers/reducerTypes"
+import { LOAD_USER_REQUEST, LOAD_USER_POSTS_REQUEST } from "./mytypes/reducerTypes"
 import { StoreState } from "../reducers"
+import { NextPage } from "next"
+import { Context } from "./mytypes/pagesTypes"
 
-const User = ({ id }) => {
+const User: NextPage<{ id: number }> = ({ id }) => {
   const { mainPosts } = useSelector((state: StoreState) => state.post)
   const { userInfo } = useSelector((state: StoreState) => state.user)
 
@@ -46,8 +48,8 @@ User.propTypes = {
   id: PropTypes.number.isRequired,
 }
 
-User.getInitialProps = async context => {
-  const id = parseInt(context.query.id, 10)
+User.getInitialProps = async (context: Context) => {
+  const id = parseInt(context.query.id as string, 10)
   context.store.dispatch({
     type: LOAD_USER_REQUEST,
     data: id,

@@ -1,7 +1,11 @@
 import React, { useCallback, useState, useEffect, useRef } from "react"
 import { Form, Input, Icon, Row, Col, Checkbox, Button, AutoComplete, Avatar, Card } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from "../reducers/reducerTypes"
+import {
+  ADD_POST_REQUEST,
+  UPLOAD_IMAGES_REQUEST,
+  REMOVE_IMAGE,
+} from "../pages/mytypes/reducerTypes"
 
 const PostForm = () => {
   const [text, setText] = useState("")

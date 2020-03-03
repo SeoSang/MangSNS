@@ -4,8 +4,8 @@ import LoginForm from "./LoginForm"
 import { Menu, Input, Button, Row, Col, Avatar, Card, Form } from "antd"
 import UserProfile from "./UserProfile"
 import { useDispatch, useSelector } from "react-redux"
-import { LOAD_USER_REQUEST } from "../reducers/reducerTypes.ts"
-import { LOG_OUT_REQUEST } from "../reducers/reducerTypes"
+import { LOAD_USER_REQUEST } from "../pages/mytypes/reducerTypes.ts"
+import { LOG_OUT_REQUEST } from "../pages/mytypes/reducerTypes"
 
 const WrappedLoginForm = Form.create({ name: "login" })(LoginForm)
 

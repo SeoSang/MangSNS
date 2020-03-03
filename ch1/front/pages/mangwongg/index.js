@@ -3,6 +3,7 @@ import { Card, Col, Row } from "antd"
 import Link from "next/link"
 import { useDispatch, useSelector } from "react-redux"
 import { setSummonerNameAction } from "../../reducers/mwgg"
+import { ADD_SUMMONER_NAME } from "../mytypes/reducerTypes"
 
 const index = () => {
   const dispatch = useDispatch()
@@ -10,7 +11,7 @@ const index = () => {
 
   const onClickEvent = e => {
     const summonerName = e.target.innerText
-    dispatch(setSummonerNameAction(summonerName))
+    dispatch({ type: ADD_SUMMONER_NAME, data: summonerName })
   }
 
   // 소환사 넘어가는 링크 만들어줌
@@ -18,7 +19,7 @@ const index = () => {
     const summonerLinks = summonerArr.map(str => {
       return (
         <React.Fragment key={str}>
-          <Link href="/mangwongg/recent">
+          <Link href='/mangwongg/recent'>
             <a onClick={onClickEvent}>{str}</a>
           </Link>
           <br />

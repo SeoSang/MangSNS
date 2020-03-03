@@ -1,4 +1,4 @@
-import { MwggState, MwggActionTypes, ADD_SUMMONER_NAME } from "./reducerTypes"
+import { MwggState, MwggActionTypes, ADD_SUMMONER_NAME } from "../pages/mytypes/reducerTypes"
 
 export const initialState: MwggState = {
   users: [
@@ -14,10 +14,10 @@ export const initialState: MwggState = {
   summonerName: "",
 }
 
-export const addSummonerNameAction = (summonerName: string): MwggActionTypes => {
+export const addSummonerNameAction = (data: string): MwggActionTypes => {
   return {
     type: ADD_SUMMONER_NAME,
-    summonerName,
+    data,
   }
 }
 
@@ -26,7 +26,7 @@ const reducer = (state = initialState, action: MwggActionTypes) => {
     case ADD_SUMMONER_NAME: {
       return {
         ...state,
-        summonerName: action.summonerName,
+        summonerName: action.data,
       }
     }
     default: {

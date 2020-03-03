@@ -34,7 +34,7 @@ import {
   RETWEET_SUCCESS,
   RETWEET_FAILURE,
   ADD_POST_TO_ME,
-} from "./reducerTypes"
+} from "../pages/mytypes/reducerTypes"
 
 export const initialState: PostState = {
   mainPosts: [],

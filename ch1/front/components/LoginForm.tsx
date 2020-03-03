@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 import { Form, Input, Button, Icon, Row, Col, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { LOG_IN_REQUEST } from "../reducers/reducerTypes"
+import { LOG_IN_REQUEST } from "../pages/mytypes/reducerTypes"
 import { StoreState } from "../reducers"
 import { FormComponentProps } from "antd/lib/form"
 const { Title } = Typography

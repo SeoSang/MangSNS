@@ -52,11 +52,10 @@ export const ADD_POST_TO_ME = "ADD_POST_TO_ME" as const
 export interface UserState {
   isLoggingIn: boolean
   isLoggingOut: boolean
-  loginErrorReason: string | null
+  loginErrorReason: string | undefined | ""
   isSignedUp: boolean
   isSigningUp: boolean
-  signUpErrorReason: string | null
-  // TODO : any 없애기
+  signUpErrorReason: string | undefined | ""
   me: UserInfo | null
   userInfo: null | UserInfo
   followingList: UserInfo[] | [] // 팔로잉 리스트
@@ -481,7 +480,9 @@ export const ADD_SUMMONER_NAME = "ADD_SUMMONER_NAME" as const
 
 export interface AddSummonerNameAction {
   type: typeof ADD_SUMMONER_NAME
-  summonerName: string
+  data: string
 }
 
 export type MwggActionTypes = AddSummonerNameAction
+
+export type AllActionTypes = UserActionTypes | MwggActionTypes | PostActionTypes

@@ -1,7 +1,7 @@
-import React from "react"
+import React, { FC } from "react"
 import Link from "next/link"
 
-const PostCardContent = ({ postData }) => {
+const PostCardContent: FC<{ postData: string }> = ({ postData }) => {
   return (
     <div>
       {postData.split(/(#[^\s]+)/g).map((v: string) => {

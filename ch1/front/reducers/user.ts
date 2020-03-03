@@ -1,4 +1,3 @@
-import { ReducerAction } from "react"
 import {
   UserState,
   UserActionTypes,
@@ -33,7 +32,7 @@ import {
   EDIT_NICKNAME_SUCCESS,
   EDIT_NICKNAME_REQUEST,
   EDIT_NICKNAME_FAILURE,
-} from "./reducerTypes"
+} from "../pages/mytypes/reducerTypes"
 
 export const initialState: UserState = {
   isLoggingIn: false,
@@ -55,7 +54,6 @@ const reducer = (state = initialState, action: UserActionTypes) => {
     case LOG_IN_REQUEST: {
       return {
         ...state,
-        loginData: action.data,
         isLoggingIn: true,
       }
     }
@@ -170,7 +168,7 @@ const reducer = (state = initialState, action: UserActionTypes) => {
         ...state,
         me: {
           ...state.me,
-          Followings: state.me!.Followings.filter(v => v.id !== action.data),
+          Followings: state.me!.Followings!.filter(v => v.id !== action.data),
         },
         followingList: state.followingList.filter(v => v.id !== action.data),
       }
@@ -222,7 +220,7 @@ const reducer = (state = initialState, action: UserActionTypes) => {
         ...state,
         me: {
           ...state.me,
-          Followers: state.me.Followers.filter(v => v.id !== action.data),
+          Followers: state.me!.Followers!.filter(v => v.id !== action.data),
         },
         followerList: state.followerList.filter(v => v.id !== action.data),
       }
@@ -259,7 +257,7 @@ const reducer = (state = initialState, action: UserActionTypes) => {
         ...state,
         me: {
           ...state.me,
-          Posts: [{ id: action.data }, ...state.me.Posts],
+          Posts: [{ id: action.data }, ...state.me!.Posts],
         },
       }
     }

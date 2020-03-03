@@ -9,29 +9,16 @@ import {
   LOAD_USER_POSTS_REQUEST,
   REMOVE_FOLLOWER_REQUEST,
   UNFOLLOW_USER_REQUEST,
-} from "../reducers/reducerTypes"
+  UserState,
+} from "./mytypes/reducerTypes"
 import { StoreState } from "../reducers"
+import { NextComponentType, NextPage, NextPageContext } from "next"
+import { Context } from "./mytypes/pagesTypes"
 
-const Profile = () => {
+const Profile: NextPage = () => {
   const { me, followingList, followerList } = useSelector((state: StoreState) => state.user)
   const { mainPosts } = useSelector((state: StoreState) => state.post)
   const dispatch = useDispatch()
-  useEffect(() => {
-    if (me) {
-      dispatch({
-        type: LOAD_FOLLOWERS_REQUEST,
-        data: me.id,
-      })
-      dispatch({
-        type: LOAD_FOLLOWINGS_REQUEST,
-        data: me.id,
-      })
-      dispatch({
-        type: LOAD_USER_POSTS_REQUEST,
-        data: me.id,
-      })
-    }
-  }, [me && me.id])
 
   const onUnfollow = useCallback(
     userId => () => {
@@ -98,3 +85,21 @@ const Profile = () => {
 }
 
 export default Profile
+
+Profile.getInitialProps = async (context: Context) => {
+  const { user } = context.store.getState()
+  if (user.me) {
+    context.store.dispatch({
+      type: LOAD_FOLLOWERS_REQUEST,
+      data: user.me,
+    })
+    context.store.dispatch({
+      type: LOAD_FOLLOWINGS_REQUEST,
+      data: user.me,
+    })
+    context.store.dispatch({
+      type: LOAD_USER_POSTS_REQUEST,
+      data: user.me,
+    })
+  }
+}

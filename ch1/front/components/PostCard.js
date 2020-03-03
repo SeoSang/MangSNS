@@ -9,7 +9,7 @@ import {
   RETWEET_REQUEST,
   FOLLOW_USER_REQUEST,
   UNFOLLOW_USER_REQUEST,
-} from "../reducers/reducerTypes"
+} from "../pages/mytypes/reducerTypes"
 import Link from "next/link"
 import PostImages from "./PostImages"
 import PostCardContent from "./PostCardContent"
