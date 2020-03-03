@@ -32,6 +32,11 @@ import {
   RETWEET_SUCCESS,
   ADD_POST_TO_ME,
   EDIT_NICKNAME_REQUEST,
+  REMOVE_POST_REQUEST,
+  REMOVE_FOLLOWER_SUCCESS,
+  REMOVE_POST_SUCCESS,
+  REMOVE_POST_FAILURE,
+  REMOVE_POST_OF_ME,
 } from "../pages/mytypes/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
@@ -61,6 +66,33 @@ function* addPost(action) {
 }
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost)
+}
+
+function removePostAPI(postId) {
+  return axios.delete(`/post/${postId}/removePost`, {
+    withCredentials: true,
+  })
+}
+function* removePost(action) {
+  try {
+    const result = yield call(removePostAPI, action.data)
+    yield put({
+      type: REMOVE_POST_SUCCESS,
+      data: result.data,
+    })
+    yield put({
+      type: REMOVE_POST_OF_ME,
+      data: result.data,
+    })
+  } catch (e) {
+    yield put({
+      type: REMOVE_POST_FAILURE,
+      error: e,
+    })
+  }
+}
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removePost)
 }
 
 // 댓글 달렸을 때
@@ -117,8 +149,8 @@ function* watchLoadMainPosts() {
 }
 
 // 특정 포스트 불러오기
-function loadUserPostsAPI(id) {
-  return axios.get(`/user/${id}/posts`)
+function loadUserPostsAPI(id = 0) {
+  return axios.get(`/user/${id || 0}/posts`)
 }
 function* loadUserPosts(action) {
   try {
@@ -280,6 +312,7 @@ function* watchRetweet() {
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
+    fork(watchRemovePost),
     fork(watchAddComment),
     fork(watchLoadMainPosts),
     fork(watchLoadHashtagPosts),

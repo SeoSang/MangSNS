@@ -74,6 +74,18 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   }
 })
 
+router.delete("/:id/removePost", isLoggedIn, isPostExist, async (req, res, next) => {
+  try {
+    await db.Post.destroy({
+      where: { id: req.params.id },
+    })
+    res.send(req.params.id)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+})
+
 router.get("/:id/comments", async (req, res, next) => {
   try {
     const comments = await db.Comment.findAll({

@@ -34,6 +34,8 @@ import {
   RETWEET_SUCCESS,
   RETWEET_FAILURE,
   ADD_POST_TO_ME,
+  REMOVE_POST_REQUEST,
+  REMOVE_POST_SUCCESS,
 } from "../pages/mytypes/reducerTypes"
 
 export const initialState: PostState = {
@@ -73,6 +75,12 @@ const reducer = (state = initialState, action: PostActionTypes) => {
         ...state,
         isAddingPost: false,
         addPostErrorReason: action.error,
+      }
+    }
+    case REMOVE_POST_SUCCESS: {
+      return {
+        ...state,
+        mainPosts: state.mainPosts.filter(v => v.id !== action.data),
       }
     }
     case LIKE_POST_REQUEST: {

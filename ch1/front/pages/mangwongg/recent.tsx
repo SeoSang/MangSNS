@@ -4,6 +4,7 @@ import RecenteStats from "../../components/RecentStats"
 import styled, { css } from "styled-components"
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux"
+import { StoreState } from "../../reducers"
 
 const { Title } = Typography
 
@@ -26,7 +27,7 @@ const BolderRow = styled(Row)`
 
 const Recent = () => {
   const dispatch = useDispatch()
-  const { summonerName } = useSelector(state => state.mwgg)
+  const { summonerName } = useSelector((state: StoreState) => state.mwgg)
   const [tier, setTier] = useState("")
   const [kda, setKda] = useState(0)
 

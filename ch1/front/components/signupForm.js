@@ -3,7 +3,7 @@ import styled, { css } from "styled-components"
 
 import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { SIGN_UP_REQUEST } from "../reducers/reducerTypes"
+import { SIGN_UP_REQUEST } from "../pages/mytypes/reducerTypes"
 
 const { Option } = Select
 const StyledForm = styled.div`

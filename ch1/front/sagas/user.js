@@ -212,9 +212,9 @@ function* watchUnfollowUser() {
 }
 
 // 팔로우 관련
-function loadFollowersAPI(userId) {
+function loadFollowersAPI(userId = 0) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId}/followers`, {
+  return axios.get(`/user/${userId || 0}/followers`, {
     withCredentials: true,
   })
 }
@@ -242,9 +242,9 @@ function* watchLoadFollowers() {
   yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers)
 }
 
-function loadFollowingsAPI(userId) {
+function loadFollowingsAPI(userId = 0) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId}/followings`, {
+  return axios.get(`/user/${userId || 0}/followings`, {
     withCredentials: true,
   })
 }

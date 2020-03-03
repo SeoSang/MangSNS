@@ -32,6 +32,7 @@ import {
   EDIT_NICKNAME_SUCCESS,
   EDIT_NICKNAME_REQUEST,
   EDIT_NICKNAME_FAILURE,
+  REMOVE_POST_OF_ME,
 } from "../pages/mytypes/reducerTypes"
 
 export const initialState: UserState = {
@@ -258,6 +259,15 @@ const reducer = (state = initialState, action: UserActionTypes) => {
         me: {
           ...state.me,
           Posts: [{ id: action.data }, ...state.me!.Posts],
+        },
+      }
+    }
+    case REMOVE_POST_OF_ME: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: state.me?.Posts?.filter(v => v.id !== action.data),
         },
       }
     }

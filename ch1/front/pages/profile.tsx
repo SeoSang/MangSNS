@@ -88,18 +88,16 @@ export default Profile
 
 Profile.getInitialProps = async (context: Context) => {
   const { user } = context.store.getState()
-  if (user.me) {
-    context.store.dispatch({
-      type: LOAD_FOLLOWERS_REQUEST,
-      data: user.me,
-    })
-    context.store.dispatch({
-      type: LOAD_FOLLOWINGS_REQUEST,
-      data: user.me,
-    })
-    context.store.dispatch({
-      type: LOAD_USER_POSTS_REQUEST,
-      data: user.me,
-    })
-  }
+  context.store.dispatch({
+    type: LOAD_FOLLOWERS_REQUEST,
+    data: user.me && user.me.id,
+  })
+  context.store.dispatch({
+    type: LOAD_FOLLOWINGS_REQUEST,
+    data: user.me && user.me.id,
+  })
+  context.store.dispatch({
+    type: LOAD_USER_POSTS_REQUEST,
+    data: user.me && user.me.id,
+  })
 }

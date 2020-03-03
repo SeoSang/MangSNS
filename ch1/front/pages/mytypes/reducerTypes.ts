@@ -1,3 +1,5 @@
+import { Image } from "./componentTypes"
+
 // ---------------- User ----------------
 
 // 로그인
@@ -198,6 +200,10 @@ export interface AddPostToMeAction {
   type: typeof ADD_POST_TO_ME
   data: number
 }
+export interface RemovePostOfMeAction {
+  type: typeof REMOVE_POST_OF_ME
+  data: number
+}
 
 export type UserActionTypes =
   | LoginRequestAction
@@ -231,6 +237,7 @@ export type UserActionTypes =
   | EditNicknameRequestAction
   | EditNicknameSuccessAction
   | EditNicknameFailureAction
+  | RemovePostOfMeAction
 
 // ---------------- Post ----------------
 
@@ -250,13 +257,16 @@ export interface PostState {
 
 export interface MainPost {
   id: number
-  User?: { id: number; nickname: string }
+  UserId?: number
   content: string
   Comments?: any
-  img?: string
-  Likers?: { id: number }[] | null
+  Images?: Image[]
   createdAt?: any
   deletedAt?: any
+  Likers?: { id: number }[] | null
+  User?: { id: number; nickname: string }
+  Retweet?: MainPost
+  RetweetId?: number
 }
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST" as const
@@ -293,6 +303,8 @@ export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST" as const
 export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS" as const
 export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE" as const
 
+export const REMOVE_POST_OF_ME = "REMOVE_POST_OF_ME" as const
+
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST" as const
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS" as const
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE" as const
@@ -318,6 +330,19 @@ export interface AddPostFailureAction {
   type: typeof ADD_POST_FAILURE
   error?: any
 }
+export interface RemovePostRequestAction {
+  type: typeof REMOVE_POST_REQUEST
+  data: number
+}
+export interface RemovePostSuccessAction {
+  type: typeof REMOVE_POST_SUCCESS
+  data: number
+}
+export interface RemovePostFailureAction {
+  type: typeof REMOVE_POST_FAILURE
+  error?: any
+}
+
 export interface LoadMainPostsRequestAction {
   type: typeof LOAD_MAIN_POSTS_REQUEST
 }
@@ -436,6 +461,9 @@ export type PostActionTypes =
   | AddPostRequestAction
   | AddPostSuccessAction
   | AddPostFailureAction
+  | RemovePostRequestAction
+  | RemovePostSuccessAction
+  | RemovePostFailureAction
   | LoadMainPostsRequestAction
   | LoadMainPostsSuccessAction
   | LoadMainPostsFailureAction
