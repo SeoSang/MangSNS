@@ -4,6 +4,7 @@ import styled, { css } from "styled-components"
 import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { SIGN_UP_REQUEST } from "../pages/mytypes/reducerTypes"
+import { useRouter } from "next/router"
 
 const { Option } = Select
 const StyledForm = styled.div`
@@ -37,7 +38,7 @@ const residences = [
 const SignupForm = ({ form }) => {
   const [confirmDirty, setConfirmDirty] = useState(false)
   const dispatch = useDispatch()
-  const { isSigningUp } = useSelector(state => state.user)
+  const { isSigningUp, isSignedUp } = useSelector(state => state.user)
 
   const handleSubmit = e => {
     e.preventDefault()

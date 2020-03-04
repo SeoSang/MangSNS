@@ -152,6 +152,7 @@ export interface UnfollowUserFailureAction {
 
 export interface LoadFollowersRequestAction {
   type: typeof LOAD_FOLLOWERS_REQUEST
+  offset?: number
 }
 export interface LoadFollowersSuccessAction {
   type: typeof LOAD_FOLLOWERS_SUCCESS
@@ -163,6 +164,7 @@ export interface LoadFollowersFailureAction {
 }
 export interface LoadFollowingsRequestAction {
   type: typeof LOAD_FOLLOWINGS_REQUEST
+  offset?: number
 }
 export interface LoadFollowingsSuccessAction {
   type: typeof LOAD_FOLLOWINGS_SUCCESS

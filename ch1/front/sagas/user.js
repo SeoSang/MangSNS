@@ -124,9 +124,9 @@ function* signUp(action) {
       type: SIGN_UP_SUCCESS,
     })
     yield alert("회원가입 성공!")
-    yield call(goHome)
   } catch (e) {
     console.log("signUp ERROR : ", e)
+    yield alert("회원가입 실패")
     yield put({
       type: SIGN_UP_FAILURE,
       error: e,
@@ -212,9 +212,9 @@ function* watchUnfollowUser() {
 }
 
 // 팔로우 관련
-function loadFollowersAPI(userId = 0) {
+function loadFollowersAPI(userId = 0, offset = 0, limit = 3) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId || 0}/followers`, {
+  return axios.get(`/user/${userId || 0}/followers?offset=${offset}&limit=${limit}`, {
     withCredentials: true,
   })
 }
@@ -222,7 +222,7 @@ function loadFollowersAPI(userId = 0) {
 function* loadFollowers(action) {
   try {
     // yield call(loadFollowersAPI);
-    const result = yield call(loadFollowersAPI, action.data)
+    const result = yield call(loadFollowersAPI, action.data, action.offset)
     yield put({
       // put은 dispatch 동일
       type: LOAD_FOLLOWERS_SUCCESS,
@@ -242,9 +242,9 @@ function* watchLoadFollowers() {
   yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers)
 }
 
-function loadFollowingsAPI(userId = 0) {
+function loadFollowingsAPI(userId = 0, offset = 0, limit = 3) {
   // 서버에 요청을 보내는 부분
-  return axios.get(`/user/${userId || 0}/followings`, {
+  return axios.get(`/user/${userId || 0}/followings?offset=${offset}&limit=${limit}`, {
     withCredentials: true,
   })
 }
@@ -252,7 +252,7 @@ function loadFollowingsAPI(userId = 0) {
 function* loadFollowings(action) {
   try {
     // yield call(loadFollowersAPI);
-    const result = yield call(loadFollowingsAPI, action.data)
+    const result = yield call(loadFollowingsAPI, action.data, action.offset)
     yield put({
       // put은 dispatch 동일
       type: LOAD_FOLLOWINGS_SUCCESS,

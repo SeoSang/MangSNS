@@ -9,7 +9,6 @@ import {
   LOAD_USER_POSTS_REQUEST,
   REMOVE_FOLLOWER_REQUEST,
   UNFOLLOW_USER_REQUEST,
-  UserState,
 } from "./mytypes/reducerTypes"
 import { StoreState } from "../reducers"
 import { NextComponentType, NextPage, NextPageContext } from "next"
@@ -40,6 +39,19 @@ const Profile: NextPage = () => {
     [],
   )
 
+  const loadMoreFollowings = useCallback(() => {
+    dispatch({
+      type: LOAD_FOLLOWINGS_REQUEST,
+      offset: followingList.length,
+    })
+  }, [followingList])
+  const loadMoreFollowers = useCallback(() => {
+    dispatch({
+      type: LOAD_FOLLOWERS_REQUEST,
+      offset: followerList.length,
+    })
+  }, [followerList])
+
   return (
     <>
       <NickNameEditForm />
@@ -48,7 +60,11 @@ const Profile: NextPage = () => {
         grid={{ gutter: 4, xs: 2, md: 3 }}
         size='small'
         header={<div>팔로워 목록</div>}
-        loadMore={<Button style={{ width: "100%" }}>더 보기</Button>}
+        loadMore={
+          <Button style={{ width: "100%" }} onClick={loadMoreFollowers}>
+            더 보기
+          </Button>
+        }
         bordered
         dataSource={followerList}
         renderItem={item => (
@@ -64,7 +80,11 @@ const Profile: NextPage = () => {
         grid={{ gutter: 4, xs: 2, md: 3 }}
         size='small'
         header={<div>팔로잉 목록</div>}
-        loadMore={<Button style={{ width: "100%" }}>더 보기</Button>}
+        loadMore={
+          <Button style={{ width: "100%" }} onClick={loadMoreFollowings}>
+            더 보기
+          </Button>
+        }
         bordered
         dataSource={followingList}
         renderItem={item => (
