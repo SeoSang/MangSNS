@@ -56,8 +56,9 @@ function* login(action) {
       data: result.data,
     }) // put 은 dispatch
   } catch (e) {
-    console.log(e)
-    console.log(action.data)
+    console.log("e =>", e)
+    console.log("action.data => ", action.data)
+    yield alert("로그인 실패!")
     yield put({
       type: LOG_IN_FAILURE,
       error: e,
