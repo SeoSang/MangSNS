@@ -261,6 +261,7 @@ export interface PostState {
   commentAdded: boolean
   likeErrorReason: string | null
   unlikeErrorReason: string | null
+  hasMorePost: boolean
 }
 
 export interface MainPost {
@@ -353,6 +354,7 @@ export interface RemovePostFailureAction {
 
 export interface LoadMainPostsRequestAction {
   type: typeof LOAD_MAIN_POSTS_REQUEST
+  lastId?: number
 }
 export interface LoadMainPostsSuccessAction {
   type: typeof LOAD_MAIN_POSTS_SUCCESS
@@ -375,6 +377,7 @@ export interface LoadUserPostsFailureAction {
 }
 export interface LoadHashtagPostsRequestAction {
   type: typeof LOAD_HASHTAG_POSTS_REQUEST
+  lastId?: number
 }
 export interface LoadHashtagPostsSuccessAction {
   type: typeof LOAD_HASHTAG_POSTS_SUCCESS

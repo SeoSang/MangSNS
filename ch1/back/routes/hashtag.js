@@ -3,8 +3,12 @@ const db = require("../models")
 const router = express.Router()
 
 router.get("/:tag", async (req, res, next) => {
-  console.log("---routes__hashtag.js -> req.params.tag")
   try {
+    let where = {}
+    if (req.query.lastId != 0) {
+      where = { id: { [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10) } }
+    }
+
     const posts = await db.Post.findAll({
       include: [
         {
@@ -19,6 +23,8 @@ router.get("/:tag", async (req, res, next) => {
           model: db.Image,
         },
       ],
+      order: [["createdAt", "DESC"]],
+      limit: parseInt(req.query.limit, 10),
     })
     res.json(posts)
   } catch (e) {

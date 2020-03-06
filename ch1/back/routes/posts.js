@@ -4,7 +4,12 @@ const db = require("../models")
 
 router.get("/", async (req, res, next) => {
   try {
+    let where = {}
+    if (req.query.lastId != 0) {
+      where = { id: { [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10) } }
+    }
     const posts = await db.Post.findAll({
+      where,
       include: [
         {
           model: db.User,
@@ -37,6 +42,7 @@ router.get("/", async (req, res, next) => {
         ["createdAt", "DESC"],
         ["updatedAt", "DESC"],
       ],
+      limit: parseInt(req.query.limit, 10),
     })
     res.json(posts)
   } catch (e) {

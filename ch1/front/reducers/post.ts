@@ -49,6 +49,7 @@ export const initialState: PostState = {
   commentAdded: false,
   likeErrorReason: "",
   unlikeErrorReason: "",
+  hasMorePost: false,
 }
 
 const reducer = (state = initialState, action: PostActionTypes) => {
@@ -160,12 +161,18 @@ const reducer = (state = initialState, action: PostActionTypes) => {
       }
     }
     // 포스트 불러오기
-    case LOAD_USER_POSTS_REQUEST:
+    case LOAD_USER_POSTS_REQUEST: {
+      return {
+        ...state,
+        mainPosts: [],
+      }
+    }
     case LOAD_HASHTAG_POSTS_REQUEST:
     case LOAD_MAIN_POSTS_REQUEST: {
       return {
         ...state,
-        mainPosts: [],
+        mainPosts: action.lastId === 0 ? [] : state.mainPosts,
+        hasMorePost: action.lastId ? state.hasMorePost : true,
       }
     }
     // 포스트 불러오기
@@ -174,7 +181,8 @@ const reducer = (state = initialState, action: PostActionTypes) => {
     case LOAD_HASHTAG_POSTS_SUCCESS: {
       return {
         ...state,
-        mainPosts: action.data,
+        mainPosts: state.mainPosts.concat(action.data),
+        hasMorePost: action.data.length === 10,
       }
     }
     case LOAD_USER_POSTS_FAILURE:

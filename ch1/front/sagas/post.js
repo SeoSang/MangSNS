@@ -1,4 +1,4 @@
-import { call, all, fork, takeLatest, delay, put } from "redux-saga/effects"
+import { call, all, fork, takeLatest, delay, put, throttle } from "redux-saga/effects"
 import {
   ADD_POST_SUCCESS,
   ADD_POST_REQUEST,
@@ -127,12 +127,12 @@ function* watchAddComment() {
 }
 
 // 포스트 불러오기
-function loadMainPostsAPI() {
-  return axios.get("/posts")
+function loadMainPostsAPI(lastId = 0, limit = 10) {
+  return axios.get(`/posts?lastId=${lastId}&limit=${limit}`)
 }
-function* loadMainPosts() {
+function* loadMainPosts(action) {
   try {
-    const result = yield call(loadMainPostsAPI)
+    const result = yield call(loadMainPostsAPI, action.lastId)
     yield put({
       type: LOAD_MAIN_POSTS_SUCCESS,
       data: result.data,
@@ -145,7 +145,7 @@ function* loadMainPosts() {
   }
 }
 function* watchLoadMainPosts() {
-  yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts)
+  yield throttle(2000, LOAD_MAIN_POSTS_REQUEST, loadMainPosts)
 }
 
 // 특정 포스트 불러오기
@@ -195,12 +195,12 @@ function* watchLoadComments() {
 }
 
 // 해쉬태그 포스트 불러오기
-function loadHashtagPostsAPI(tag) {
-  return axios.get(`/hashtag/${encodeURIComponent(tag)}`)
+function loadHashtagPostsAPI(tag, lastId) {
+  return axios.get(`/hashtag/${encodeURIComponent(tag)}?lastId=${lastId}`)
 }
 function* loadHashtagPosts(action) {
   try {
-    const result = yield call(loadHashtagPostsAPI, action.data)
+    const result = yield call(loadHashtagPostsAPI, action.data, action.lastId)
     yield put({
       type: LOAD_HASHTAG_POSTS_SUCCESS,
       data: result.data,
