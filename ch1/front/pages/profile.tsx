@@ -13,9 +13,17 @@ import {
 import { StoreState } from "../reducers"
 import { NextComponentType, NextPage, NextPageContext } from "next"
 import { Context } from "./mytypes/pagesTypes"
+import styled from "styled-components"
+
+export const EndOfData = styled.div`
+  text-align: center;
+  font-style: italic;
+`
 
 const Profile: NextPage = () => {
-  const { me, followingList, followerList } = useSelector((state: StoreState) => state.user)
+  const { me, followingList, followerList, hasMoreFollower, hasMoreFollowing } = useSelector(
+    (state: StoreState) => state.user,
+  )
   const { mainPosts } = useSelector((state: StoreState) => state.post)
   const dispatch = useDispatch()
 
@@ -61,9 +69,13 @@ const Profile: NextPage = () => {
         size='small'
         header={<div>팔로워 목록</div>}
         loadMore={
-          <Button style={{ width: "100%" }} onClick={loadMoreFollowers}>
-            더 보기
-          </Button>
+          hasMoreFollower ? (
+            <Button style={{ width: "100%" }} onClick={loadMoreFollowers}>
+              더 보기
+            </Button>
+          ) : (
+            <EndOfData>데이터의 끝입니다.</EndOfData>
+          )
         }
         bordered
         dataSource={followerList}
@@ -81,9 +93,13 @@ const Profile: NextPage = () => {
         size='small'
         header={<div>팔로잉 목록</div>}
         loadMore={
-          <Button style={{ width: "100%" }} onClick={loadMoreFollowings}>
-            더 보기
-          </Button>
+          hasMoreFollowing ? (
+            <Button style={{ width: "100%" }} onClick={loadMoreFollowings}>
+              더 보기
+            </Button>
+          ) : (
+            <EndOfData>데이터의 끝입니다.</EndOfData>
+          )
         }
         bordered
         dataSource={followingList}

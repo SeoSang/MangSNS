@@ -5,6 +5,11 @@ import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "
 import { useDispatch, useSelector } from "react-redux"
 import { SIGN_UP_REQUEST } from "../pages/mytypes/reducerTypes"
 import { useRouter } from "next/router"
+import { StoreState } from "../reducers"
+import { NextPage } from "next"
+import { FormProps, FormComponentProps } from "antd/lib/form"
+import { ValidateFieldsOptions, ValidationRule, ValidateCallback } from "antd/lib/form/Form"
+import Password from "antd/lib/input/Password"
 
 const { Option } = Select
 const StyledForm = styled.div`
@@ -35,12 +40,12 @@ const residences = [
   },
 ]
 
-const SignupForm = ({ form }) => {
+const SignupForm: NextPage<FormComponentProps> = ({ form }) => {
   const [confirmDirty, setConfirmDirty] = useState(false)
   const dispatch = useDispatch()
-  const { isSigningUp, isSignedUp } = useSelector(state => state.user)
+  const { isSigningUp, isSignedUp } = useSelector((state: StoreState) => state.user)
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err && !!values.agreement) {
@@ -58,7 +63,7 @@ const SignupForm = ({ form }) => {
     setConfirmDirty(confirmDirty || !!value)
   }
 
-  const compareToFirstPassword = (rule, value, callback) => {
+  const compareToFirstPassword = (rule: ValidationRule, value: Password, callback: any) => {
     if (value && value !== form.getFieldValue("password")) {
       callback("Two passwords that you enter is inconsistent!")
     } else {
@@ -66,14 +71,14 @@ const SignupForm = ({ form }) => {
     }
   }
 
-  const validateToNextPassword = (rule, value, callback) => {
+  const validateToNextPassword = (rule: ValidationRule, value: Password, callback: any) => {
     if (value && confirmDirty) {
       form.validateFields(["confirm"], { force: true })
     }
     callback()
   }
 
-  const validateChecked = (rule, value, callback) => {
+  const validateChecked = (rule: ValidationRule, value: boolean, callback: any) => {
     if (value === true) {
       form.validateFields(["agreement"], { force: true })
     }

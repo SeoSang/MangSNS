@@ -1,7 +1,9 @@
 import React from "react"
 import { Card, Avatar } from "antd"
+import { NextPage } from "next"
+import { UserInfo } from "../pages/mytypes/reducerTypes"
 
-const UserProfile = ({ user }) => {
+const UserProfile: NextPage<{ user: UserInfo }> = ({ user }) => {
   return (
     <Card
       actions={[

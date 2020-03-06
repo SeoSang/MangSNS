@@ -49,6 +49,10 @@ export const EDIT_NICKNAME_REQUEST = "EDIT_NICKNAME_REQUEST" as const
 export const EDIT_NICKNAME_SUCCESS = "EDIT_NICKNAME_SUCCESS" as const
 export const EDIT_NICKNAME_FAILURE = "EDIT_NICKNAME_FAILURE" as const
 
+export const HAS_MORE_FOLLOWER_REQUEST = "HAS_MORE_FOLLOWER_REQUEST" as const
+export const HAS_MORE_FOLLOWER_SUCCESS = "HAS_MORE_FOLLOWER_SUCCESS" as const
+export const HAS_MORE_FOLLOWER_FAILURE = "HAS_MORE_FOLLOWER_FAILURE" as const
+
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME" as const
 
 export interface UserState {
@@ -63,6 +67,8 @@ export interface UserState {
   followingList: UserInfo[] | [] // 팔로잉 리스트
   followerList: UserInfo[] | [] // 팔로워 리스트
   isEditingNickname: boolean
+  hasMoreFollower: boolean
+  hasMoreFollowing: boolean
 }
 export interface UserInfo {
   id: number
@@ -72,9 +78,9 @@ export interface UserInfo {
   residence?: string
   createdAt?: string
   updatedAt?: string
-  Posts?: { id: number }[]
-  Followings?: any[]
-  Followers?: any[]
+  Posts: { id: number }[]
+  Followings: any[]
+  Followers: any[]
 }
 
 export interface LoginRequestAction {

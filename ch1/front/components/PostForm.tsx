@@ -6,12 +6,15 @@ import {
   UPLOAD_IMAGES_REQUEST,
   REMOVE_IMAGE,
 } from "../pages/mytypes/reducerTypes"
+import { StoreState } from "../reducers"
 
 const PostForm = () => {
   const [text, setText] = useState("")
   const dispatch = useDispatch()
-  const { postAdded, isAddingPost, imagePaths, mainPosts } = useSelector(state => state.post)
-  const imageInput = useRef()
+  const { postAdded, isAddingPost, imagePaths, mainPosts } = useSelector(
+    (state: StoreState) => state.post,
+  )
+  const imageInput = useRef<HTMLInputElement>(null)
 
   const onChangeTextArea = useCallback(e => {
     setText(e.target.value)
@@ -56,7 +59,9 @@ const PostForm = () => {
 
   const onClickImageUpload = useCallback(() => {
     console.log(imageInput.current)
-    imageInput.current.click()
+    if (imageInput.current) {
+      imageInput.current.click()
+    }
   }, [imageInput.current])
 
   const onRemoveImage = useCallback(

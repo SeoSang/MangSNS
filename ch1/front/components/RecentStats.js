@@ -45,7 +45,7 @@ const RecentStats = () => {
       contentType: "application/json",
       success: res => {
         callback(res)
-      }
+      },
     })
   }
 
@@ -81,10 +81,10 @@ const RecentStats = () => {
                 avatar={
                   <Avatar
                     style={{ backgroundPosition: "0px -2788px" }}
-                    src="https://opgg-static.akamaized.net/assets/champion82.png?image=q_auto&v=1579759199"
+                    src='https://opgg-static.akamaized.net/assets/champion82.png?image=q_auto&v=1579759199'
                   />
                 }
-                title={<a href="https://ant.design">{item.name.last}</a>}
+                title={<a href='https://ant.design'>{item.name.last}</a>}
                 description={item.email}
               />
               <div>승</div>
