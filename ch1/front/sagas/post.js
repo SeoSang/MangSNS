@@ -131,7 +131,7 @@ function* watchAddComment() {
 
 // 개별 포스트 불러오기
 function loadPostAPI(postId) {
-  return axios.get(`/post/id:${postId}`)
+  return axios.get(`/post/${postId}`, { withCredentials: true })
 }
 function* loadPost(action) {
   try {
@@ -141,6 +141,7 @@ function* loadPost(action) {
       data: result.data,
     })
   } catch (e) {
+    console.error(e)
     yield put({
       type: LOAD_POST_FAILURE,
       error: e,

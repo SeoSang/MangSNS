@@ -154,7 +154,6 @@ function* loadUser(action) {
       data: result.data,
       me: !action.data,
     })
-    yield console.log("--- saga_user.js -> loadUser", result.data)
   } catch (e) {
     yield put({
       type: LOAD_USER_FAILURE,

@@ -19,7 +19,7 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 },
 })
 
-router.post("/:id", isLoggedIn, async (req, res, next) => {
+router.get("/:id", isLoggedIn, async (req, res, next) => {
   try {
     const post = await db.Post.findOne({
       where: { id: req.params.id },
@@ -27,7 +27,12 @@ router.post("/:id", isLoggedIn, async (req, res, next) => {
         { model: db.User, attributes: ["id", "nickname"] },
         { model: db.Image },
         { model: db.Comment },
-        { model: db.Liker },
+        {
+          model: db.User,
+          through: "Like",
+          as: "Likers",
+          attributes: ["id"],
+        },
       ],
     })
     res.json(post)
