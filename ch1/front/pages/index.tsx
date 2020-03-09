@@ -1,14 +1,40 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useMemo, useCallback } from "react"
 import PostForm from "../components/PostForm"
 import PostCard from "../components/PostCard"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { LOAD_MAIN_POSTS_REQUEST } from "./mytypes/reducerTypes"
 import { StoreState } from "../reducers"
 import { Context } from "./mytypes/pagesTypes"
 
 const Home = () => {
   const { me } = useSelector((state: StoreState) => state.user)
-  const { mainPosts } = useSelector((state: StoreState) => state.post)
+  const { mainPosts, hasMorePost } = useSelector((state: StoreState) => state.post)
+  const dispatch = useDispatch()
+  const onScroll = useCallback(() => {
+    const lastId = mainPosts ? mainPosts[mainPosts.length - 1].id : 0
+    // console.log(
+    //   window.scrollY,
+    //   document.documentElement.clientHeight,
+    //   document.documentElement.scrollHeight,
+    // )
+    if (
+      window.scrollY + document.documentElement.clientHeight >
+      document.documentElement.scrollHeight - 300
+    ) {
+      if (hasMorePost)
+        dispatch({
+          type: LOAD_MAIN_POSTS_REQUEST,
+          lastId,
+        })
+    }
+  }, [mainPosts.length, hasMorePost])
+
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll)
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+    }
+  }, [mainPosts])
 
   return (
     <>

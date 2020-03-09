@@ -51,6 +51,7 @@ export const initialState: PostState = {
   commentAdded: false,
   likeErrorReason: "",
   unlikeErrorReason: "",
+  hasMorePost: false,
 }
 
 const reducer = (state = initialState, action: PostActionTypes) => {

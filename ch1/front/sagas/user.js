@@ -56,13 +56,12 @@ function* login(action) {
       data: result.data,
     }) // put 은 dispatch
   } catch (e) {
-    console.log("e =>", e)
-    console.log("action.data => ", action.data)
-    yield alert("로그인 실패!")
+    console.error("e =>", e)
     yield put({
       type: LOG_IN_FAILURE,
       error: e,
     })
+    alert(e.response.data)
   }
 }
 function* watchLogin() {
