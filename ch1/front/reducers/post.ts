@@ -61,79 +61,56 @@ const reducer = (state = initialState, action: PostActionTypes) => {
         draft.isAddingPost = true
         draft.addPostErrorReason = ""
         draft.postAdded = false
+        break
       }
       case ADD_POST_SUCCESS: {
         draft.isAddingPost = false
-        draft.mainPosts.push(action.data)
-        return {
-          ...state,
-          isAddingPost: false,
-          mainPosts: [action.data, ...state.mainPosts],
-          postAdded: true,
-          imagePaths: [],
-        }
+        draft.mainPosts.unshift(action.data)
+        draft.postAdded = true
+        draft.imagePaths = []
+        break
       }
       case ADD_POST_FAILURE: {
-        return {
-          ...state,
-          isAddingPost: false,
-          addPostErrorReason: action.error,
-        }
+        draft.isAddingPost = false
+        draft.addPostErrorReason = action.error
+        break
       }
       case REMOVE_POST_SUCCESS: {
-        return {
-          ...state,
-          mainPosts: state.mainPosts.filter(v => v.id !== action.data),
-        }
+        draft.mainPosts = draft.mainPosts.filter(v => v.id !== action.data)
+        break
       }
       case LIKE_POST_REQUEST: {
         break
       }
       case LIKE_POST_SUCCESS: {
-        const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
-        const post = state.mainPosts[postIndex]
-        const Likers = [{ id: action.data.userId }, ...post.Likers!]
-        const mainPosts = [...state.mainPosts]
-        mainPosts[postIndex] = { ...post, Likers }
-        return {
-          ...state,
-          mainPosts,
-        }
+        const postIndex = draft.mainPosts.findIndex(v => v.id === action.data.postId)
+        draft.mainPosts[postIndex].Likers?.unshift({ id: action.data.userId })
+        break
       }
       case LIKE_POST_FAILURE: {
-        return {
-          ...state,
-          likeErrorReason: action.error,
-        }
+        draft.likeErrorReason = action.error
+        break
       }
       case UNLIKE_POST_REQUEST: {
         break
       }
       case UNLIKE_POST_SUCCESS: {
         const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
-        const post = state.mainPosts[postIndex]
-        const Likers = post.Likers ? post.Likers.filter(v => v.id !== action.data.userId) : []
-        const mainPosts = [...state.mainPosts]
-        mainPosts[postIndex] = { ...post, Likers }
-        return {
-          ...state,
-          mainPosts,
-        }
+        draft.mainPosts[postIndex].Likers = draft.mainPosts[postIndex].Likers?.filter(
+          v => v.id !== action.data.userId,
+        )
+        break
       }
       case UNLIKE_POST_FAILURE: {
-        return {
-          ...state,
-          unlikeErrorReason: action.error,
-        }
+        draft.unlikeErrorReason = action.error
+        break
       }
       case RETWEET_REQUEST: {
         break
       }
       case RETWEET_SUCCESS: {
-        return {
-          ...state,
-          mainPosts: [action.data, ...state.mainPosts],
-        }
+        draft.mainPosts.unshift(action.data)
+        break
       }
       case RETWEET_FAILURE: {
         break
@@ -153,19 +130,15 @@ const reducer = (state = initialState, action: PostActionTypes) => {
       case LOAD_USER_POSTS_REQUEST:
       case LOAD_HASHTAG_POSTS_REQUEST:
       case LOAD_MAIN_POSTS_REQUEST: {
-        return {
-          ...state,
-          mainPosts: [],
-        }
+        draft.mainPosts = []
+        break
       }
       // 포스트 불러오기
       case LOAD_USER_POSTS_SUCCESS:
       case LOAD_MAIN_POSTS_SUCCESS:
       case LOAD_HASHTAG_POSTS_SUCCESS: {
-        return {
-          ...state,
-          mainPosts: action.data,
-        }
+        draft.mainPosts = action.data
+        break
       }
       case LOAD_USER_POSTS_FAILURE:
       case LOAD_HASHTAG_POSTS_FAILURE:
@@ -173,52 +146,31 @@ const reducer = (state = initialState, action: PostActionTypes) => {
         break
       }
       case ADD_COMMENT_REQUEST: {
-        return {
-          ...state,
-          isAddingComment: true,
-          addCommentErrorReason: "",
-          commentAdded: false,
-        }
+        draft.isAddingComment = true
+        draft.addCommentErrorReason = ""
+        draft.commentAdded = false
+        break
       }
       case ADD_COMMENT_SUCCESS: {
-        const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
-        const post = state.mainPosts[postIndex]
-        console.log("------reducers__post.ts / action.data => ", action.data)
-        console.log("------reducers__post.ts / post.Comments => ", post.Comments)
-        const Comments = post.Comments
-          ? [...post.Comments, action.data.comment]
-          : [action.data.comment]
-        const mainPosts = [...state.mainPosts]
-        mainPosts[postIndex] = { ...post, Comments }
-        return {
-          ...state,
-          isAddingComment: false,
-          mainPosts,
-          commentAdded: true,
-        }
+        const postIndex = draft.mainPosts.findIndex(v => v.id === action.data.postId)
+        draft.mainPosts[postIndex].Comments.push(action.data.comment)
+        draft.isAddingComment = false
+        draft.commentAdded = true
+        break
       }
       case ADD_COMMENT_FAILURE: {
-        return {
-          ...state,
-          isAddingComment: false,
-          addCommentErrorReason: action.error,
-          commentAdded: false,
-        }
+        draft.isAddingComment = false
+        draft.addCommentErrorReason = action.error
+        draft.commentAdded = false
+        break
       }
       case LOAD_COMMENTS_SUCCESS: {
-        const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId)
-        const post = state.mainPosts[postIndex]
-        const Comments = action.data.comments
-        const mainPosts = [...state.mainPosts]
-        mainPosts[postIndex] = { ...post, Comments }
-        console.log("----reducers__post.ts / mainPosts[postIndex] => ", mainPosts[postIndex])
-        return {
-          ...state,
-          mainPosts,
-        }
+        const postIndex = draft.mainPosts.findIndex(v => v.id === action.data.postId)
+        draft.mainPosts[postIndex].Comments = action.data.comments
+        break
       }
       case REMOVE_IMAGE: {
-        draft.imagePaths = state.imagePaths.filter((v, i) => i !== action.index)
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.index)
       }
 
       default: {
