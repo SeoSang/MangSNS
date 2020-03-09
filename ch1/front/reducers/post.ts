@@ -36,6 +36,8 @@ import {
   ADD_POST_TO_ME,
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
 } from "../pages/mytypes/reducerTypes"
 
 import produce from "immer"
@@ -51,7 +53,8 @@ export const initialState: PostState = {
   commentAdded: false,
   likeErrorReason: "",
   unlikeErrorReason: "",
-  hasMorePost: false,
+  hasMorePost: true,
+  singlePost: null,
 }
 
 const reducer = (state = initialState, action: PostActionTypes) => {
@@ -130,14 +133,18 @@ const reducer = (state = initialState, action: PostActionTypes) => {
       case LOAD_USER_POSTS_REQUEST:
       case LOAD_HASHTAG_POSTS_REQUEST:
       case LOAD_MAIN_POSTS_REQUEST: {
-        draft.mainPosts = []
+        draft.mainPosts = !action.lastId ? [] : draft.mainPosts
+        draft.hasMorePost = action.lastId ? draft.hasMorePost : true
         break
       }
       // 포스트 불러오기
       case LOAD_USER_POSTS_SUCCESS:
       case LOAD_MAIN_POSTS_SUCCESS:
       case LOAD_HASHTAG_POSTS_SUCCESS: {
-        draft.mainPosts = action.data
+        action.data.forEach(post => {
+          draft.mainPosts.push(post)
+        })
+        draft.hasMorePost = action.data.length == 10
         break
       }
       case LOAD_USER_POSTS_FAILURE:
@@ -171,6 +178,12 @@ const reducer = (state = initialState, action: PostActionTypes) => {
       }
       case REMOVE_IMAGE: {
         draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.index)
+        break
+      }
+
+      case LOAD_POST_SUCCESS: {
+        draft.singlePost = action.data
+        break
       }
 
       default: {

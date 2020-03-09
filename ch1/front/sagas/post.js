@@ -37,6 +37,9 @@ import {
   REMOVE_POST_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_OF_ME,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
+  LOAD_POST_FAILURE,
 } from "../pages/mytypes/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
@@ -124,6 +127,28 @@ function* addComment(action) {
 }
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment)
+}
+
+// 개별 포스트 불러오기
+function loadPostAPI(postId) {
+  return axios.get(`/post/id:${postId}`)
+}
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.postId)
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    yield put({
+      type: LOAD_POST_FAILURE,
+      error: e,
+    })
+  }
+}
+function* watchLoadPost() {
+  yield takeLatest(LOAD_POST_REQUEST, loadPost)
 }
 
 // 포스트 불러오기
@@ -314,6 +339,7 @@ export default function* postSaga() {
     fork(watchAddPost),
     fork(watchRemovePost),
     fork(watchAddComment),
+    fork(watchLoadPost),
     fork(watchLoadMainPosts),
     fork(watchLoadHashtagPosts),
     fork(watchLoadUserPosts),

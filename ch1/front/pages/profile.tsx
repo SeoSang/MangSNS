@@ -14,18 +14,26 @@ import { StoreState } from "../reducers"
 import { NextComponentType, NextPage, NextPageContext } from "next"
 import { Context } from "./mytypes/pagesTypes"
 import styled from "styled-components"
+import Router from "next/router"
 
 export const EndOfData = styled.div`
   text-align: center;
   font-style: italic;
 `
 
-const Profile: NextPage = () => {
+const Profile: NextPage<{ isLogin: boolean }> = ({ isLogin }) => {
   const { me, followingList, followerList, hasMoreFollower, hasMoreFollowing } = useSelector(
     (state: StoreState) => state.user,
   )
   const { mainPosts } = useSelector((state: StoreState) => state.post)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!isLogin) {
+      alert("로그인이 필요합니다!")
+      Router.push("/")
+    }
+  }, [])
 
   const onUnfollow = useCallback(
     userId => () => {
@@ -124,6 +132,9 @@ export default Profile
 
 Profile.getInitialProps = async (context: Context) => {
   const { user } = context.store.getState()
+  if (!user.me) {
+    return { isLogin: false }
+  }
   context.store.dispatch({
     type: LOAD_FOLLOWERS_REQUEST,
     data: user.me && user.me.id,
@@ -136,4 +147,5 @@ Profile.getInitialProps = async (context: Context) => {
     type: LOAD_USER_POSTS_REQUEST,
     data: user.me && user.me.id,
   })
+  return { isLogin: true }
 }

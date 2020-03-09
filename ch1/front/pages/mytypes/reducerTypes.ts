@@ -262,6 +262,7 @@ export interface PostState {
   likeErrorReason: string | null
   unlikeErrorReason: string | null
   hasMorePost: boolean
+  singlePost: MainPost | null
 }
 
 export interface MainPost {
@@ -281,6 +282,11 @@ export interface MainPost {
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST" as const
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS" as const
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE" as const
+
+// 특정 포스트 불러오기
+export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST" as const
+export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS" as const
+export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE" as const
 
 // 메인포스트 불러오기
 export const LOAD_MAIN_POSTS_REQUEST = "LOAD_MAIN_POSTS_REQUEST" as const
@@ -352,6 +358,19 @@ export interface RemovePostFailureAction {
   error?: any
 }
 
+export interface LoadPostRequestAction {
+  type: typeof LOAD_POST_REQUEST
+  postId: number
+}
+export interface LoadPostSuccessAction {
+  type: typeof LOAD_POST_SUCCESS
+  data: MainPost
+}
+export interface LoadPostFailureAction {
+  type: typeof LOAD_POST_FAILURE
+  error?: any
+}
+
 export interface LoadMainPostsRequestAction {
   type: typeof LOAD_MAIN_POSTS_REQUEST
   lastId?: number
@@ -366,6 +385,7 @@ export interface LoadMainPostsFailureAction {
 }
 export interface LoadUserPostsRequestAction {
   type: typeof LOAD_USER_POSTS_REQUEST
+  lastId?: number
 }
 export interface LoadUserPostsSuccessAction {
   type: typeof LOAD_USER_POSTS_SUCCESS
@@ -475,6 +495,9 @@ export type PostActionTypes =
   | RemovePostRequestAction
   | RemovePostSuccessAction
   | RemovePostFailureAction
+  | LoadPostRequestAction
+  | LoadPostSuccessAction
+  | LoadPostFailureAction
   | LoadMainPostsRequestAction
   | LoadMainPostsSuccessAction
   | LoadMainPostsFailureAction

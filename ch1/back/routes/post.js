@@ -19,6 +19,24 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 },
 })
 
+router.post("/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await db.Post.findOne({
+      where: { id: req.params.id },
+      include: [
+        { model: db.User, attributes: ["id", "nickname"] },
+        { model: db.Image },
+        { model: db.Comment },
+        { model: db.Liker },
+      ],
+    })
+    res.json(post)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+})
+
 // 포스트 추가
 router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   console.log("TCL: req", req)

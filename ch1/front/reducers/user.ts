@@ -77,11 +77,11 @@ const reducer = (state = initialState, action: UserActionTypes) => {
         break
       }
       case LOG_OUT_SUCCESS: {
-        draft.me = null
         draft.isLoggingOut = false
-        draft.userInfo = null
+        draft.me = null
         draft.followerList = []
         draft.followingList = []
+        draft.userInfo = null
         break
       }
       case LOG_OUT_FAILURE: {

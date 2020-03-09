@@ -33,7 +33,8 @@ import {
 } from "../pages/mytypes/reducerTypes"
 import { signUpFailureAction } from "../reducers/user"
 import axios from "axios"
-import { useRouter } from "next/router"
+import Router from "next/router"
+import { getContext } from "redux-saga/effects"
 
 axios.defaults.baseURL = "http://localhost:4539/api"
 
@@ -99,6 +100,7 @@ function* logout() {
       type: LOG_OUT_SUCCESS,
     })
     yield alert("로그아웃 성공!")
+    yield call(Router.push, "/")
   } catch (e) {
     console.error(e)
     yield put({
