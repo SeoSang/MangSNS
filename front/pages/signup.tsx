@@ -1,10 +1,9 @@
 import React, { memo, useEffect } from "react"
 import { Form } from "antd"
 import Router, { useRouter } from "next/router"
-import SignupForm from "../components/SignupForm"
+import SignupForm from "../containers/SignupForm"
 import { useSelector } from "react-redux"
 import { StoreState } from "../reducers"
-import { Context } from "./mytypes/pagesTypes"
 import { NextPage } from "next"
 import { UserInfo } from "./mytypes/reducerTypes"
 

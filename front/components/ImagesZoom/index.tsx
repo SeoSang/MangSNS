@@ -1,9 +1,9 @@
 import * as React from "react"
 import { useState } from "react"
-import { Image, BACKEND_HTTP } from "../pages/mytypes/componentTypes"
 import Slick from "react-slick"
 import { Icon } from "antd"
 import styled from "styled-components"
+import { Image, BACKEND_HTTP } from "../../pages/mytypes/componentTypes"
 
 const ImagesZoomDiv = styled.div`
   position: fixed;

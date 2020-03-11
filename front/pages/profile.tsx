@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from "react"
 import { List, Icon, Input, Card, Form, Button } from "antd"
-import NickNameEditForm from "../components/NickNameEditForm"
+import NickNameEditForm from "../containers/NickNameEditForm"
 import { useDispatch, useSelector } from "react-redux"
-import PostCard from "../components/PostCard"
+import PostCard from "../containers/PostCard"
 import {
   LOAD_FOLLOWERS_REQUEST,
   LOAD_FOLLOWINGS_REQUEST,
@@ -11,7 +11,7 @@ import {
   UNFOLLOW_USER_REQUEST,
 } from "./mytypes/reducerTypes"
 import { StoreState } from "../reducers"
-import { NextComponentType, NextPage, NextPageContext } from "next"
+import { NextPage } from "next"
 import { Context } from "./mytypes/pagesTypes"
 import styled from "styled-components"
 import Router from "next/router"
@@ -121,7 +121,7 @@ const Profile: NextPage<{ isLogin: boolean }> = ({ isLogin }) => {
       ></List>
       <div>
         {mainPosts.map(c => (
-          <PostCard key={+c.createdAt} post={c} />
+          <PostCard key={c.id} post={c} />
         ))}
       </div>
     </>

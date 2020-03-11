@@ -15,8 +15,8 @@ import {
   MainPost,
 } from "../pages/mytypes/reducerTypes"
 import Link from "next/link"
-import PostImages from "./PostImages"
-import PostCardContent from "./PostCardContent"
+import PostImages from "../components/PostImages"
+import PostCardContent from "../components/PostCardContent"
 import { StoreState } from "../reducers"
 import { NextPage } from "next"
 

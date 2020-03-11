@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { Form } from "antd"
-import LoginForm from "../components/LoginForm"
+import LoginForm from "../containers/LoginForm"
 
 const WrappedLoginForm = Form.create({ name: "login" })(LoginForm)
 

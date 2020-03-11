@@ -1,7 +1,7 @@
-import React, { Component, memo, useMemo, useState, ErrorInfo, FC } from "react"
+import React, { memo, FC } from "react"
 import styled from "styled-components"
 
-import { Form, Input, Button, Icon, Row, Col, Typography } from "antd"
+import { Form, Input, Button, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { LOG_IN_REQUEST } from "../pages/mytypes/reducerTypes"
 import { StoreState } from "../reducers"

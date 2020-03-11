@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from "react"
 import Link from "next/link"
-import LoginForm from "./LoginForm"
+import LoginForm from "../containers/LoginForm"
 import { Menu, Input, Button, Row, Col, Avatar, Card, Form } from "antd"
-import UserProfile from "./UserProfile"
+import UserProfile from "../containers/UserProfile"
 import { useDispatch, useSelector } from "react-redux"
 import { LOG_OUT_REQUEST } from "../pages/mytypes/reducerTypes"
 import Router from "next/router"
-import { NextPage, NextComponentType } from "next"
+import { NextPage } from "next"
 import { StoreState } from "../reducers"
 
 const WrappedLoginForm = Form.create({ name: "login" })(LoginForm)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Row, Col, List, Typography, Card } from "antd"
-import RecenteStats from "../../components/RecentStats"
+import RecenteStats from "../../containers/RecentStats"
 import styled, { css } from "styled-components"
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux"

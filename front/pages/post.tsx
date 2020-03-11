@@ -44,7 +44,10 @@ const Post: NextPage<{ id: number }> = ({ id }) => {
       <div>{singlePost.Likers![0].id}</div>
     </React.Fragment>
   ) : (
-    <div>에러 발생</div>
+    <div>
+      <h1>존재하지 않는 포스트입니다.</h1>
+      <h3>에러가 지속되면 운영자에게 문의 바랍니다.</h3>
+    </div>
   )
 }
 
