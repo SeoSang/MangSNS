@@ -11,9 +11,7 @@ import { StoreState } from "../reducers"
 const PostForm = () => {
   const [text, setText] = useState("")
   const dispatch = useDispatch()
-  const { postAdded, isAddingPost, imagePaths, mainPosts } = useSelector(
-    (state: StoreState) => state.post,
-  )
+  const { postAdded, isAddingPost, imagePaths } = useSelector((state: StoreState) => state.post)
   const imageInput = useRef<HTMLInputElement>(null)
 
   const onChangeTextArea = useCallback(e => {
@@ -37,7 +35,7 @@ const PostForm = () => {
         data: formData,
       })
     },
-    [text],
+    [text, imagePaths, imageInput.current],
   )
 
   useEffect(() => {
@@ -45,24 +43,27 @@ const PostForm = () => {
     if (postAdded) setText("")
   }, [postAdded])
 
-  const onChangeImage = useCallback(e => {
-    console.log(e.target.files)
-    const imageFormData = new FormData()
-    ;[].forEach.call(e.target.files, f => {
-      imageFormData.append("image", f)
-    })
-    dispatch({
-      type: UPLOAD_IMAGES_REQUEST,
-      data: imageFormData,
-    })
-  }, [])
+  const onChangeImage = useCallback(
+    e => {
+      console.log(e.target.files)
+      const imageFormData = new FormData()
+      ;[].forEach.call(e.target.files, f => {
+        imageFormData.append("image", f)
+      })
+      dispatch({
+        type: UPLOAD_IMAGES_REQUEST,
+        data: imageFormData,
+      })
+    },
+    [text],
+  )
 
   const onClickImageUpload = useCallback(() => {
     console.log(imageInput.current)
     if (imageInput.current) {
       imageInput.current.click()
     }
-  }, [imageInput.current])
+  }, [imageInput.current, text])
 
   const onRemoveImage = useCallback(
     index => () => {
@@ -71,7 +72,7 @@ const PostForm = () => {
         index,
       })
     },
-    [],
+    [imageInput.current],
   )
 
   return (

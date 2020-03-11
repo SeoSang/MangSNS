@@ -1,6 +1,6 @@
 import React from "react"
 import Head from "next/head"
-import PropTypes from "prop-types"
+import Helmet from "react-helmet"
 import withRedux from "next-redux-wrapper"
 import AppLayout from "../components/AppLayout"
 import { Provider } from "react-redux"
@@ -10,7 +10,6 @@ import reducer, { StoreState } from "../reducers/index"
 import rootSaga from "../sagas"
 import withReduxSaga from "next-redux-saga"
 import { Context } from "vm"
-import { NextComponentType } from "next"
 import {
   AppContextType,
   AppInitialProps,
@@ -19,6 +18,7 @@ import {
 } from "next/dist/next-server/lib/utils"
 import { LOAD_USER_REQUEST, AllActionTypes } from "./mytypes/reducerTypes"
 import axios from "axios"
+import { Container } from "next/app"
 
 export interface MyAppPropsType extends AppPropsType {
   store: Store
@@ -26,28 +26,66 @@ export interface MyAppPropsType extends AppPropsType {
 
 const MangSNS = ({ Component, store, pageProps }: MyAppPropsType) => {
   return (
-    <Provider store={store}>
-      <Head>
-        <title>MangSNS</title>
-        <link
-          rel='stylesheet'
-          href='https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css'
-        ></link>
-        <link
-          rel='stylesheet'
-          type='text/css'
-          href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css'
+    <Container>
+      <Provider store={store}>
+        <Helmet
+          title='MangSNS'
+          htmlAttributes={{ lang: "ko" }}
+          meta={[
+            {
+              charSet: "UTF-8",
+            },
+            {
+              name: "viewport",
+              content:
+                "width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover",
+            },
+            {
+              httpEquiv: "X-UA-Compatible",
+              content: "IE=edge",
+            },
+            {
+              name: "description",
+              content: "서상혁의 MangSNS",
+            },
+            {
+              name: "og:title",
+              content: "MangSNS",
+            },
+            {
+              name: "og:description",
+              content: "서상혁 MangSNS",
+            },
+            {
+              property: "og:type",
+              content: "website",
+            },
+          ]}
+          link={[
+            {
+              rel: "shortcut icon",
+              href: "/favicon.ico",
+            },
+            {
+              rel: "stylesheet",
+              href: "https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.css",
+            },
+            {
+              rel: "stylesheet",
+              href: "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css",
+            },
+            {
+              rel: "stylesheet",
+              href:
+                "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css",
+            },
+          ]}
         />
-        <link
-          rel='stylesheet'
-          type='text/css'
-          href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css'
-        />
-      </Head>
-      <AppLayout>
-        <Component {...pageProps} />
-      </AppLayout>
-    </Provider>
+        <AppLayout>
+          <Component {...pageProps} />
+        </AppLayout>
+      </Provider>
+    </Container>
   )
 }
 

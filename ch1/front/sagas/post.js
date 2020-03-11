@@ -222,7 +222,7 @@ function* watchLoadComments() {
 
 // 해쉬태그 포스트 불러오기
 function loadHashtagPostsAPI(tag, lastId) {
-  return axios.get(`/hashtag/${encodeURIComponent(tag)}?lastId=${lastId}`)
+  return axios.get(`/hashtag/${encodeURIComponent(tag)}?lastId=${lastId}&limit=10`)
 }
 function* loadHashtagPosts(action) {
   try {
