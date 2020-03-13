@@ -16,7 +16,7 @@ import {
   AppPropsType,
   NextApiRequest,
 } from "next/dist/next-server/lib/utils"
-import { LOAD_USER_REQUEST, AllActionTypes } from "./mytypes/reducerTypes"
+import { LOAD_USER_REQUEST, AllActionTypes } from "../mytypes/reducerTypes"
 import axios from "axios"
 
 export interface MyAppPropsType extends AppPropsType {
@@ -100,7 +100,7 @@ MangSNS.getInitialProps = async (context: Context) => {
     })
   }
   let pageProps = {}
-  if (context.Component.getInitialProps) {
+  if (Component.getInitialProps) {
     pageProps = await context.Component.getInitialProps(ctx)
   }
   return { pageProps }

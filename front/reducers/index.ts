@@ -4,7 +4,7 @@ import { combineReducers } from "redux"
 import user from "./user"
 import post from "./post"
 import mwgg from "./mwgg"
-import { UserState, PostState, MwggState } from "../pages/mytypes/reducerTypes"
+import { UserState, PostState, MwggState } from "../mytypes/reducerTypes"
 
 export interface StoreState {
   user: UserState

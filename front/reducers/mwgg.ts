@@ -1,4 +1,4 @@
-import { MwggState, MwggActionTypes, ADD_SUMMONER_NAME } from "../pages/mytypes/reducerTypes"
+import { MwggState, MwggActionTypes, ADD_SUMMONER_NAME } from "../mytypes/reducerTypes"
 
 export const initialState: MwggState = {
   users: [

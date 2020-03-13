@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useCallback, useRef } from "react"
 import PostForm from "../containers/PostForm"
 import PostCard from "../containers/PostCard"
 import { useSelector, useDispatch } from "react-redux"
-import { LOAD_MAIN_POSTS_REQUEST } from "./mytypes/reducerTypes"
+import { LOAD_MAIN_POSTS_REQUEST } from "../mytypes/reducerTypes"
 import { StoreState } from "../reducers"
-import { Context } from "./mytypes/pagesTypes"
+import { Context } from "../mytypes/pagesTypes"
 
 const Home = () => {
   const { me } = useSelector((state: StoreState) => state.user)

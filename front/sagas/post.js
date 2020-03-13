@@ -40,7 +40,7 @@ import {
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
   LOAD_POST_FAILURE,
-} from "../pages/mytypes/reducerTypes"
+} from "../mytypes/reducerTypes"
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:4539/api"
 

@@ -2,7 +2,7 @@ import React, { ChangeEvent, useCallback } from "react"
 import { Card, Col, Row } from "antd"
 import Link from "next/link"
 import { useDispatch, useSelector } from "react-redux"
-import { ADD_SUMMONER_NAME } from "../mytypes/reducerTypes"
+import { ADD_SUMMONER_NAME } from "../../mytypes/reducerTypes"
 import { StoreState } from "../../reducers"
 
 const index = () => {

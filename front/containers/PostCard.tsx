@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useMemo, useEffect } from "react"
-import { Card, Button, Icon, Avatar, Form, List, Input, Comment, Popover } from "antd"
+import { Card, Button, Icon, Avatar, Form, List, Input, Comment, Popover, Tag } from "antd"
 import { useSelector, useDispatch } from "react-redux"
 import {
   ADD_COMMENT_REQUEST,
@@ -13,14 +13,27 @@ import {
   UserInfo,
   PostState,
   MainPost,
-} from "../pages/mytypes/reducerTypes"
+} from "../mytypes/reducerTypes"
 import Link from "next/link"
 import PostImages from "../components/PostImages"
 import PostCardContent from "../components/PostCardContent"
 import { StoreState } from "../reducers"
 import { NextPage } from "next"
+import moment from "moment"
+import styled from "styled-components"
+moment.locale("ko")
 
-const BACKEND_HTTP = "http://localhost:4539/"
+export const MarginBottomCard = styled(Card)`
+  && {
+    margin-bottom: 20px;
+  }
+`
+
+export const TimeTag = styled(Tag)`
+  && {
+    margin: 15px 0 0 0;
+  }
+`
 
 const PostCard: NextPage<{ post: MainPost }> = ({ post }) => {
   if (post == undefined) return <></>
@@ -130,7 +143,7 @@ const PostCard: NextPage<{ post: MainPost }> = ({ post }) => {
 
   return (
     <>
-      <Card
+      <MarginBottomCard
         key={+post.createdAt}
         cover={post.Images && post.Images[0] && <PostImages images={post.Images} />}
         actions={[
@@ -173,44 +186,50 @@ const PostCard: NextPage<{ post: MainPost }> = ({ post }) => {
         }
       >
         {post.RetweetId && post.Retweet ? (
-          <Card
-            cover={
-              post.Retweet?.Images &&
-              post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />
-            }
-          >
+          <div>
+            <Card
+              cover={
+                post.Retweet?.Images &&
+                post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />
+              }
+            >
+              <Card.Meta
+                avatar={
+                  <Link
+                    href={{ pathname: "/user", query: { id: post.Retweet?.User?.id } }}
+                    as={`/user/${post.Retweet?.User?.id}`}
+                  >
+                    <a>
+                      <Avatar>{post.Retweet?.User?.nickname[0]}</Avatar>
+                    </a>
+                  </Link>
+                }
+                title={post.RetweetId ? `${post.User?.nickname}님이 리트윗하셨습니다.` : null}
+                description={<PostCardContent postData={post.Retweet.content} />} // a tag x -> Link
+              />
+            </Card>
+            <TimeTag color='blue'>{moment(post.createdAt).format("LLL")}</TimeTag>
+          </div>
+        ) : (
+          <div>
             <Card.Meta
               avatar={
                 <Link
-                  href={{ pathname: "/user", query: { id: post.Retweet?.User?.id } }}
-                  as={`/user/${post.Retweet?.User?.id}`}
+                  href={{ pathname: "/user", query: { id: post.User?.id } }}
+                  as={`/user/${post.User?.id}`}
                 >
                   <a>
-                    <Avatar>{post.Retweet?.User?.nickname[0]}</Avatar>
+                    <Avatar>{post.User?.nickname[0]}</Avatar>
                   </a>
                 </Link>
               }
-              title={post.RetweetId ? `${post.User?.nickname}님이 리트윗하셨습니다.` : null}
-              description={<PostCardContent postData={post.Retweet.content} />} // a tag x -> Link
+              title={post.User?.nickname}
+              description={<PostCardContent postData={post.content} />} // a tag x -> Link
             />
-          </Card>
-        ) : (
-          <Card.Meta
-            avatar={
-              <Link
-                href={{ pathname: "/user", query: { id: post.User?.id } }}
-                as={`/user/${post.User?.id}`}
-              >
-                <a>
-                  <Avatar>{post.User?.nickname[0]}</Avatar>
-                </a>
-              </Link>
-            }
-            title={post.User?.nickname}
-            description={<PostCardContent postData={post.content} />} // a tag x -> Link
-          />
+            <TimeTag color='blue'>{moment(post.createdAt).format("LLL")}</TimeTag>
+          </div>
         )}
-      </Card>
+      </MarginBottomCard>
       {commentFormOpened && (
         <>
           <Form onSubmit={onSubmitComment}>

@@ -2,8 +2,8 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { StoreState } from "../reducers"
 import { NextPage } from "next"
-import { Context } from "./mytypes/pagesTypes"
-import { LOAD_POST_REQUEST } from "./mytypes/reducerTypes"
+import { Context } from "../mytypes/pagesTypes"
+import { LOAD_POST_REQUEST } from "../mytypes/reducerTypes"
 import Helmet from "react-helmet"
 
 const Post: NextPage<{ id: number }> = ({ id }) => {

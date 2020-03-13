@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useCallback, useState } from "react"
 import { Icon } from "antd"
-import { Image, BACKEND_HTTP } from "../pages/mytypes/componentTypes"
+import { Image, BACKEND_HTTP } from "../mytypes/componentTypes"
 import ImagesZoom from "./ImagesZoom"
 
 const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {

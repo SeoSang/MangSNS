@@ -1,15 +1,14 @@
-import React, { Component, memo, useState } from "react"
-import styled, { css } from "styled-components"
+import React, { memo, useState, ChangeEvent } from "react"
+import styled from "styled-components"
 
 import { Form, Input, Tooltip, Icon, Cascader, Select, Checkbox, Button } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { SIGN_UP_REQUEST } from "../../pages/mytypes/reducerTypes"
-import { useRouter } from "next/router"
-import { StoreState } from "../../reducers"
 import { NextPage } from "next"
-import { FormProps, FormComponentProps } from "antd/lib/form"
-import { ValidateFieldsOptions, ValidationRule, ValidateCallback } from "antd/lib/form/Form"
+import { FormComponentProps } from "antd/lib/form"
+import { ValidationRule } from "antd/lib/form/Form"
 import Password from "antd/lib/input/Password"
+import { SIGN_UP_REQUEST } from "../mytypes/reducerTypes"
+import { StoreState } from "../reducers"
 
 const { Option } = Select
 const StyledForm = styled.div`
@@ -43,7 +42,7 @@ const residences = [
 const SignupForm: NextPage<FormComponentProps> = ({ form }) => {
   const [confirmDirty, setConfirmDirty] = useState(false)
   const dispatch = useDispatch()
-  const { isSigningUp, isSignedUp } = useSelector((state: StoreState) => state.user)
+  const { isSigningUp } = useSelector((state: StoreState) => state.user)
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -58,7 +57,7 @@ const SignupForm: NextPage<FormComponentProps> = ({ form }) => {
     })
   }
 
-  const handleConfirmBlur = e => {
+  const handleConfirmBlur = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setConfirmDirty(confirmDirty || !!value)
   }

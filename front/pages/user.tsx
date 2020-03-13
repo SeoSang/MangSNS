@@ -3,10 +3,10 @@ import PropTypes from "prop-types"
 import { useSelector } from "react-redux"
 import { Avatar, Card } from "antd"
 import PostCard from "../containers/PostCard"
-import { LOAD_USER_REQUEST, LOAD_USER_POSTS_REQUEST } from "./mytypes/reducerTypes"
+import { LOAD_USER_REQUEST, LOAD_USER_POSTS_REQUEST } from "../mytypes/reducerTypes"
 import { StoreState } from "../reducers"
 import { NextPage } from "next"
-import { Context } from "./mytypes/pagesTypes"
+import { Context } from "../mytypes/pagesTypes"
 
 const User: NextPage<{ id: number }> = ({ id }) => {
   const { mainPosts } = useSelector((state: StoreState) => state.post)

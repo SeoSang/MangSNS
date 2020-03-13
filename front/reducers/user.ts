@@ -33,7 +33,7 @@ import {
   EDIT_NICKNAME_REQUEST,
   EDIT_NICKNAME_FAILURE,
   REMOVE_POST_OF_ME,
-} from "../pages/mytypes/reducerTypes"
+} from "../mytypes/reducerTypes"
 import produce from "immer"
 
 export const initialState: UserState = {

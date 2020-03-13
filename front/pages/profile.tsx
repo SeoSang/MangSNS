@@ -9,10 +9,10 @@ import {
   LOAD_USER_POSTS_REQUEST,
   REMOVE_FOLLOWER_REQUEST,
   UNFOLLOW_USER_REQUEST,
-} from "./mytypes/reducerTypes"
+} from "../mytypes/reducerTypes"
 import { StoreState } from "../reducers"
 import { NextPage } from "next"
-import { Context } from "./mytypes/pagesTypes"
+import { Context } from "../mytypes/pagesTypes"
 import styled from "styled-components"
 import Router from "next/router"
 

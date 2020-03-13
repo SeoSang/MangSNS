@@ -1,7 +1,7 @@
 import React from "react"
 import { Card, Avatar } from "antd"
 import { NextPage } from "next"
-import { UserInfo } from "../pages/mytypes/reducerTypes"
+import { UserInfo } from "../mytypes/reducerTypes"
 import Link from "next/link"
 
 const UserProfile: NextPage<{ user: UserInfo }> = ({ user }) => {

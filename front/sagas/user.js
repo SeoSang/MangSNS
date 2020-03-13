@@ -30,7 +30,7 @@ import {
   EDIT_NICKNAME_SUCCESS,
   EDIT_NICKNAME_FAILURE,
   EDIT_NICKNAME_REQUEST,
-} from "../pages/mytypes/reducerTypes"
+} from "../mytypes/reducerTypes"
 import { signUpFailureAction } from "../reducers/user"
 import axios from "axios"
 import Router from "next/router"

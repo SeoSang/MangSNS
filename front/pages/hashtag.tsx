@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { LOAD_HASHTAG_POSTS_REQUEST } from "./mytypes/reducerTypes"
+import { LOAD_HASHTAG_POSTS_REQUEST } from "../mytypes/reducerTypes"
 import PostCard from "../containers/PostCard"
 import { StoreState } from "../reducers"
 import { Context } from "vm"

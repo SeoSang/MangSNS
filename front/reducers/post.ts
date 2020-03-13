@@ -38,7 +38,7 @@ import {
   REMOVE_POST_SUCCESS,
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
-} from "../pages/mytypes/reducerTypes"
+} from "../mytypes/reducerTypes"
 
 import produce from "immer"
 

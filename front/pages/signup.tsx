@@ -5,7 +5,7 @@ import SignupForm from "../containers/SignupForm"
 import { useSelector } from "react-redux"
 import { StoreState } from "../reducers"
 import { NextPage } from "next"
-import { UserInfo } from "./mytypes/reducerTypes"
+import { UserInfo } from "../mytypes/reducerTypes"
 
 const WrappedSignupForm = Form.create({ name: "register" })(SignupForm)
 

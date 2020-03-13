@@ -1,5 +1,5 @@
 import React from "react"
-import { Context } from "./mytypes/pagesTypes"
+import { Context } from "../mytypes/pagesTypes"
 import { NextPage } from "next"
 
 const MyError: NextPage<{ statusCode: number | null | undefined }> = ({ statusCode }) => {

@@ -1,12 +1,12 @@
 import React, { useCallback, useState, useEffect, useRef } from "react"
-import { Form, Input, Icon, Row, Col, Checkbox, Button, AutoComplete, Avatar, Card } from "antd"
+import { message, Form, Input, Button } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  ADD_POST_REQUEST,
-  UPLOAD_IMAGES_REQUEST,
-  REMOVE_IMAGE,
-} from "../pages/mytypes/reducerTypes"
+import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from "../mytypes/reducerTypes"
 import { StoreState } from "../reducers"
+
+const onSubmitFormSuccess = () => {
+  message.success("게시글 작성에 성공했습니다!", 5)
+}
 
 const PostForm = () => {
   const [text, setText] = useState("")
@@ -40,7 +40,10 @@ const PostForm = () => {
 
   useEffect(() => {
     console.log("useEffect")
-    if (postAdded) setText("")
+    if (postAdded) {
+      onSubmitFormSuccess()
+      setText("")
+    }
   }, [postAdded])
 
   const onChangeImage = useCallback(
