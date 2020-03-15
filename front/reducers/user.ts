@@ -135,7 +135,8 @@ const reducer = (state = initialState, action: UserActionTypes) => {
       }
       case UNFOLLOW_USER_SUCCESS: {
         draft.me!.Followings = draft.me!.Followings!.filter(v => v.id !== action.data)
-        draft.followingList = draft.followerList.filter(v => v.id !== action.data)
+        draft.followingList = draft.followingList.filter(v => v.id !== action.data)
+
         break
       }
       case UNFOLLOW_USER_FAILURE: {
@@ -155,7 +156,7 @@ const reducer = (state = initialState, action: UserActionTypes) => {
       }
       case LOAD_FOLLOWINGS_REQUEST: {
         draft.followingList = !action.offset ? [] : draft.followingList
-        draft.hasMoreFollowing = action.offset ? state.hasMoreFollowing : true
+        draft.hasMoreFollowing = action.offset ? draft.hasMoreFollowing : true
         break
       }
       case LOAD_FOLLOWINGS_SUCCESS: {

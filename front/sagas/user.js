@@ -274,7 +274,6 @@ function* watchLoadFollowings() {
 }
 
 function removeFollowerAPI(userId) {
-  // 서버에 요청을 보내는 부분
   return axios.delete(`/user/${userId}/follower`, {
     withCredentials: true,
   })
