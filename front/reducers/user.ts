@@ -86,6 +86,7 @@ const reducer = (state = initialState, action: UserActionTypes) => {
       }
       case LOG_OUT_FAILURE: {
         draft.isLoggingOut = false
+        draft.loginErrorReason = action.error
         break
       }
       // 회원가입

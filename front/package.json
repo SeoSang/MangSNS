@@ -5,20 +5,19 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "cross-env BUNDLE_ANALYZE=both next build",
+    "build": "cross-env ANALYZE=true next build",
     "prestart": "npm run build",
-    "start": "cross-env NODE_ENV=production next start"
+    "start": "cross-env NODE_ENV=production node server.js"
   },
   "author": "seosang",
   "license": "MIT",
   "dependencies": {
+    "@next/bundle-analyzer": "^9.3.0",
     "@types/history": "^4.7.5",
     "@types/next-redux-saga": "^3.0.2",
     "@types/react-helmet": "^5.0.15",
     "@types/react-router-dom": "^5.1.3",
     "@types/styled-components": "^5.0.1",
-    "@zeit/next-bundle-analyzer": "^0.1.2",
-    "@zeit/next-typescript": "^1.1.1",
     "antd": "^3.26.13",
     "awesome-typescript-loader": "^5.2.1",
     "axios": "^0.19.2",

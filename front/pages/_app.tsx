@@ -58,6 +58,10 @@ const MangSNS = ({ Component, store, pageProps }: MyAppPropsType) => {
             property: "og:type",
             content: "website",
           },
+          {
+            property: "og:image",
+            content: "http://localhost:4539/favicon.ico",
+          },
         ]}
         link={[
           {
@@ -115,18 +119,16 @@ const middle = (initialState: StoreState, options: any) => {
       next(action) // 엑션 로그받는 미들웨어
     },
   ]
-  const composeEnhancers =
+  const composedEnhancers =
     process.env.NODE_ENV === "production"
       ? compose(applyMiddleware(...middlewares))
-      : (!options.isServer &&
-          (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-          (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 })) ||
-        compose
-  const store = createStore(
-    reducer,
-    initialState as any,
-    composeEnhancers(applyMiddleware(...middlewares)),
-  )
+      : compose(
+          applyMiddleware(...middlewares),
+          !options.isServer && typeof (window as any).__REDUX_DEVTOOLS_EXTENSION__ !== "undefined"
+            ? (window as any).__REDUX_DEVTOOLS_EXTENSION__({ trace: true, traceLimit: 25 })
+            : (f: any) => f,
+        )
+  const store = createStore(reducer, initialState as any, composedEnhancers)
   ;(store as any).sagaTask = sagaMiddleware.run(rootSaga)
   return store
 }

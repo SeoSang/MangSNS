@@ -60,7 +60,7 @@ function* login(action) {
     console.error("e =>", e)
     yield put({
       type: LOG_IN_FAILURE,
-      error: e,
+      error: e.response.data,
     })
     alert(e.response.data)
   }
