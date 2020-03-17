@@ -64,7 +64,6 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
       await newPost.addHashtags(result.map(r => r[0]))
     }
     if (req.body.image) {
-      console.log("backend__post.js__ => req.body.image", req.body.image)
       if (Array.isArray(req.body.image)) {
         const images = await Promise.all(
           req.body.image.map(image => {

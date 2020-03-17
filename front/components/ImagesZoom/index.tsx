@@ -63,10 +63,7 @@ const ImagesZoom: React.FC<{ images: Image[]; onClose: React.EffectCallback }> =
             {images.map(v => {
               return (
                 <div>
-                  <img
-                    src={BACKEND_HTTP + `${v.src}`}
-                    style={{ margin: "0 auto", maxHeight: 750 }}
-                  />
+                  <img src={v.src} style={{ margin: "0 auto", maxHeight: 750 }} />
                 </div>
               )
             })}

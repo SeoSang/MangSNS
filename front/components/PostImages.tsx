@@ -17,7 +17,7 @@ const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <img src={BACKEND_HTTP + `${images[0].src}`} onClick={onZoom} />
+        <img src={images[0].src.replace(/original\//, "thumb/")} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose}></ImagesZoom>}
       </>
     )
@@ -25,8 +25,8 @@ const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {
     return (
       <>
         <div>
-          <img src={BACKEND_HTTP + `${images[0].src}`} width='50%' onClick={onZoom} />
-          <img src={BACKEND_HTTP + `${images[1].src}`} width='50%' onClick={onZoom} />
+          <img src={images[0].src.replace(/original\//, "thumb/")} width='50%' onClick={onZoom} />
+          <img src={images[0].src.replace(/original\//, "thumb/")} width='50%' onClick={onZoom} />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose}></ImagesZoom>}
       </>
@@ -35,7 +35,7 @@ const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {
     return (
       <>
         <div>
-          <img src={BACKEND_HTTP + `${images[0].src}`} width='50%' onClick={onZoom} />
+          <img src={images[0].src.replace(/original\//, "thumb/")} width='50%' onClick={onZoom} />
           <div
             style={{
               display: "inline-block",
