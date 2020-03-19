@@ -31,8 +31,11 @@ import {
   EDIT_NICKNAME_FAILURE,
   EDIT_NICKNAME_REQUEST,
 } from "../mytypes/reducerTypes"
-import axios from "axios"
 import Router from "next/router"
+import axios from "axios"
+import { backURL } from "../config/config"
+
+axios.defaults.baseURL = `${backURL}/api`
 
 // ----------- 로그인 -----------
 function loginAPI(loginData) {

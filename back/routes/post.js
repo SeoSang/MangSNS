@@ -7,16 +7,16 @@ const multerS3 = require("multer-s3")
 const AWS = require("aws-sdk")
 const router = express.Router()
 
-export const IS_PRODUCTION = process.env.NODE_ENV === "production"
+const IS_PRODUCTION = process.env.NODE_ENV === "production"
 
 AWS.config.update({
   region: "ap-northeast-2",
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.S3_ACCESS_SECRET_KEY,
 })
-
+let upload = ""
 if (IS_PRODUCTION) {
-  const upload = multer({
+  upload = multer({
     storage: multerS3({
       s3: new AWS.S3(),
       bucket: "mangsns",
@@ -27,7 +27,7 @@ if (IS_PRODUCTION) {
     limits: { fileSize: 20 * 1024 * 1024 },
   })
 } else {
-  const upload = multer({
+  upload = multer({
     storage: multer.diskStorage({
       destination(req, file, done) {
         done(null, "uploads") // null 은 서버에러

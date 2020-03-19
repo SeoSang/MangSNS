@@ -3,7 +3,7 @@ import { useState } from "react"
 import Slick from "react-slick"
 import { Icon } from "antd"
 import styled from "styled-components"
-import { Image, BACKEND_HTTP } from "../../mytypes/componentTypes"
+import { Image } from "../../mytypes/componentTypes"
 
 const ImagesZoomDiv = styled.div`
   position: fixed;

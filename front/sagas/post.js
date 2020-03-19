@@ -31,9 +31,7 @@ import {
   RETWEET_FAILURE,
   RETWEET_SUCCESS,
   ADD_POST_TO_ME,
-  EDIT_NICKNAME_REQUEST,
   REMOVE_POST_REQUEST,
-  REMOVE_FOLLOWER_SUCCESS,
   REMOVE_POST_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_OF_ME,
@@ -42,6 +40,9 @@ import {
   LOAD_POST_FAILURE,
 } from "../mytypes/reducerTypes"
 import axios from "axios"
+import { backURL } from "../config/config"
+
+axios.defaults.baseURL = `${backURL}/api`
 
 function addPostAPI(formData) {
   return axios.post("/post", formData, {
