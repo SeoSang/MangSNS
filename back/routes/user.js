@@ -6,11 +6,14 @@ const db = require("../models")
 const router = express.Router()
 
 // 유저정보 가져오기
-router.get("/", (req, res) => {
-  const user = Object.assign({}, req.user.toJSON())
-  delete user.password
-  return res.json(user)
-}) // request 요청 response 응답
+router.get("/", (req, res, next) => {
+  const user = req.user ? Object.assign({}, req.user.toJSON()) : ""
+  if (user) {
+    delete user.password
+    return res.json(user)
+  }
+  return next("no user")
+})
 
 router.post("/", isNotLoggedIn, async (req, res, next) => {
   // 회원가입

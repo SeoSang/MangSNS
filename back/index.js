@@ -5,9 +5,9 @@ const cookieParser = require("cookie-parser")
 const expressSession = require("express-session")
 const dotenv = require("dotenv")
 const passport = require("passport")
-const passportConfig = require("./passport")
 const hpp = require("hpp")
 const helmet = require("helmet")
+const passportConfig = require("./passport")
 const db = require("./models")
 const app = express()
 const userAPIRouter = require("./routes/user")
@@ -26,11 +26,12 @@ if (IS_PRODUCTION) {
   app.use(morgan("combined"))
   app.use(
     cors({
-      origin: "http://mangsns.ml",
+      origin: /mangsns\.ml$/,
       credentials: true,
     }),
   )
 } else {
+  app.use(morgan("dev")) // 로그 저장용
   app.use(
     cors({
       origin: true,
@@ -40,7 +41,6 @@ if (IS_PRODUCTION) {
 }
 
 // api는 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
-app.use(morgan("dev")) // 로그 저장용
 app.use("/", express.static("uploads"))
 app.use(
   cors({
@@ -73,5 +73,5 @@ app.use("/api/posts", postsAPIRouter)
 app.use("/api/hashtag", hashtagAPIRouter)
 
 app.listen(IS_PRODUCTION ? process.env.PORT : 4539, () => {
-  console.log("Hello server, http://localhost:4539")
+  console.log(`Hello server, ${process.env.PORT}`)
 })
