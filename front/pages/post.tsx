@@ -6,6 +6,8 @@ import { Context } from "../mytypes/pagesTypes"
 import { LOAD_POST_REQUEST } from "../mytypes/reducerTypes"
 import Helmet from "react-helmet"
 
+export const IS_PRODUCTION = process.env.NODE_ENV === "production"
+
 const Post: NextPage<{ id: number }> = ({ id }) => {
   const { singlePost } = useSelector((state: StoreState) => state.post)
   console.log(id)
@@ -28,7 +30,10 @@ const Post: NextPage<{ id: number }> = ({ id }) => {
           },
           {
             property: "og:image",
-            content: singlePost.Images![0] && `http://localhost:4539/${singlePost.Images![0].src}`,
+            content:
+              singlePost.Images![0] && IS_PRODUCTION
+                ? singlePost.Images![0].src
+                : `http://localhost:4539/${singlePost.Images![0].src}`,
           },
           {
             property: "og:url",
@@ -38,7 +43,13 @@ const Post: NextPage<{ id: number }> = ({ id }) => {
       />
       <div>
         {singlePost.Images![0] && (
-          <img src={`http://localhost:4539/${singlePost.Images![0].src}`} />
+          <img
+            src={
+              IS_PRODUCTION
+                ? singlePost.Images![0].src
+                : `http://localhost:4539/${singlePost.Images![0].src}`
+            }
+          />
         )}
       </div>
       <div>{singlePost.Likers![0].id}</div>

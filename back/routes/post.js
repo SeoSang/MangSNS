@@ -3,21 +3,44 @@ const db = require("../models")
 const path = require("path")
 const multer = require("multer")
 const { isLoggedIn, isNotLoggedIn, isPostExist } = require("./middleware")
+const multerS3 = require("multer-s3")
+const AWS = require("aws-sdk")
 const router = express.Router()
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads") // null 은 서버에러
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname)
-      const basename = path.basename(file.originalname, ext)
-      done(null, basename + new Date().valueOf() + ext) // 동일한 이름일 경우를 대비하여 , 날짜 추가.
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 },
+export const IS_PRODUCTION = process.env.NODE_ENV === "production"
+
+AWS.config.update({
+  region: "ap-northeast-2",
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_ACCESS_SECRET_KEY,
 })
+
+if (IS_PRODUCTION) {
+  const upload = multer({
+    storage: multerS3({
+      s3: new AWS.S3(),
+      bucket: "mangsns",
+      key(req, file, cb) {
+        cb(null, `original/${+new Date()}${path.basename(file.originalname)}`)
+      },
+    }),
+    limits: { fileSize: 20 * 1024 * 1024 },
+  })
+} else {
+  const upload = multer({
+    storage: multer.diskStorage({
+      destination(req, file, done) {
+        done(null, "uploads") // null 은 서버에러
+      },
+      filename(req, file, done) {
+        const ext = path.extname(file.originalname)
+        const basename = path.basename(file.originalname, ext)
+        done(null, basename + new Date().valueOf() + ext) // 동일한 이름일 경우를 대비하여 , 날짜 추가.
+      },
+    }),
+    limits: { fileSize: 20 * 1024 * 1024 },
+  })
+}
 
 router.get("/:id", isLoggedIn, async (req, res, next) => {
   try {
@@ -165,7 +188,7 @@ router.post("/:id/comment", isLoggedIn, isPostExist, async (req, res, next) => {
 
 // 이미지처리
 router.post("/images", upload.array("image"), (req, res) => {
-  res.json(req.files.map(v => v.filename))
+  res.json(req.files.map(v => (IS_PRODUCTION ? v.location : v.filename)))
 })
 
 // 좋아요처리

@@ -1,8 +1,11 @@
 import * as React from "react"
 import { useCallback, useState } from "react"
 import { Icon } from "antd"
-import { Image, BACKEND_HTTP } from "../mytypes/componentTypes"
+import { Image } from "../mytypes/componentTypes"
 import ImagesZoom from "./ImagesZoom"
+import { backURL } from "../config/config"
+
+export const IS_PRODUCTION = process.env.NODE_ENV === "production"
 
 const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false)
@@ -17,7 +20,14 @@ const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <img src={images[0].src.replace(/original\//, "thumb/")} onClick={onZoom} />
+        <img
+          src={
+            IS_PRODUCTION
+              ? images[0].src.replace(/original\//, "thumb/")
+              : backURL + `${images[0].src}`
+          }
+          onClick={onZoom}
+        />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose}></ImagesZoom>}
       </>
     )
@@ -25,8 +35,24 @@ const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {
     return (
       <>
         <div>
-          <img src={images[0].src.replace(/original\//, "thumb/")} width='50%' onClick={onZoom} />
-          <img src={images[0].src.replace(/original\//, "thumb/")} width='50%' onClick={onZoom} />
+          <img
+            src={
+              IS_PRODUCTION
+                ? images[0].src.replace(/original\//, "thumb/")
+                : backURL + `${images[0].src}`
+            }
+            width='50%'
+            onClick={onZoom}
+          />
+          <img
+            src={
+              IS_PRODUCTION
+                ? images[1].src.replace(/original\//, "thumb/")
+                : backURL + `${images[0].src}`
+            }
+            width='50%'
+            onClick={onZoom}
+          />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose}></ImagesZoom>}
       </>
@@ -35,7 +61,15 @@ const PostImages: React.FC<{ images: Image[] }> = ({ images }) => {
     return (
       <>
         <div>
-          <img src={images[0].src.replace(/original\//, "thumb/")} width='50%' onClick={onZoom} />
+          <img
+            src={
+              IS_PRODUCTION
+                ? images[0].src.replace(/original\//, "thumb/")
+                : backURL + `${images[0].src}`
+            }
+            width='50%'
+            onClick={onZoom}
+          />
           <div
             style={{
               display: "inline-block",

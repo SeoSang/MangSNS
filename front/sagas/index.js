@@ -3,8 +3,9 @@ import axios from "axios"
 import user from "./user"
 import post from "./post"
 import { watchgetSummonerInfo } from "./mwgg"
+import { backURL } from "../config/config"
 
-axios.defaults.baseURL = "http://localhost:4539/api"
+axios.defaults.baseURL = `${backURL}/api`
 
 export default function* rootSaga() {
   yield all([call(user), call(post), call(watchgetSummonerInfo)])

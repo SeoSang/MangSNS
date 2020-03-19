@@ -5,5 +5,3 @@ export interface Image {
   updatedAt: string
   postId?: number
 }
-
-export const BACKEND_HTTP = "http://localhost:4539/" as const

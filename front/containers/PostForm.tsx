@@ -3,6 +3,9 @@ import { message, Form, Input, Button } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from "../mytypes/reducerTypes"
 import { StoreState } from "../reducers"
+import { backURL } from "../config/config"
+
+export const IS_PRODUCTION = process.env.NODE_ENV === "production"
 
 const onSubmitFormSuccess = () => {
   message.success("게시글 작성에 성공했습니다!", 5)
@@ -98,7 +101,7 @@ const PostForm = () => {
         {imagePaths.map((v, i) => {
           return (
             <div key={v} style={{ display: "inline-block" }}>
-              <img src={"http://localhost:4539/" + v} style={{ width: "200px" }} alt={v} />
+              <img src={IS_PRODUCTION ? v : `${backURL}` + v} style={{ width: "200px" }} alt={v} />
               <div>
                 <Button onClick={onRemoveImage(i)}>제거</Button>
               </div>

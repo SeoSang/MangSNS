@@ -42,7 +42,6 @@ import {
   LOAD_POST_FAILURE,
 } from "../mytypes/reducerTypes"
 import axios from "axios"
-axios.defaults.baseURL = "http://localhost:4539/api"
 
 function addPostAPI(formData) {
   return axios.post("/post", formData, {

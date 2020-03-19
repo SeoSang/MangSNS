@@ -31,16 +31,8 @@ import {
   EDIT_NICKNAME_FAILURE,
   EDIT_NICKNAME_REQUEST,
 } from "../mytypes/reducerTypes"
-import { signUpFailureAction } from "../reducers/user"
 import axios from "axios"
 import Router from "next/router"
-import { getContext } from "redux-saga/effects"
-
-axios.defaults.baseURL = "http://localhost:4539/api"
-
-function goHome() {
-  return useRouter().push("/")
-}
 
 // ----------- 로그인 -----------
 function loginAPI(loginData) {
