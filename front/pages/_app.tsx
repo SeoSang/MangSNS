@@ -10,12 +10,7 @@ import reducer, { StoreState } from "../reducers/index"
 import rootSaga from "../sagas"
 import withReduxSaga from "next-redux-saga"
 import { Context } from "vm"
-import {
-  AppContextType,
-  AppInitialProps,
-  AppPropsType,
-  NextApiRequest,
-} from "next/dist/next-server/lib/utils"
+import { AppPropsType } from "next/dist/next-server/lib/utils"
 import { LOAD_USER_REQUEST, AllActionTypes } from "../mytypes/reducerTypes"
 import axios from "axios"
 
