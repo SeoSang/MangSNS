@@ -8,6 +8,7 @@ module.exports = () => {
   })
   passport.deserializeUser(async (id, done) => {
     try {
+      console.log("passport__index.js 실행")
       const user = await db.User.findOne({
         where: { id },
         include: [

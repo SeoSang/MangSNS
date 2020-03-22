@@ -57,6 +57,7 @@ app.use(
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET, // 암호화
     cookie: {
+      sameSite: "None",
       httpOnly: true,
       secure: false, // https 쓸 때 true로 하면됨
       domain: IS_PRODUCTION && ".mangsns.ml",
