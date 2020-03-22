@@ -28,6 +28,7 @@ app.prepare().then(() => {
       saveUninitialized: false,
       secret: process.env.COOKIE_SECRET,
       cookie: {
+        sameSite: "none",
         httpOnly: true,
         secure: false,
       },
