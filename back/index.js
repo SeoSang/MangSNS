@@ -1,5 +1,5 @@
 const express = require("express")
-const morgan = require("morgan") // 로그 저장됨
+const morgan = require("morgan")
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const expressSession = require("express-session")
@@ -7,9 +7,9 @@ const dotenv = require("dotenv")
 const passport = require("passport")
 const hpp = require("hpp")
 const helmet = require("helmet")
+
 const passportConfig = require("./passport")
 const db = require("./models")
-const app = express()
 const userAPIRouter = require("./routes/user")
 const postAPIRouter = require("./routes/post")
 const postsAPIRouter = require("./routes/posts")
@@ -17,6 +17,7 @@ const hashtagAPIRouter = require("./routes/hashtag")
 const IS_PRODUCTION = process.env.NODE_ENV === "production"
 
 dotenv.config()
+const app = express()
 db.sequelize.sync()
 passportConfig()
 
@@ -55,14 +56,13 @@ app.use(
   expressSession({
     resave: false,
     saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET, // 암호화
+    secret: process.env.COOKIE_SECRET,
     cookie: {
-      sameSite: "None",
       httpOnly: true,
-      secure: false, // https 쓸 때 true로 하면됨
+      secure: false, // https를 쓸 때 true
       domain: IS_PRODUCTION && ".mangsns.ml",
     },
-    name: "mingd",
+    name: "rnbck",
   }),
 )
 app.use(passport.initialize())
